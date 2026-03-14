@@ -66,7 +66,7 @@ import faIR from "antd/locale/fa_IR";
 import csCZ from "antd/locale/cs_CZ";
 import skSK from "antd/locale/sk_SK";
 
-setTwoToneColor("rgb(87,52,211)");
+setTwoToneColor("#1677ff");
 
 function getAntdLocale(language) {
   const localeMap = {
