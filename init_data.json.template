@@ -1,11 +1,43 @@
 {
   "organizations": [
     {
-      "owner": "",
-      "name": "",
-      "displayName": "",
-      "websiteUrl": "",
-      "favicon": "",
+      "owner": "admin",
+      "name": "kaixuan",
+      "displayName": "开轩",
+      "websiteUrl": "https://m.itestu.cn",
+      "logo": "${ACC_PUBLIC_URL}/kaixuan-logo.svg",
+      "logoDark": "${ACC_PUBLIC_URL}/kaixuan-logo.svg",
+      "favicon": "${ACC_PUBLIC_URL}/kaixuan-logo.svg",
+      "passwordType": "bcrypt",
+      "passwordSalt": "",
+      "passwordOptions": [
+        "AtLeast6"
+      ],
+      "countryCodes": [
+        "CN",
+        "US",
+        "GB"
+      ],
+      "defaultAvatar": "",
+      "defaultApplication": "acc",
+      "tags": [],
+      "languages": [
+        "zh",
+        "en"
+      ],
+      "masterPassword": "",
+      "defaultPassword": "",
+      "initScore": 2000,
+      "enableSoftDeletion": false,
+      "isProfilePublic": true,
+      "disableSignin": false,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
       "passwordType": "bcrypt",
       "passwordSalt": "",
       "passwordOptions": [
@@ -127,18 +159,62 @@
   ],
   "applications": [
     {
-      "owner": "",
-      "name": "",
-      "displayName": "",
-      "logo": "",
-      "homepageUrl": "",
-      "organization": "",
-      "cert": "",
+      "owner": "kaixuan",
+      "name": "acc",
+      "displayName": "开轩调度台",
+      "logo": "${ACC_PUBLIC_URL}/kaixuan-logo.svg",
+      "title": "开轩",
+      "favicon": "",
+      "homepageUrl": "${ACC_PUBLIC_URL}",
+      "description": "开轩 AI 智能体统一调度中心",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
       "enablePassword": true,
-      "enableSignUp": true,
+      "enableSignUp": false,
       "disableSignin": false,
-      "clientId": "",
-      "clientSecret": "",
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_CLIENT_SECRET}",
+      "redirectUris": [
+        "${CASDOOR_REDIRECT_URI}"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "footerHtml": "<div style=\"text-align:center;color:#8c8c8c;font-size:12px;padding:8px 0\">\u00a9 2024 \u5f00\u8f69 \u00b7 Unified Identity Platform</div>",
+      "grantTypes": [
+        "authorization_code",
+        "refresh_token"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {"name": "ID",              "visible": false, "required": true,  "prompted": false, "rule": "Random"},
+        {"name": "Username",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Display name",    "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Password",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Confirm password","visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Email",           "visible": true,  "required": false, "prompted": false, "rule": "None"},
+        {"name": "Phone",           "visible": false, "required": false, "prompted": false, "rule": "None"}
+      ]
       "providers": [
         {
           "name": "",
@@ -249,15 +325,15 @@
   ],
   "users": [
     {
-      "owner": "",
-      "name": "",
+      "owner": "kaixuan",
+      "name": "admin",
       "type": "normal-user",
-      "password": "",
-      "displayName": "",
+      "password": "${CASDOOR_ADMIN_PASS}",
+      "displayName": "系统管理员",
       "avatar": "",
-      "email": "",
+      "email": "admin@kaixuan.local",
       "phone": "",
-      "countryCode": "",
+      "countryCode": "CN",
       "address": [],
       "addresses": [],
       "affiliation": "",
@@ -267,9 +343,9 @@
       "isAdmin": true,
       "isForbidden": false,
       "isDeleted": false,
-      "signupApplication": "",
+      "signupApplication": "acc",
       "createdIp": "",
-      "groups": []
+      "groups": ["/kaixuan/admin"]
     }
   ],
   "providers": [
@@ -283,9 +359,9 @@
   ],
   "certs": [
     {
-      "owner": "",
-      "name": "",
-      "displayName": "",
+      "owner": "admin",
+      "name": "kaixuan-cert",
+      "displayName": "开轩 JWT 签名证书",
       "scope": "JWT",
       "type": "x509",
       "cryptoAlgorithm": "RS256",

@@ -18,6 +18,9 @@ vendor/
 bin/
 
 .idea/
+
+# 由 envsubst 从 init_data.json.template 生成，包含密钥，不提交
+init_data.json
 *.iml
 .vscode/settings.json
 
