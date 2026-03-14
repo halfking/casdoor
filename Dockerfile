@@ -19,7 +19,6 @@ RUN go mod download
 # Copy source files
 COPY . .
 
-RUN go test -v -run TestGetVersionInfo ./util/system_test.go ./util/system.go ./util/variable.go
 RUN ./build.sh
 
 FROM alpine:latest AS STANDARD

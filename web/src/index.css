@@ -1,6 +1,14 @@
+/**
+ * index.css (casdoor/web)
+ * 版本历史:
+ *   v1.1  2026-03-15  字体栈补充中文优先：PingFang SC / Noto Sans SC
+ */
 body {
   margin: 0;
   font-family:
+    "PingFang SC",
+    "Noto Sans SC",
+    "Microsoft YaHei",
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
