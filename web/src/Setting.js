@@ -84,9 +84,9 @@ export function getAlgorithmNames(themeData) {
 
 export function getLogo(themes) {
   if (themes.includes("dark")) {
-    return `${StaticBaseUrl}/img/casdoor-logo_1185x256_dark.png`;
+    return `${StaticBaseUrl}/img/kaixuan-platform-logo-dark.svg`;
   } else {
-    return `${StaticBaseUrl}/img/casdoor-logo_1185x256.png`;
+    return `${StaticBaseUrl}/img/kaixuan-platform-logo-light.svg`;
   }
 }
 
@@ -1953,7 +1953,7 @@ export function getUserCommonFields() {
 }
 
 export function getDefaultFooterContent() {
-  return `Powered by <a target="_blank" href="https://casdoor.org" rel="noreferrer"><img style="padding-bottom: 3px" height="20" alt="Casdoor" src="${StaticBaseUrl}/img/casdoor-logo_1185x256.png"/></a>`;
+  return `Powered by <a target="_blank" href="https://auth.itestu.cn" rel="noreferrer"><img style="padding-bottom: 3px" height="20" alt="开轩平台" src="${StaticBaseUrl}/img/kaixuan-platform-logo-light.svg"/></a>`;
 }
 
 export function getEmptyFooterContent() {
@@ -1985,7 +1985,7 @@ export function getDefaultHtmlEmailContent() {
 <div class="email-container">
   <div class="header">
         <h3>Casbin Organization</h3>
-        <img src="${StaticBaseUrl}/img/casdoor-logo_1185x256.png" alt="Casdoor Logo" width="300">
+        <img src="${StaticBaseUrl}/img/kaixuan-platform-logo-light.svg" alt="开轩平台 Logo" width="300">
     </div>
     <p><strong>%{user.friendlyName}</strong>, here is your verification code</p>
     <p>Use this code for your transaction. It's valid for 5 minutes</p>
@@ -2028,7 +2028,7 @@ export function getDefaultInvitationHtmlEmailContent() {
 <div class="email-container">
   <div class="header">
         <h3>Casbin Organization</h3>
-        <img src="${StaticBaseUrl}/img/casdoor-logo_1185x256.png" alt="Casdoor Logo" width="300">
+        <img src="${StaticBaseUrl}/img/kaixuan-platform-logo-light.svg" alt="开轩平台 Logo" width="300">
     </div>
     <p>You have been invited into Casdoor</p>
     <div class="code">
