@@ -217,7 +217,7 @@ function ManagementPage(props) {
   }
 
   function isSpecialMenuItem(item) {
-    return item.key === "#" || item.key === "logo";
+    return item.key === "#" || item.key === "logo" || item.key === "official-portal";
   }
 
   function renderWidgets() {
@@ -300,6 +300,15 @@ function ManagementPage(props) {
         height: "auto",
       },
     }) : null;
+
+    res.push(Setting.getItem(
+      <a target="_blank" rel="noreferrer" href="https://www.itestu.cn">
+        <span style={{fontWeight: "bold", backgroundColor: "rgba(22,119,255,0.1)", color: textColor, marginTop: "8px", padding: "10px 12px", display: "flex", alignItems: "center", gap: "8px", borderRadius: "10px"}}>
+          <DeploymentUnitOutlined /> 官网 · 开轩 Memora
+        </span>
+      </a>,
+      "official-portal"
+    ));
 
     res.push(Setting.getItem(<Link style={{color: textColor}} to="/">{i18next.t("general:Home")}</Link>, "/home", <HomeTwoTone twoToneColor={twoToneColor} />, [
       Setting.getItem(<Link to="/">{i18next.t("general:Dashboard")}</Link>, "/"),
