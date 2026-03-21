@@ -21,7 +21,7 @@ import i18next from "i18next";
 import {
   AppstoreTwoTone,
   BarsOutlined, CheckCircleTwoTone, DeploymentUnitOutlined, DollarTwoTone, DownOutlined,
-  HomeTwoTone,
+  HomeOutlined, HomeTwoTone,
   LockTwoTone, LogoutOutlined,
   SafetyCertificateTwoTone, SettingOutlined, SettingTwoTone,
   WalletTwoTone
@@ -566,6 +566,16 @@ function ManagementPage(props) {
     <React.Fragment>
       <EnableMfaNotification account={props.account} />
       <Header style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0", marginBottom: "4px", backgroundColor: props.themeAlgorithm.includes("dark") ? "black" : "white"}} >
+        {/* 返回主站图标 */}
+        <a
+          href="https://www.itestu.cn"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{display: "flex", alignItems: "center", marginRight: "16px", flexShrink: 0}}
+          title={i18next.t("general:Back to Home")}
+        >
+          <HomeOutlined style={{fontSize: "20px", color: props.themeAlgorithm.includes("dark") ? "#fff" : "#1890ff"}} />
+        </a>
         {
           props.requiredEnableMfa || (Setting.isMobile() ? (
             <React.Fragment>
