@@ -21,7 +21,7 @@ import i18next from "i18next";
 import {
   AppstoreTwoTone,
   BarsOutlined, CheckCircleTwoTone, DeploymentUnitOutlined, DollarTwoTone, DownOutlined,
-  HomeTwoTone,
+  HomeOutlined, HomeTwoTone,
   LockTwoTone, LogoutOutlined,
   SafetyCertificateTwoTone, SettingOutlined, SettingTwoTone,
   WalletTwoTone
@@ -217,7 +217,7 @@ function ManagementPage(props) {
   }
 
   function isSpecialMenuItem(item) {
-    return item.key === "#" || item.key === "logo";
+    return item.key === "#" || item.key === "logo" || item.key === "official-portal";
   }
 
   function renderWidgets() {
@@ -300,6 +300,34 @@ function ManagementPage(props) {
         height: "auto",
       },
     }) : null;
+
+    res.push(Setting.getItem(
+      <a target="_blank" rel="noreferrer" href="https://www.itestu.cn">
+        <span style={{
+          fontWeight: "600",
+          backgroundColor: props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.12)" : "rgba(37, 99, 235, 0.08)",
+          color: props.themeAlgorithm.includes("dark") ? "#93c5fd" : "#2563eb",
+          marginTop: "8px",
+          padding: "10px 14px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          borderRadius: "8px",
+          transition: "all 0.2s ease",
+          border: props.themeAlgorithm.includes("dark") ? "1px solid rgba(96, 165, 250, 0.2)" : "1px solid rgba(37, 99, 235, 0.15)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.2)" : "rgba(37, 99, 235, 0.15)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.12)" : "rgba(37, 99, 235, 0.08)";
+        }}
+        >
+          <HomeOutlined /> 返回开轩官网
+        </span>
+      </a>,
+      "official-portal"
+    ));
 
     res.push(Setting.getItem(<Link style={{color: textColor}} to="/">{i18next.t("general:Home")}</Link>, "/home", <HomeTwoTone twoToneColor={twoToneColor} />, [
       Setting.getItem(<Link to="/">{i18next.t("general:Dashboard")}</Link>, "/"),
@@ -557,6 +585,16 @@ function ManagementPage(props) {
     <React.Fragment>
       <EnableMfaNotification account={props.account} />
       <Header style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0", marginBottom: "4px", backgroundColor: props.themeAlgorithm.includes("dark") ? "black" : "white"}} >
+        {/* 返回主站图标 */}
+        <a
+          href="https://www.itestu.cn"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{display: "flex", alignItems: "center", marginRight: "16px", flexShrink: 0}}
+          title={i18next.t("general:Back to Home")}
+        >
+          <HomeOutlined style={{fontSize: "20px", color: props.themeAlgorithm.includes("dark") ? "#fff" : "#1890ff"}} />
+        </a>
         {
           props.requiredEnableMfa || (Setting.isMobile() ? (
             <React.Fragment>

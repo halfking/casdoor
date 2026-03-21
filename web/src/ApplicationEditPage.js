@@ -117,7 +117,7 @@ const sideTemplate = `<style>
   }
 </style>
 <div class="left-model">
-  <span class="side-logo"> <img src="${Setting.StaticBaseUrl}/img/casdoor-logo_1185x256.png" alt="Casdoor" style="width: 120px">
+  <span class="side-logo"> <img src="${Setting.StaticBaseUrl}/img/kaixuan-platform-logo-light.svg" alt="开轩平台" style="width: 120px">
     <span>SSO</span>
   </span>
   <div class="img">

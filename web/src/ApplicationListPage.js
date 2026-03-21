@@ -41,7 +41,7 @@ class ApplicationListPage extends BaseListPage {
       category: "Default",
       type: "All",
       scopes: [],
-      logo: `${Setting.StaticBaseUrl}/img/casdoor-logo_1185x256.png`,
+      logo: `${Setting.StaticBaseUrl}/img/kaixuan-platform-logo-light.svg`,
       enablePassword: true,
       enableSignUp: true,
       disableSignin: false,
