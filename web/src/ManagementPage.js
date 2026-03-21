@@ -303,8 +303,8 @@ function ManagementPage(props) {
 
     res.push(Setting.getItem(
       <a target="_blank" rel="noreferrer" href="https://www.itestu.cn">
-        <span style={{fontWeight: "bold", backgroundColor: "rgba(22,119,255,0.1)", color: textColor, marginTop: "8px", padding: "10px 12px", display: "flex", alignItems: "center", gap: "8px", borderRadius: "10px"}}>
-          <DeploymentUnitOutlined /> 官网 · 开轩 Memora
+        <span style={{fontWeight: "600", backgroundColor: "rgba(37, 99, 235, 0.08)", color: "#2563eb", marginTop: "8px", padding: "10px 14px", display: "flex", alignItems: "center", gap: "8px", borderRadius: "8px", transition: "all 0.2s ease"}} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(37, 99, 235, 0.15)"} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgba(37, 99, 235, 0.08)"}>
+          <HomeOutlined /> 返回开轩官网
         </span>
       </a>,
       "official-portal"
