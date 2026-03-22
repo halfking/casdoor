@@ -935,8 +935,18 @@ export function getMfaItemsByRules(user, organization, mfaRules = []) {
 }
 
 export function parseObject(s) {
+  if (typeof s !== "string") {
+    return null;
+  }
+
+  const value = s.trim();
+  if (value === "") {
+    return null;
+  }
+
   try {
-    return eval("(" + s + ")");
+    const parsed = JSON.parse(value);
+    return parsed !== null && typeof parsed === "object" ? parsed : null;
   } catch (e) {
     return null;
   }

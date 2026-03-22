@@ -38,6 +38,7 @@ const {Footer, Content} = Layout;
 import {setTwoToneColor} from "@ant-design/icons";
 import * as ApplicationBackend from "./backend/ApplicationBackend";
 import * as Cookie from "cookie";
+import {sanitizeHtml} from "./security/sanitize";
 
 // Ant Design locale imports
 import enUS from "antd/locale/en_US";
@@ -470,6 +471,7 @@ class App extends Component {
   renderFooter(logo, footerHtml) {
     logo = logo ?? this.state.logo;
     footerHtml = footerHtml ?? this.state.application?.footerHtml;
+    const safeFooterHtml = sanitizeHtml(footerHtml);
     return (
       <React.Fragment>
         {!this.state.account ? null : <div style={{display: "none"}} id="CasdoorApplicationName" value={this.state.account.signupApplication} />}
@@ -480,9 +482,9 @@ class App extends Component {
           }
         }>
           {
-            footerHtml && footerHtml !== "" ?
+            safeFooterHtml !== "" ?
               <React.Fragment>
-                <div dangerouslySetInnerHTML={{__html: footerHtml}} />
+                <div dangerouslySetInnerHTML={{__html: safeFooterHtml}} />
               </React.Fragment>
               : (
                 Conf.CustomFooter !== null ? Conf.CustomFooter : (
