@@ -329,6 +329,37 @@ function ManagementPage(props) {
       "official-portal"
     ));
 
+    // 产品切换入口（统一导航规范）
+    res.push(Setting.getItem(
+      <span style={{fontWeight: "600", color: props.themeAlgorithm.includes("dark") ? "#9aa0ac" : "#4a5568"}}>
+        🚀 产品入口
+      </span>,
+      "kx-products",
+      null,
+      [
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://memora.itestu.cn">🧠 Memora</a>,
+          "kx-memora"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://acc.itestu.cn">🤖 Agent 控制台</a>,
+          "kx-acc"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://docs.itestu.cn">📄 文档工具</a>,
+          "kx-docs"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://finance.itestu.cn">💹 股票推荐</a>,
+          "kx-finance"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://trendaradar.itestu.cn">📰 TrendRadar</a>,
+          "kx-trendaradar"
+        ),
+      ]
+    ));
+
     res.push(Setting.getItem(<Link style={{color: textColor}} to="/">{i18next.t("general:Home")}</Link>, "/home", <HomeTwoTone twoToneColor={twoToneColor} />, [
       Setting.getItem(<Link to="/">{i18next.t("general:Dashboard")}</Link>, "/"),
       Setting.getItem(<Link to="/shortcuts">{i18next.t("general:Shortcuts")}</Link>, "/shortcuts"),
