@@ -214,7 +214,7 @@
         {"name": "Confirm password","visible": true,  "required": true,  "prompted": false, "rule": "None"},
         {"name": "Email",           "visible": true,  "required": false, "prompted": false, "rule": "None"},
         {"name": "Phone",           "visible": false, "required": false, "prompted": false, "rule": "None"}
-      ]
+      ],
       "providers": [
         {
           "name": "",
@@ -321,6 +321,56 @@
       "expireInHours": 168,
       "failedSigninLimit": 5,
       "failedSigninFrozenTime": 15
+    },
+    {
+      "owner": "admin",
+      "name": "official-portal",
+      "displayName": "Official Portal",
+      "logo": "",
+      "homepageUrl": "${PORTAL_URL:-http://localhost:8080}",
+      "description": "Kaixuan Official Portal",
+      "organization": "built-in",
+      "cert": "",
+      "enablePassword": true,
+      "enableSignUp": true,
+      "disableSignin": false,
+      "enableSigninSession": false,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "enableLinkWithEmail": false,
+      "clientId": "${PORTAL_CASDOOR_CLIENT_ID:-a7e2fa70893f8552a602}",
+      "clientSecret": "${PORTAL_CASDOOR_CLIENT_SECRET:-dfd7a5b184496fd6938a1db3a386b053358d4c9e}",
+      "redirectUris": [
+        "${PORTAL_URL:-http://localhost:8080}/auth/callback",
+        "${PORTAL_LOCAL_URL:-http://localhost:8081}/auth/callback"
+      ],
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 3,
+      "failedSigninFrozenTime": 15,
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {"name": "ID",              "visible": false, "required": true,  "prompted": false, "rule": "Random"},
+        {"name": "Username",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Display name",    "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Password",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Confirm password","visible": true,  "required": true,  "prompted": false, "rule": "None"},
+        {"name": "Email",           "visible": true,  "required": false, "prompted": false, "rule": "None"},
+        {"name": "Phone",           "visible": false, "required": false, "prompted": false, "rule": "None"}
+      ]
     }
   ],
   "users": [
