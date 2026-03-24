@@ -30,6 +30,7 @@ import {withRouter} from "react-router-dom";
 import {CountryCodeSelect} from "../common/select/CountryCodeSelect";
 import * as PasswordChecker from "../common/PasswordChecker";
 import * as InvitationBackend from "../backend/InvitationBackend";
+import {sanitizeHtml, sanitizeStyleText} from "../security/sanitize";
 
 const formItemLayout = {
   labelCol: {
@@ -127,6 +128,27 @@ class SignupPage extends React.Component {
     };
 
     this.form = React.createRef();
+  }
+
+  renderCustomCss(signupItem, key) {
+    const safeStyleText = sanitizeStyleText(signupItem?.customCss);
+    if (safeStyleText === "") {
+      return null;
+    }
+
+    return <style key={`${key}_style`}>{safeStyleText}</style>;
+  }
+
+  renderApplicationCustomStyles(application) {
+    const safeDesktopStyle = sanitizeStyleText(application?.formCss);
+    const safeMobileStyle = sanitizeStyleText(application?.formCssMobile);
+
+    return (
+      <React.Fragment>
+        {Setting.inIframe() || Setting.isMobile() || safeDesktopStyle === "" ? null : <style>{safeDesktopStyle}</style>}
+        {Setting.inIframe() || !Setting.isMobile() || safeMobileStyle === "" ? null : <style>{safeMobileStyle}</style>}
+      </React.Fragment>
+    );
   }
 
   componentDidMount() {
@@ -826,8 +848,13 @@ class SignupPage extends React.Component {
     } else if (signupItem.name === "Agreement") {
       return AgreementModal.renderAgreementFormItem(application, required, tailFormItemLayout, this);
     } else if (signupItem.name.startsWith("Text ")) {
+      const safeLabelHtml = sanitizeHtml(signupItem.label);
+      if (safeLabelHtml === "") {
+        return null;
+      }
+
       return (
-        <div dangerouslySetInnerHTML={{__html: signupItem.label}} />
+        <div dangerouslySetInnerHTML={{__html: safeLabelHtml}} />
       );
     } else if (signupItem.name === "Signup button") {
       return (
@@ -957,7 +984,7 @@ class SignupPage extends React.Component {
           application.signupItems?.map((signupItem, idx) => {
             return (
               <div key={idx}>
-                <div dangerouslySetInnerHTML={{__html: ("<style>" + signupItem.customCss + "</style>")}} />
+                {this.renderCustomCss(signupItem, `signup_${idx}`)}
                 {this.renderFormItem(application, signupItem)}
               </div>
             );
@@ -987,9 +1014,10 @@ class SignupPage extends React.Component {
       });
     }
 
-    if (application.signupHtml !== "") {
+    const safeSignupHtml = sanitizeHtml(application.signupHtml);
+    if (safeSignupHtml !== "") {
       return (
-        <div dangerouslySetInnerHTML={{__html: application.signupHtml}} />
+        <div dangerouslySetInnerHTML={{__html: safeSignupHtml}} />
       );
     }
 
@@ -997,11 +1025,10 @@ class SignupPage extends React.Component {
       <React.Fragment>
         <CustomGithubCorner />
         <div className="login-content" style={{margin: this.props.preview ?? this.parseOffset(application.formOffset)}}>
-          {Setting.inIframe() || Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCss}} />}
-          {Setting.inIframe() || !Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCssMobile}} />}
+          {this.renderApplicationCustomStyles(application)}
           <div className={Setting.isDarkTheme(this.props.themeAlgorithm) ? "login-panel-dark" : "login-panel"}>
             <div className="side-image" style={{display: application.formOffset !== 4 ? "none" : null}}>
-              <div dangerouslySetInnerHTML={{__html: application.formSideHtml}} />
+              <div dangerouslySetInnerHTML={{__html: sanitizeHtml(application.formSideHtml)}} />
             </div>
             <div className="login-form">
               {

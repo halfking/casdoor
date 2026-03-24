@@ -40,6 +40,7 @@ import * as ProviderButton from "./ProviderButton";
 import {createFormAndSubmit, goToLink} from "../Setting";
 import WeChatLoginPanel from "./WeChatLoginPanel";
 import {CountryCodeSelect} from "../common/select/CountryCodeSelect";
+import {sanitizeHtml, sanitizeStyleText, sanitizeUrl} from "../security/sanitize";
 const FaceRecognitionCommonModal = lazy(() => import("../common/modal/FaceRecognitionCommonModal"));
 const FaceRecognitionModal = lazy(() => import("../common/modal/FaceRecognitionModal"));
 
@@ -87,6 +88,27 @@ class LoginPage extends React.Component {
 
   refreshInlineCaptcha() {
     this.captchaRef.current?.loadCaptcha?.();
+  }
+
+  renderCustomCss(signinItem, resultItemKey) {
+    const safeStyleText = sanitizeStyleText(signinItem?.customCss);
+    if (safeStyleText === "") {
+      return null;
+    }
+
+    return <style key={`${resultItemKey}_style`}>{safeStyleText}</style>;
+  }
+
+  renderApplicationCustomStyles(application) {
+    const safeDesktopStyle = sanitizeStyleText(application?.formCss);
+    const safeMobileStyle = sanitizeStyleText(application?.formCssMobile);
+
+    return (
+      <React.Fragment>
+        {Setting.inIframe() || Setting.isMobile() || safeDesktopStyle === "" ? null : <style>{safeDesktopStyle}</style>}
+        {Setting.inIframe() || !Setting.isMobile() || safeMobileStyle === "" ? null : <style>{safeMobileStyle}</style>}
+      </React.Fragment>
+    );
   }
 
   isInlineCaptchaEnabled(application = this.getApplicationObj()) {
@@ -664,7 +686,7 @@ class LoginPage extends React.Component {
     if (signinItem.name === "Logo") {
       return (
         <div key={resultItemKey} className="login-logo-box">
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {
             Setting.renderHelmet(application)
           }
@@ -676,7 +698,7 @@ class LoginPage extends React.Component {
     } else if (signinItem.name === "Back button") {
       return (
         <div key={resultItemKey} className="back-button">
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {
             this.renderBackButton()
           }
@@ -694,14 +716,14 @@ class LoginPage extends React.Component {
 
       return (
         <div key={resultItemKey} className="login-languages">
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           <LanguageSelect languages={application.organizationObj.languages} onClick={key => {this.setState({userLang: key});}} />
         </div>
       );
     } else if (signinItem.name === "Signin methods") {
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {this.renderMethodChoiceBox()}
         </div>
       )
@@ -768,7 +790,7 @@ class LoginPage extends React.Component {
 
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           <Form.Item
             name="username"
             className="login-username"
@@ -845,21 +867,21 @@ class LoginPage extends React.Component {
     } else if (signinItem.name === "Password") {
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {this.renderPasswordOrCodeInput(signinItem)}
         </div>
       );
     } else if (signinItem.name === "Verification code") {
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {this.renderCodeInput(signinItem)}
         </div>
       );
     } else if (signinItem.name === "Forgot password?") {
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           <div className="login-forget-password">
             <Form.Item name="autoSignin" valuePropName="checked" noStyle>
               <Checkbox style={{float: "left"}}>
@@ -880,7 +902,7 @@ class LoginPage extends React.Component {
       }
       return (
         <Form.Item key={resultItemKey} className="login-button-box">
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           <Button
             loading={this.state.loginLoading}
             type="primary"
@@ -933,7 +955,7 @@ class LoginPage extends React.Component {
 
       return (
         <div key={resultItemKey}>
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           <Form.Item>
             {
               application.providers.filter(providerItem => this.isProviderVisible(providerItem)).map((providerItem, id) => {
@@ -966,13 +988,18 @@ class LoginPage extends React.Component {
     } else if (signinItem.name === "Captcha" && signinItem.rule === "inline") {
       return this.renderCaptchaModal(application, true);
     } else if (signinItem.name.startsWith("Text ") || signinItem?.isCustom) {
+      const safeCustomHtml = sanitizeHtml(signinItem.customCss);
+      if (safeCustomHtml === "") {
+        return null;
+      }
+
       return (
-        <div key={resultItemKey} dangerouslySetInnerHTML={{__html: signinItem.customCss}} />
+        <div key={resultItemKey} dangerouslySetInnerHTML={{__html: safeCustomHtml}} />
       );
     } else if (signinItem.name === "Signup link") {
       return (
         <div key={resultItemKey} style={{width: "100%"}} className="login-signup-link">
-          <div dangerouslySetInnerHTML={{__html: ("<style>" + signinItem.customCss?.replaceAll("<style>", "").replaceAll("</style>", "") + "</style>")}} />
+          {this.renderCustomCss(signinItem, resultItemKey)}
           {this.renderFooter(application, signinItem)}
         </div>
       );
@@ -1081,11 +1108,12 @@ class LoginPage extends React.Component {
         </Form>
       );
     } else {
+      const safeHomepageUrl = sanitizeUrl(application.homepageUrl);
       return (
         <div style={{marginTop: "20px"}}>
           <div style={{fontSize: 16, textAlign: "left"}}>
             {i18next.t("login:To access")}&nbsp;
-            <a target="_blank" rel="noreferrer" href={application.homepageUrl}>
+            <a target="_blank" rel="noreferrer" href={safeHomepageUrl || undefined}>
               <span style={{fontWeight: "bold"}}>
                 {application.displayName}
               </span>
@@ -1567,9 +1595,10 @@ class LoginPage extends React.Component {
       return <RedirectForm samlResponse={this.state.samlResponse} redirectUrl={this.state.redirectUrl} relayState={this.state.relayState} />;
     }
 
-    if (application.signinHtml !== "") {
+    const safeSigninHtml = sanitizeHtml(application.signinHtml);
+    if (safeSigninHtml !== "") {
       return (
-        <div dangerouslySetInnerHTML={{__html: application.signinHtml}} />
+        <div dangerouslySetInnerHTML={{__html: safeSigninHtml}} />
       );
     }
 
@@ -1589,11 +1618,10 @@ class LoginPage extends React.Component {
       <React.Fragment>
         <CustomGithubCorner />
         <div className="login-content" style={{margin: this.props.preview ?? this.parseOffset(application.formOffset)}}>
-          {Setting.inIframe() || Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCss}} />}
-          {Setting.inIframe() || !Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCssMobile}} />}
+          {this.renderApplicationCustomStyles(application)}
           <div className={Setting.isDarkTheme(this.props.themeAlgorithm) ? "login-panel-dark" : "login-panel"}>
             <div className="side-image" style={{display: application.formOffset !== 4 ? "none" : null}}>
-              <div dangerouslySetInnerHTML={{__html: application.formSideHtml}} />
+              <div dangerouslySetInnerHTML={{__html: sanitizeHtml(application.formSideHtml)}} />
             </div>
             <div className="login-form">
               <div>

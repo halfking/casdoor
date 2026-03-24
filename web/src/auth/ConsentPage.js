@@ -21,6 +21,7 @@ import * as Setting from "../Setting";
 import i18next from "i18next";
 import {withRouter} from "react-router-dom";
 import * as Util from "./Util";
+import {sanitizeUrl} from "../security/sanitize";
 
 class ConsentPage extends React.Component {
   constructor(props) {
@@ -188,10 +189,10 @@ class ConsentPage extends React.Component {
                   <span style={{fontWeight: 600, color: "#000"}}>{application.displayName || application.name}</span>
                   {" "}{i18next.t("consent:wants to access your account")}
                 </p>
-                {application.homepageUrl && (
+                {sanitizeUrl(application.homepageUrl) && (
                   <div style={{textAlign: "center", marginTop: 4}}>
-                    <a href={application.homepageUrl} target="_blank" rel="noopener noreferrer" style={{fontSize: 13, color: "#1890ff"}}>
-                      {application.homepageUrl}
+                    <a href={sanitizeUrl(application.homepageUrl)} target="_blank" rel="noopener noreferrer" style={{fontSize: 13, color: "#1890ff"}}>
+                      {sanitizeUrl(application.homepageUrl)}
                     </a>
                   </div>
                 )}

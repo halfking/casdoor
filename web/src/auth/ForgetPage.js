@@ -26,6 +26,7 @@ import CustomGithubCorner from "../common/CustomGithubCorner";
 import {withRouter} from "react-router-dom";
 import * as PasswordChecker from "../common/PasswordChecker";
 import * as Obfuscator from "./Obfuscator";
+import {sanitizeStyleText} from "../security/sanitize";
 
 const {Option} = Select;
 
@@ -523,12 +524,15 @@ class ForgetPage extends React.Component {
       return Util.renderMessageLarge(this, this.state.msg);
     }
 
+    const safeDesktopStyle = sanitizeStyleText(application.formCss);
+    const safeMobileStyle = sanitizeStyleText(application.formCssMobile);
+
     return (
       <React.Fragment>
         <CustomGithubCorner />
         <div className="forget-content" style={{padding: Setting.isMobile() ? "0" : null, boxShadow: Setting.isMobile() ? "none" : null}}>
-          {Setting.inIframe() || Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCss}} />}
-          {Setting.inIframe() || !Setting.isMobile() ? null : <div dangerouslySetInnerHTML={{__html: application.formCssMobile}} />}
+          {Setting.inIframe() || Setting.isMobile() || safeDesktopStyle === "" ? null : <style>{safeDesktopStyle}</style>}
+          {Setting.inIframe() || !Setting.isMobile() || safeMobileStyle === "" ? null : <style>{safeMobileStyle}</style>}
           <Button type="text"
             style={{position: "relative", left: Setting.isMobile() ? "10px" : "-90px", top: 0}}
             icon={<ArrowLeftOutlined style={{fontSize: "24px"}} />}
