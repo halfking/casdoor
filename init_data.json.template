@@ -343,7 +343,9 @@
       "clientSecret": "${PORTAL_CASDOOR_CLIENT_SECRET:-dfd7a5b184496fd6938a1db3a386b053358d4c9e}",
       "redirectUris": [
         "${PORTAL_URL:-http://localhost:8080}/auth/callback",
-        "${PORTAL_LOCAL_URL:-http://localhost:8081}/auth/callback"
+        "${PORTAL_LOCAL_URL:-http://localhost:8081}/auth/callback",
+        "${PORTAL_IP_URL:-http://localhost:8080}/auth/callback",
+        "${PORTAL_IP_ALT_URL:-http://localhost:8081}/auth/callback"
       ],
       "grantTypes": [
         "authorization_code"
