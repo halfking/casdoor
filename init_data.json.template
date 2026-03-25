@@ -14,36 +14,6 @@
         "AtLeast6"
       ],
       "countryCodes": [
-        "CN",
-        "US",
-        "GB"
-      ],
-      "defaultAvatar": "",
-      "defaultApplication": "acc",
-      "tags": [],
-      "languages": [
-        "zh",
-        "en"
-      ],
-      "masterPassword": "",
-      "defaultPassword": "",
-      "initScore": 2000,
-      "enableSoftDeletion": false,
-      "isProfilePublic": true,
-      "disableSignin": false,
-      "themeData": {
-        "themeType": "default",
-        "colorPrimary": "#1677ff",
-        "borderRadius": 8,
-        "isCompact": false,
-        "isEnabled": true
-      },
-      "passwordType": "bcrypt",
-      "passwordSalt": "",
-      "passwordOptions": [
-        "AtLeast6"
-      ],
-      "countryCodes": [
         "US",
         "GB",
         "ES",
@@ -94,66 +64,368 @@
       "enableSoftDeletion": false,
       "isProfilePublic": true,
       "disableSignin": false,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
       "accountItems": [
-        {"name": "Organization", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "ID", "visible": true, "viewRule": "Public", "modifyRule": "Immutable"},
-        {"name": "Name", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Display name", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "First name", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Last name", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Avatar", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "User type", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Password", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Email", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Phone", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Country code", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Country/Region", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Location", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Address", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Addresses", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Affiliation", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Title", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "ID card type", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "ID card", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "ID card info", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Real name", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "ID verification", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Homepage", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Bio", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Tag", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Language", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Gender", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Birthday", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Education", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Balance", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Balance credit", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Balance currency", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Cart", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Transactions", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Score", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Karma", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Ranking", "visible": true, "viewRule": "Public", "modifyRule": "Self"},
-        {"name": "Signup application", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Register type", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "Register source", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "API key", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Roles", "visible": true, "viewRule": "Public", "modifyRule": "Immutable"},
-        {"name": "Permissions", "visible": true, "viewRule": "Public", "modifyRule": "Immutable"},
-        {"name": "Groups", "visible": true, "viewRule": "Public", "modifyRule": "Admin"},
-        {"name": "3rd-party logins", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Properties", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "Is admin", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "Is forbidden", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "Is deleted", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "Multi-factor authentication", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "MFA items", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "WebAuthn credentials", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Last change password time", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "Managed accounts", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Face ID", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "MFA accounts", "visible": true, "viewRule": "Self", "modifyRule": "Self"},
-        {"name": "Need update password", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"},
-        {"name": "IP whitelist", "visible": true, "viewRule": "Admin", "modifyRule": "Admin"}
+        {
+          "name": "Organization",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "ID",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "First name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Last name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Avatar",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "User type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Phone",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Country code",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Country/Region",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Location",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Address",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Addresses",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Affiliation",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Title",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card info",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Real name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID verification",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Homepage",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Bio",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Tag",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Language",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Gender",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Birthday",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Education",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance credit",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance currency",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Cart",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Transactions",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Score",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Karma",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Ranking",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Signup application",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Register type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Register source",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "API key",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Roles",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Permissions",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Groups",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "3rd-party logins",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Properties",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is admin",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is forbidden",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is deleted",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Multi-factor authentication",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "MFA items",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "WebAuthn credentials",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Last change password time",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Managed accounts",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Face ID",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "MFA accounts",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Need update password",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "IP whitelist",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        }
       ]
     }
   ],
@@ -179,7 +451,7 @@
       "clientId": "${CASDOOR_CLIENT_ID}",
       "clientSecret": "${CASDOOR_CLIENT_SECRET}",
       "redirectUris": [
-        "${CASDOOR_REDIRECT_URI}"
+        "http://localhost:9000/callback"
       ],
       "tokenFormat": "JWT",
       "tokenFields": [],
@@ -193,27 +465,14 @@
         "isCompact": false,
         "isEnabled": true
       },
-      "footerHtml": "<div style=\"text-align:center;color:#8c8c8c;font-size:12px;padding:8px 0\">\u00a9 2024 \u5f00\u8f69 \u00b7 Unified Identity Platform</div>",
+      "footerHtml": "<div style=\"text-align:center;color:#8c8c8c;font-size:12px;padding:8px 0\">© 2024 开轩 · Unified Identity Platform</div>",
       "grantTypes": [
         "authorization_code",
+        "password",
+        "client_credentials",
+        "token",
+        "id_token",
         "refresh_token"
-      ],
-      "providers": [],
-      "signinMethods": [
-        {
-          "name": "Password",
-          "displayName": "Password",
-          "rule": "All"
-        }
-      ],
-      "signupItems": [
-        {"name": "ID",              "visible": false, "required": true,  "prompted": false, "rule": "Random"},
-        {"name": "Username",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Display name",    "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Password",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Confirm password","visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Email",           "visible": true,  "required": false, "prompted": false, "rule": "None"},
-        {"name": "Phone",           "visible": false, "required": false, "prompted": false, "rule": "None"}
       ],
       "providers": [
         {
@@ -304,23 +563,7 @@
           "prompted": false,
           "rule": "None"
         }
-      ],
-      "grantTypes": [
-        "authorization_code",
-        "password",
-        "client_credentials",
-        "token",
-        "id_token",
-        "refresh_token"
-      ],
-      "redirectUris": [
-        "http://localhost:9000/callback"
-      ],
-      "tokenFormat": "JWT",
-      "tokenFields": [],
-      "expireInHours": 168,
-      "failedSigninLimit": 5,
-      "failedSigninFrozenTime": 15
+      ]
     },
     {
       "owner": "admin",
@@ -345,7 +588,12 @@
         "${PORTAL_URL:-http://localhost:8080}/auth/callback",
         "${PORTAL_LOCAL_URL:-http://localhost:8081}/auth/callback",
         "${PORTAL_IP_URL:-http://localhost:8080}/auth/callback",
-        "${PORTAL_IP_ALT_URL:-http://localhost:8081}/auth/callback"
+        "${PORTAL_IP_ALT_URL:-http://localhost:8081}/auth/callback",
+        "https://www.itestu.cn/auth/callback",
+        "https://itestu.cn/auth/callback",
+        "http://localhost:3000/auth/callback",
+        "http://127.0.0.1:8081/auth/callback",
+        "http://127.0.0.1:3000/auth/callback"
       ],
       "grantTypes": [
         "authorization_code"
@@ -365,13 +613,55 @@
         }
       ],
       "signupItems": [
-        {"name": "ID",              "visible": false, "required": true,  "prompted": false, "rule": "Random"},
-        {"name": "Username",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Display name",    "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Password",        "visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Confirm password","visible": true,  "required": true,  "prompted": false, "rule": "None"},
-        {"name": "Email",           "visible": true,  "required": false, "prompted": false, "rule": "None"},
-        {"name": "Phone",           "visible": false, "required": false, "prompted": false, "rule": "None"}
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "required": false,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Phone",
+          "visible": false,
+          "required": false,
+          "prompted": false,
+          "rule": "None"
+        }
       ]
     }
   ],
@@ -397,7 +687,9 @@
       "isDeleted": false,
       "signupApplication": "acc",
       "createdIp": "",
-      "groups": ["/kaixuan/admin"]
+      "groups": [
+        "/kaixuan/admin"
+      ]
     }
   ],
   "providers": [
