@@ -329,7 +329,7 @@ function ManagementPage(props) {
       "official-portal"
     ));
 
-    // 产品切换入口（统一导航规范）
+    // 产品切换入口（统一导航规范 — 与 unified-links.ts 保持同步）
     res.push(Setting.getItem(
       <span style={{fontWeight: "600", color: props.themeAlgorithm.includes("dark") ? "#9aa0ac" : "#4a5568"}}>
         🚀 产品入口
@@ -337,17 +337,47 @@ function ManagementPage(props) {
       "kx-products",
       null,
       [
+        // ── 基础服务 ──────────────────────────────────────────
+        Setting.getItem(
+          <span style={{fontSize: "11px", color: props.themeAlgorithm.includes("dark") ? "#6b7280" : "#9ca3af", padding: "0 4px", cursor: "default"}}>基础服务</span>,
+          "kx-group-core", null, null, {disabled: true}
+        ),
         Setting.getItem(
           <a target="_blank" rel="noreferrer" href="https://memora.itestu.cn">🧠 Memora</a>,
           "kx-memora"
         ),
         Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://acc.itestu.cn">🤖 Agent 控制台</a>,
+          <a target="_blank" rel="noreferrer" href="https://acc.itestu.cn">🤖 控制台</a>,
           "kx-acc"
         ),
         Setting.getItem(
           <a target="_blank" rel="noreferrer" href="https://docs.itestu.cn">📄 文档工具</a>,
           "kx-docs"
+        ),
+        // ── 业务应用 ──────────────────────────────────────────
+        Setting.getItem(
+          <span style={{fontSize: "11px", color: props.themeAlgorithm.includes("dark") ? "#6b7280" : "#9ca3af", padding: "0 4px", cursor: "default"}}>业务应用</span>,
+          "kx-group-biz", null, null, {disabled: true}
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://pms.itestu.cn">🏢 资产运营</a>,
+          "kx-pms"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://agent.itestu.cn">🔀 Agent 编排</a>,
+          "kx-agent"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://crm.itestu.cn">💬 客服AI</a>,
+          "kx-crm"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://account.itestu.cn">🧾 发票AI</a>,
+          "kx-invoice"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://grasp.itestu.cn">🛠 企业助手</a>,
+          "kx-grasp"
         ),
         Setting.getItem(
           <a target="_blank" rel="noreferrer" href="https://finance.itestu.cn">💹 股票推荐</a>,

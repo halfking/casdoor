@@ -1,53 +1,26 @@
 const CracoLessPlugin = require("craco-less");
 const path = require("path");
 
+// 本地开发时可通过环境变量将 API 代理到远端，无需启动本地 Go 后端或 Docker
+// 示例：REACT_APP_BACKEND_URL=https://auth.itestu.cn yarn start
+const BACKEND_TARGET = process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+
+const makeProxy = (target) => ({ target, changeOrigin: true, secure: target.startsWith("https") });
+
 module.exports = {
   devServer: {
     proxy: {
-      "/api": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/swagger": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/files": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/.well-known/openid-configuration": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/serviceValidate": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/proxyValidate": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/proxy": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/validate": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/p3/serviceValidate": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/cas/**/p3/proxyValidate": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
-      "/scim": {
-        target: "http://localhost:8000",
-        changeOrigin: true,
-      },
+      "/api": makeProxy(BACKEND_TARGET),
+      "/swagger": makeProxy(BACKEND_TARGET),
+      "/files": makeProxy(BACKEND_TARGET),
+      "/.well-known/openid-configuration": makeProxy(BACKEND_TARGET),
+      "/cas/**/serviceValidate": makeProxy(BACKEND_TARGET),
+      "/cas/**/proxyValidate": makeProxy(BACKEND_TARGET),
+      "/cas/**/proxy": makeProxy(BACKEND_TARGET),
+      "/cas/**/validate": makeProxy(BACKEND_TARGET),
+      "/cas/**/p3/serviceValidate": makeProxy(BACKEND_TARGET),
+      "/cas/**/p3/proxyValidate": makeProxy(BACKEND_TARGET),
+      "/scim": makeProxy(BACKEND_TARGET),
     },
   },
   plugins: [
