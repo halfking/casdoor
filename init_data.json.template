@@ -663,6 +663,301 @@
           "rule": "None"
         }
       ]
+    },
+    {
+      "owner": "kaixuan",
+      "name": "kxmemory-app",
+      "displayName": "Memora 知识记忆系统",
+      "logo": "",
+      "title": "Memora",
+      "favicon": "",
+      "homepageUrl": "${KXMEMORY_URL}",
+      "description": "开轩 Memora 知识记忆系统",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_KXMEMORY_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_KXMEMORY_CLIENT_SECRET}",
+      "redirectUris": [
+        "${KXMEMORY_URL}/auth/callback",
+        "http://localhost:8001/auth/callback",
+        "https://m.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "kaixuan",
+      "name": "stock-trading",
+      "displayName": "股票推荐系统",
+      "logo": "",
+      "title": "Finance AI",
+      "favicon": "",
+      "homepageUrl": "${STOCK_URL}",
+      "description": "开轩股票推荐与交易系统",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_STOCK_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_STOCK_CLIENT_SECRET}",
+      "redirectUris": [
+        "${STOCK_URL}/callback",
+        "${STOCK_URL}/auth/callback",
+        "http://localhost:8090/callback",
+        "http://localhost:8090/auth/callback",
+        "https://finance.itestu.cn/callback",
+        "https://finance.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "kaixuan",
+      "name": "doc-tools",
+      "displayName": "文档工具",
+      "logo": "",
+      "title": "Doc Tools",
+      "favicon": "",
+      "homepageUrl": "${DOCTOOLS_URL}",
+      "description": "开轩文档处理工具",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_DOCTOOLS_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_DOCTOOLS_CLIENT_SECRET}",
+      "redirectUris": [
+        "${DOCTOOLS_URL}/auth/callback",
+        "http://localhost:8200/auth/callback",
+        "https://docs.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "kaixuan",
+      "name": "trendaradar",
+      "displayName": "消息雷达",
+      "logo": "",
+      "title": "TrendRadar",
+      "favicon": "",
+      "homepageUrl": "${TRENDARADAR_URL}",
+      "description": "开轩消息雷达",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_TRENDARADAR_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_TRENDARADAR_CLIENT_SECRET}",
+      "redirectUris": [
+        "${TRENDARADAR_URL}/auth/callback",
+        "http://localhost:8081/trendaradar/auth/callback",
+        "https://trendaradar.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
     }
   ],
   "users": [
