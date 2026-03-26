@@ -337,13 +337,8 @@ function ManagementPage(props) {
       "kx-products",
       null,
       [
-        // ── 基础服务 ──────────────────────────────────────────
         Setting.getItem(
-          <span style={{fontSize: "11px", color: props.themeAlgorithm.includes("dark") ? "#6b7280" : "#9ca3af", padding: "0 4px", cursor: "default"}}>基础服务</span>,
-          "kx-group-core", null, null, {disabled: true}
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://memora.itestu.cn">🧠 Memora</a>,
+          <a target="_blank" rel="noreferrer" href="https://m.itestu.cn">🧠 Memora</a>,
           "kx-memora"
         ),
         Setting.getItem(
@@ -354,38 +349,17 @@ function ManagementPage(props) {
           <a target="_blank" rel="noreferrer" href="https://docs.itestu.cn">📄 文档工具</a>,
           "kx-docs"
         ),
-        // ── 业务应用 ──────────────────────────────────────────
-        Setting.getItem(
-          <span style={{fontSize: "11px", color: props.themeAlgorithm.includes("dark") ? "#6b7280" : "#9ca3af", padding: "0 4px", cursor: "default"}}>业务应用</span>,
-          "kx-group-biz", null, null, {disabled: true}
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://pms.itestu.cn">🏢 资产运营</a>,
-          "kx-pms"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://agent.itestu.cn">🔀 Agent 编排</a>,
-          "kx-agent"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://crm.itestu.cn">💬 客服AI</a>,
-          "kx-crm"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://account.itestu.cn">🧾 发票AI</a>,
-          "kx-invoice"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://grasp.itestu.cn">🛠 企业助手</a>,
-          "kx-grasp"
-        ),
         Setting.getItem(
           <a target="_blank" rel="noreferrer" href="https://finance.itestu.cn">💹 股票推荐</a>,
           "kx-finance"
         ),
         Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://trendaradar.itestu.cn">📰 TrendRadar</a>,
+          <a target="_blank" rel="noreferrer" href="https://trendaradar.itestu.cn">📰 消息雷达</a>,
           "kx-trendaradar"
+        ),
+        Setting.getItem(
+          <a target="_blank" rel="noreferrer" href="https://auth.itestu.cn">🔐 账户中心</a>,
+          "kx-auth"
         ),
       ]
     ));
