@@ -7,6 +7,11 @@ const BACKEND_TARGET = process.env.REACT_APP_BACKEND_URL || "http://localhost:80
 
 const makeProxy = (target) => ({ target, changeOrigin: true, secure: target.startsWith("https") });
 
+// Shared components directory (used by SharedNavbar)
+// In Docker: /shared is copied alongside /web
+// In local dev: ../../shared relative to casdoor/web
+const SHARED_DIR = path.resolve(__dirname, "../../shared");
+
 module.exports = {
   devServer: {
     proxy: {

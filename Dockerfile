@@ -5,6 +5,9 @@ WORKDIR /web
 COPY ./web/package.json ./web/yarn.lock ./
 RUN yarn install --frozen-lockfile --network-timeout 1000000
 
+# Copy shared components (used by SharedNavbar)
+COPY ./shared /shared
+
 # Copy source files and build
 COPY ./web .
 RUN NODE_OPTIONS="--max-old-space-size=4096" yarn run build
