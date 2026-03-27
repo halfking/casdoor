@@ -1,8 +1,8 @@
 <template>
-  <div style="padding: 24px;">
-    <a-result status="info" title="GroupEditPage" sub-title="页面开发中..." />
-  </div>
+  <ResourceEditView :resource="resourceConfigs.groups" />
 </template>
+
 <script setup lang="ts">
-// TODO: Implement GroupEditPage
+import ResourceEditView from "@/views/management/ResourceEditView.vue";
+import { resourceConfigs } from "@/utils/resource-configs";
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <div style="padding: 24px;">
-    <a-result status="info" title="PermissionEditPage" sub-title="页面开发中..." />
-  </div>
+  <ResourceEditView :resource="resourceConfigs.permissions" />
 </template>
+
 <script setup lang="ts">
-// TODO: Implement PermissionEditPage
+import ResourceEditView from "@/views/management/ResourceEditView.vue";
+import { resourceConfigs } from "@/utils/resource-configs";
 </script>

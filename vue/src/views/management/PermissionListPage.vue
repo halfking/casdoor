@@ -1,8 +1,8 @@
 <template>
-  <div style="padding: 24px;">
-    <a-result status="info" title="PermissionListPage" sub-title="页面开发中..." />
-  </div>
+  <ResourceListView :resource="resourceConfigs.permissions" />
 </template>
+
 <script setup lang="ts">
-// TODO: Implement PermissionListPage
+import ResourceListView from "@/views/management/ResourceListView.vue";
+import { resourceConfigs } from "@/utils/resource-configs";
 </script>
