@@ -10,18 +10,33 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - postgres
     environment:
       RUNNING_IN_DOCKER: "true"
+      CASDOOR_DB_PASS: "${CASDOOR_DB_PASS:-casdoor2024}"
     volumes:
       - ./conf:/conf/
-  db:
+      - ./init_data.json:/init_data.json
+    networks:
+      - casdoor-network
+
+  postgres:
     restart: always
-    image: mysql:8.0.25
-    platform: linux/amd64
+    image: postgres:15-alpine
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      POSTGRES_DB: casdoor
+      POSTGRES_USER: casdoor
+      POSTGRES_PASSWORD: "${CASDOOR_DB_PASS:-casdoor2024}"
     volumes:
-      - /usr/local/docker/mysql:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - casdoor-network
+
+volumes:
+  postgres-data:
+
+networks:
+  casdoor-network:
+    driver: bridge
