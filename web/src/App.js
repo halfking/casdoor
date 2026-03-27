@@ -22,6 +22,7 @@ import {GithubOutlined, InfoCircleFilled, ShareAltOutlined} from "@ant-design/ic
 import {Alert, Button, ConfigProvider, Drawer, FloatButton, Layout, Result, Tooltip} from "antd";
 import {Route, Switch, withRouter} from "react-router-dom";
 import CustomGithubCorner from "./common/CustomGithubCorner";
+import SharedNavbar from "../../shared/components/SharedNavbar";
 import * as Conf from "./Conf";
 
 import * as Auth from "./auth/Auth";
@@ -112,6 +113,10 @@ class App extends Component {
     } catch {
       storageThemeAlgorithm = ["default"];
     }
+
+    // Sync from kx-ui-theme (cross-app theme)
+    this._syncKxTheme(storageThemeAlgorithm);
+
     this.state = {
       classes: props,
       selectedMenuKey: 0,
@@ -130,12 +135,43 @@ class App extends Component {
       serverUrl: Setting.ServerUrl,
       appName: Conf.DefaultApplication, // the application used in Casdoor root path: "/"
     });
+
+    // Listen for cross-app theme changes
+    this._kxThemeHandler = (e) => {
+      if (e.key === "kx-ui-theme" || e.key === "kx-ui-theme-sync") {
+        this._syncKxTheme(this.state.themeAlgorithm);
+      }
+    };
+    window.addEventListener("storage", this._kxThemeHandler);
+  }
+
+  _syncKxTheme(currentAlgorithm) {
+    try {
+      const kxTheme = localStorage.getItem("kx-ui-theme");
+      if (kxTheme === "dark" && !currentAlgorithm.includes("dark")) {
+        const next = [...currentAlgorithm.filter((a) => a !== "default"), "dark"];
+        localStorage.setItem("themeAlgorithm", JSON.stringify(next));
+        return next;
+      } else if (kxTheme === "light" && currentAlgorithm.includes("dark")) {
+        const next = currentAlgorithm.filter((a) => a !== "dark");
+        if (!next.includes("default")) next.push("default");
+        localStorage.setItem("themeAlgorithm", JSON.stringify(next));
+        return next;
+      }
+    } catch {}
+    return currentAlgorithm;
   }
 
   UNSAFE_componentWillMount() {
     this.updateMenuKey();
     this.getAccount();
     this.getApplication();
+  }
+
+  componentWillUnmount() {
+    if (this._kxThemeHandler) {
+      window.removeEventListener("storage", this._kxThemeHandler);
+    }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -379,14 +415,28 @@ class App extends Component {
           logo: this.getLogo(storageThemeAlgorithm),
           themeAlgorithm: storageThemeAlgorithm,
         });
+        // Sync kx-ui-theme
+        this._syncToKxTheme(storageThemeAlgorithm);
         return;
       }
+      const newAlgorithm = Setting.getAlgorithmNames(theme);
       this.setState({
-        logo: this.getLogo(Setting.getAlgorithmNames(theme)),
-        themeAlgorithm: Setting.getAlgorithmNames(theme),
+        logo: this.getLogo(newAlgorithm),
+        themeAlgorithm: newAlgorithm,
       });
+      this._syncToKxTheme(newAlgorithm);
     }
   };
+
+  _syncToKxTheme(algorithm) {
+    try {
+      const isDark = algorithm.includes("dark");
+      localStorage.setItem("kx-ui-theme", isDark ? "dark" : "light");
+      localStorage.setItem("kx-ui-theme-sync", JSON.stringify({ theme: isDark ? "dark" : "light", at: Date.now() }));
+      document.documentElement.dataset.theme = isDark ? "dark" : "light";
+      document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+    } catch {}
+  }
 
   getApplication() {
     const applicationName = localStorage.getItem("applicationName");
@@ -648,6 +698,7 @@ class App extends Component {
         {
           <Suspense fallback={null}>
             <Layout id="parent-area">
+              <SharedNavbar appName="认证中心" />
               <ManagementPage
                 account={this.state.account}
                 application={this.state.application}
@@ -674,6 +725,14 @@ class App extends Component {
                     logo: this.getLogo(nextThemeAlgorithm),
                   });
                   localStorage.setItem("themeAlgorithm", JSON.stringify(nextThemeAlgorithm));
+                  // Sync to kx-ui-theme for cross-app consistency
+                  try {
+                    const isDark = nextThemeAlgorithm.includes("dark");
+                    localStorage.setItem("kx-ui-theme", isDark ? "dark" : "light");
+                    localStorage.setItem("kx-ui-theme-sync", JSON.stringify({ theme: isDark ? "dark" : "light", at: Date.now() }));
+                    document.documentElement.dataset.theme = isDark ? "dark" : "light";
+                    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+                  } catch {}
                 }}
                 setLogoutState={() => {
                   this.setState({
