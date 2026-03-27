@@ -562,7 +562,7 @@ class LoginPage extends React.Component {
                 Setting.goToLinkSoft(this, `/forget/${this.state.applicationName}`);
               }
               Setting.showMessage("success", i18next.t("application:Logged in successfully"));
-              this.props.onLoginSuccess();
+              goToLink(Setting.getFromLink(this.props.location.search));
             } else if (responseType === "code") {
               this.postCodeLoginAction(res);
             } else if (responseType === "device") {
@@ -612,7 +612,14 @@ class LoginPage extends React.Component {
           };
 
           if (res.status === "ok") {
-            Setting.checkLoginMfa(res, values, oAuthParams, loginHandler, this);
+            Setting.checkLoginMfa(
+              res,
+              values,
+              oAuthParams,
+              loginHandler,
+              this,
+              values["type"] === "login" ? Setting.getFromLink(this.props.location.search) : null
+            );
           } else {
             Setting.showMessage("error", `${i18next.t("application:Failed to sign in")}: ${res.msg}`);
             if (shouldRefreshCaptcha) {

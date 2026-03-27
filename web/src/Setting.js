@@ -1709,10 +1709,21 @@ export function getRandomNumber() {
   return Math.random().toString(10).slice(-11);
 }
 
-export function getFromLink() {
+export function getFromLink(search = window.location.search) {
+  const params = new URLSearchParams(search);
+  const redirectUri = params.get("redirect_uri");
+  if (redirectUri !== null && redirectUri.trim() !== "") {
+    return redirectUri;
+  }
+
+  const fromParam = params.get("from");
+  if (fromParam !== null && fromParam.trim() !== "") {
+    return fromParam;
+  }
+
   const from = sessionStorage.getItem("from");
-  if (from === null) {
-    return "/";
+  if (from === null || from.trim() === "") {
+    return "https://www.itestu.cn";
   }
   return from;
 }

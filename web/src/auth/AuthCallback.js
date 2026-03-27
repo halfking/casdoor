@@ -99,8 +99,7 @@ class AuthCallback extends React.Component {
           return;
         }
         Setting.showMessage("success", "Logged in successfully");
-        const link = Setting.getFromLink();
-        Setting.goToLink(link);
+        Setting.goToLink(Setting.getFromLink(queryString));
       } else if (responseType === "code") {
         if (res.data3) {
           sessionStorage.setItem("signinUrl", signinUrl);
@@ -164,7 +163,14 @@ class AuthCallback extends React.Component {
       }
     };
 
-    Setting.checkLoginMfa(res, body, oAuthParams, handleLogin, this, window.location.origin);
+    Setting.checkLoginMfa(
+      res,
+      body,
+      oAuthParams,
+      handleLogin,
+      this,
+      responseType === "login" ? Setting.getFromLink(queryString) : window.location.origin
+    );
   }
 
   getInnerParams() {
