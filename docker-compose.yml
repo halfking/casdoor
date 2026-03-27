@@ -3,8 +3,8 @@ services:
   casdoor:
     restart: always
     build:
-      context: ./
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: casdoor/Dockerfile
       target: STANDARD
     entrypoint: /bin/sh -c './server --createDatabase=true'
     ports:

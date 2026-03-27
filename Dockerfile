@@ -2,25 +2,25 @@ FROM --platform=$BUILDPLATFORM node:20.20.1 AS FRONT
 WORKDIR /web
 
 # Copy only dependency files first for better caching
-COPY ./web/package.json ./web/yarn.lock ./
+COPY ./casdoor/web/package.json ./casdoor/web/yarn.lock ./
 RUN yarn install --frozen-lockfile --network-timeout 1000000
 
 # Copy shared components (used by SharedNavbar)
 COPY ./shared /shared
 
 # Copy source files and build
-COPY ./web .
+COPY ./casdoor/web .
 RUN NODE_OPTIONS="--max-old-space-size=4096" yarn run build
 
 FROM --platform=$BUILDPLATFORM golang:1.24.13 AS BACK
 WORKDIR /go/src/casdoor
 
 # Copy only go.mod and go.sum first for dependency caching
-COPY go.mod go.sum ./
+COPY ./casdoor/go.mod ./casdoor/go.sum ./
 RUN go mod download
 
 # Copy source files
-COPY . .
+COPY ./casdoor . .
 
 RUN ./build.sh
 
