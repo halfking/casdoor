@@ -22,7 +22,7 @@ import {GithubOutlined, InfoCircleFilled, ShareAltOutlined} from "@ant-design/ic
 import {Alert, Button, ConfigProvider, Drawer, FloatButton, Layout, Result, Tooltip} from "antd";
 import {Route, Switch, withRouter} from "react-router-dom";
 import CustomGithubCorner from "./common/CustomGithubCorner";
-import SharedNavbar from "../../shared/components/SharedNavbar";
+import SharedNavbar from "@kx/shared/components/SharedNavbar";
 import * as Conf from "./Conf";
 
 import * as Auth from "./auth/Auth";
@@ -154,11 +154,15 @@ class App extends Component {
         return next;
       } else if (kxTheme === "light" && currentAlgorithm.includes("dark")) {
         const next = currentAlgorithm.filter((a) => a !== "dark");
-        if (!next.includes("default")) next.push("default");
+        if (!next.includes("default")) {
+          next.push("default");
+        }
         localStorage.setItem("themeAlgorithm", JSON.stringify(next));
         return next;
       }
-    } catch {}
+    } catch {
+      // ignore
+    }
     return currentAlgorithm;
   }
 
@@ -432,10 +436,12 @@ class App extends Component {
     try {
       const isDark = algorithm.includes("dark");
       localStorage.setItem("kx-ui-theme", isDark ? "dark" : "light");
-      localStorage.setItem("kx-ui-theme-sync", JSON.stringify({ theme: isDark ? "dark" : "light", at: Date.now() }));
+      localStorage.setItem("kx-ui-theme-sync", JSON.stringify({theme: isDark ? "dark" : "light", at: Date.now()}));
       document.documentElement.dataset.theme = isDark ? "dark" : "light";
       document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-    } catch {}
+    } catch {
+      // ignore
+    }
   }
 
   getApplication() {
@@ -729,10 +735,12 @@ class App extends Component {
                   try {
                     const isDark = nextThemeAlgorithm.includes("dark");
                     localStorage.setItem("kx-ui-theme", isDark ? "dark" : "light");
-                    localStorage.setItem("kx-ui-theme-sync", JSON.stringify({ theme: isDark ? "dark" : "light", at: Date.now() }));
+                    localStorage.setItem("kx-ui-theme-sync", JSON.stringify({theme: isDark ? "dark" : "light", at: Date.now()}));
                     document.documentElement.dataset.theme = isDark ? "dark" : "light";
                     document.documentElement.style.colorScheme = isDark ? "dark" : "light";
-                  } catch {}
+                  } catch {
+                    // ignore
+                  }
                 }}
                 setLogoutState={() => {
                   this.setState({

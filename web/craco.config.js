@@ -41,6 +41,37 @@ module.exports = {
       paths.appBuild = path.resolve(__dirname, "build-temp");
       webpackConfig.output.path = path.resolve(__dirname, "build-temp");
 
+      // Allow importing from @kx/shared (../../shared) outside of src/
+      webpackConfig.resolve.alias = {
+        ...webpackConfig.resolve.alias,
+        "@kx/shared": path.resolve(__dirname, "../../shared"),
+      };
+
+      // Remove ModuleScopePlugin to allow imports from outside src/
+      webpackConfig.resolve.plugins = webpackConfig.resolve.plugins.filter(
+        (plugin) => plugin.constructor.name !== "ModuleScopePlugin"
+      );
+
+      // Allow babel-loader to process JSX files in @kx/shared directory
+      // Insert a rule before the oneOf to ensure shared/ files get transpiled
+      const sharedDir = path.resolve(__dirname, "../../shared");
+      webpackConfig.module.rules.unshift({
+        test: /\.(js|jsx|mjs)$/,
+        include: sharedDir,
+        use: {
+          loader: require.resolve("babel-loader"),
+          options: {
+            babelrc: false,
+            configFile: false,
+            presets: [require.resolve("@babel/preset-react")],
+            plugins: [
+              [require.resolve("@babel/plugin-proposal-private-methods"), { loose: true }],
+            ],
+            cacheDirectory: true,
+          },
+        },
+      });
+
       // ignore webpack warnings by source-map-loader
       // https://github.com/facebook/create-react-app/pull/11752#issuecomment-1345231546
       webpackConfig.ignoreWarnings = [
