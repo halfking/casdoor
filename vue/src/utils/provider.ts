@@ -1,59 +1,40 @@
-// PKCE utilities ported from Casdoor React Provider.js
+function base64UrlEncode(bytes: Uint8Array): string {
+  let binary = "";
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
 
-const CODE_VERIFIER_PREFIX = 'casdoor_pkce_'
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+}
 
-/**
- * Generate a random code verifier string (43-128 chars, unreserved chars)
- */
 export function generateCodeVerifier(): string {
-  const array = new Uint8Array(32)
-  crypto.getRandomValues(array)
-  return base64URLEncode(array)
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return base64UrlEncode(array);
 }
 
-/**
- * Generate code challenge from verifier using SHA-256
- */
 export async function generateCodeChallenge(verifier: string): Promise<string> {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(verifier)
-  const hash = await crypto.subtle.digest('SHA-256', data)
-  return base64URLEncode(new Uint8Array(hash))
+  const data = new TextEncoder().encode(verifier);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return base64UrlEncode(new Uint8Array(digest));
 }
 
-/**
- * Save code verifier to localStorage keyed by state
- */
-export function saveCodeVerifier(state: string | null, verifier: string) {
-  if (state) {
-    localStorage.setItem(`${CODE_VERIFIER_PREFIX}${state}`, verifier)
-  }
+export function saveCodeVerifier(state: string, verifier: string): void {
+  localStorage.setItem(`pkce_verifier_${state}`, verifier);
 }
 
-/**
- * Get code verifier from localStorage by state
- */
 export function getCodeVerifier(state: string | null): string | null {
-  if (!state) return null
-  return localStorage.getItem(`${CODE_VERIFIER_PREFIX}${state}`)
+  if (!state) {
+    return null;
+  }
+
+  return localStorage.getItem(`pkce_verifier_${state}`);
 }
 
-/**
- * Clear stored code verifier
- */
-export function clearCodeVerifier(state: string | null) {
-  if (state) {
-    localStorage.removeItem(`${CODE_VERIFIER_PREFIX}${state}`)
+export function clearCodeVerifier(state: string | null): void {
+  if (!state) {
+    return;
   }
-}
 
-function base64URLEncode(array: Uint8Array): string {
-  let binary = ''
-  for (let i = 0; i < array.length; i++) {
-    binary += String.fromCharCode(array[i])
-  }
-  return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '')
+  localStorage.removeItem(`pkce_verifier_${state}`);
 }
