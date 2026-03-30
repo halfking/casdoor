@@ -1723,7 +1723,7 @@ export function getFromLink(search = window.location.search) {
 
   const from = sessionStorage.getItem("from");
   if (from === null || from.trim() === "") {
-    return "https://www.itestu.cn";
+    return "/";
   }
   return from;
 }
