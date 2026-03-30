@@ -19,12 +19,12 @@ import {Link, Redirect, Route, Switch, withRouter} from "react-router-dom";
 import React, {useState} from "react";
 import i18next from "i18next";
 import {
-  AppstoreTwoTone,
-  BarsOutlined, CheckCircleTwoTone, DeploymentUnitOutlined, DollarTwoTone, DownOutlined,
-  HomeOutlined, HomeTwoTone,
-  LockTwoTone, LogoutOutlined,
-  SafetyCertificateTwoTone, SettingOutlined, SettingTwoTone,
-  WalletTwoTone
+  AppstoreOutlined,
+  BarsOutlined, CheckCircleOutlined, DeploymentUnitOutlined, DollarOutlined, DownOutlined,
+  HomeOutlined,
+  LockOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined,
+  SafetyCertificateOutlined, SettingOutlined,
+  WalletOutlined
 } from "@ant-design/icons";
 import Dashboard from "./basic/Dashboard";
 import AppListPage from "./basic/AppListPage";
@@ -90,11 +90,11 @@ import MfaSetupPage from "./auth/MfaSetupPage";
 import OdicDiscoveryPage from "./auth/OidcDiscoveryPage";
 import * as Conf from "./Conf";
 import LanguageSelect from "./common/select/LanguageSelect";
-import ThemeSelect from "./common/select/ThemeSelect";
 import OpenTour from "./common/OpenTour";
 import OrganizationSelect from "./common/select/OrganizationSelect";
 import AccountAvatar from "./account/AccountAvatar";
 import {Content, Header} from "antd/es/layout/layout";
+import Sider from "antd/es/layout/Sider";
 import * as AuthBackend from "./auth/AuthBackend";
 import {clearWeb3AuthToken} from "./auth/Web3Auth";
 import TransactionListPage from "./TransactionListPage";
@@ -111,6 +111,7 @@ import RuleListPage from "./RuleListPage";
 
 function ManagementPage(props) {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const organization = props.account?.organization;
   const navItems = Setting.isLocalAdminUser(props.account) ? organization?.navItems : (organization?.userNavItems ?? []);
   const widgetItems = organization?.widgetItems;
@@ -222,7 +223,6 @@ function ManagementPage(props) {
 
   function renderWidgets() {
     const widgets = [
-      Setting.getItem(<ThemeSelect themeAlgorithm={props.themeAlgorithm} onChange={props.setLogoAndThemeAlgorithm} />, "theme"),
       Setting.getItem(<LanguageSelect languages={props.account.organization.languages} />, "language"),
       Setting.getItem(Conf.AiAssistantUrl?.trim() && (
         <Tooltip title="Click to open AI assistant">
@@ -278,93 +278,9 @@ function ManagementPage(props) {
       return [];
     }
 
-    let textColor = "black";
-    const twoToneColor = props.themeData.colorPrimary;
+    const iconColor = props.themeData.colorPrimary;
 
-    let logo = props.account.organization.logo ? props.account.organization.logo : Setting.getLogo(props.themeAlgorithm);
-    if (props.themeAlgorithm.includes("dark")) {
-      if (props.account.organization.logoDark) {
-        logo = props.account.organization.logoDark;
-      }
-      textColor = "white";
-    }
-
-    !Setting.isMobile() ? res.push({
-      label:
-        <Link to="/">
-          <img className="logo" src={logo ?? props.logo} alt="logo" />
-        </Link>,
-      disabled: true, key: "logo",
-      style: {
-        padding: 0,
-        height: "auto",
-      },
-    }) : null;
-
-    res.push(Setting.getItem(
-      <a target="_blank" rel="noreferrer" href="https://www.itestu.cn">
-        <span style={{
-          fontWeight: "600",
-          backgroundColor: props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.12)" : "rgba(37, 99, 235, 0.08)",
-          color: props.themeAlgorithm.includes("dark") ? "#93c5fd" : "#2563eb",
-          marginTop: "8px",
-          padding: "10px 14px",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          borderRadius: "8px",
-          transition: "all 0.2s ease",
-          border: props.themeAlgorithm.includes("dark") ? "1px solid rgba(96, 165, 250, 0.2)" : "1px solid rgba(37, 99, 235, 0.15)",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.2)" : "rgba(37, 99, 235, 0.15)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = props.themeAlgorithm.includes("dark") ? "rgba(96, 165, 250, 0.12)" : "rgba(37, 99, 235, 0.08)";
-        }}
-        >
-          <HomeOutlined /> 返回开轩官网
-        </span>
-      </a>,
-      "official-portal"
-    ));
-
-    // 产品切换入口（统一导航规范 — 与 unified-links.ts 保持同步）
-    res.push(Setting.getItem(
-      <span style={{fontWeight: "600", color: props.themeAlgorithm.includes("dark") ? "#9aa0ac" : "#4a5568"}}>
-        🚀 产品入口
-      </span>,
-      "kx-products",
-      null,
-      [
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://m.itestu.cn">🧠 Memora</a>,
-          "kx-memora"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://acc.itestu.cn">🤖 控制台</a>,
-          "kx-acc"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://docs.itestu.cn">📄 文档工具</a>,
-          "kx-docs"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://finance.itestu.cn">💹 股票推荐</a>,
-          "kx-finance"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://trendaradar.itestu.cn">📰 消息雷达</a>,
-          "kx-trendaradar"
-        ),
-        Setting.getItem(
-          <a target="_blank" rel="noreferrer" href="https://auth.itestu.cn">🔐 账户中心</a>,
-          "kx-auth"
-        ),
-      ]
-    ));
-
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/">{i18next.t("general:Home")}</Link>, "/home", <HomeTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/">{i18next.t("general:Home")}</Link>, "/home", <HomeOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/">{i18next.t("general:Dashboard")}</Link>, "/"),
       Setting.getItem(<Link to="/shortcuts">{i18next.t("general:Shortcuts")}</Link>, "/shortcuts"),
       Setting.getItem(<Link to="/apps">{i18next.t("general:Apps")}</Link>, "/apps"),
@@ -378,14 +294,14 @@ function ManagementPage(props) {
       </a>, "#"));
     }
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/organizations">{i18next.t("general:User Management")}</Link>, "/orgs", <AppstoreTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/organizations">{i18next.t("general:User Management")}</Link>, "/orgs", <AppstoreOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/organizations">{i18next.t("general:Organizations")}</Link>, "/organizations"),
       Setting.getItem(<Link to="/groups">{i18next.t("general:Groups")}</Link>, "/groups"),
       Setting.getItem(<Link to="/users">{i18next.t("general:Users")}</Link>, "/users"),
       Setting.getItem(<Link to="/invitations">{i18next.t("general:Invitations")}</Link>, "/invitations"),
     ]));
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/applications">{i18next.t("general:Identity")}</Link>, "/identity", <LockTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/applications">{i18next.t("general:Identity")}</Link>, "/identity", <LockOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/applications">{i18next.t("general:Applications")}</Link>, "/applications"),
       Setting.getItem(<Link to="/providers">{i18next.t("application:Providers")}</Link>, "/providers"),
       Setting.getItem(<Link to="/resources">{i18next.t("general:Resources")}</Link>, "/resources"),
@@ -394,7 +310,7 @@ function ManagementPage(props) {
       Setting.getItem(<Link to="/rules">{i18next.t("general:Rules")}</Link>, "/rules"),
     ]));
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/roles">{i18next.t("general:Authorization")}</Link>, "/auth", <SafetyCertificateTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/roles">{i18next.t("general:Authorization")}</Link>, "/auth", <SafetyCertificateOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/roles">{i18next.t("general:Roles")}</Link>, "/roles"),
       Setting.getItem(<Link to="/permissions">{i18next.t("general:Permissions")}</Link>, "/permissions"),
       Setting.getItem(<Link to="/models">{i18next.t("general:Models")}</Link>, "/models"),
@@ -408,13 +324,13 @@ function ManagementPage(props) {
       }
     })));
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/sites">{i18next.t("general:Gateway")}</Link>, "/gateway", <CheckCircleTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/sites">{i18next.t("general:Gateway")}</Link>, "/gateway", <CheckCircleOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/sites">{i18next.t("general:Sites")}</Link>, "/sites"),
       Setting.getItem(<Link to="/certs">{i18next.t("general:Certs")}</Link>, "/certs"),
       Setting.getItem(<Link to="/rules">{i18next.t("general:Rules")}</Link>, "/rules"),
     ]));
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/sessions">{i18next.t("general:Logging & Auditing")}</Link>, "/logs", <WalletTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/sessions">{i18next.t("general:Logging & Auditing")}</Link>, "/logs", <WalletOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/sessions">{i18next.t("general:Sessions")}</Link>, "/sessions"),
       Conf.CasvisorUrl ? Setting.getItem(<a target="_blank" rel="noreferrer" href={Conf.CasvisorUrl}>{i18next.t("general:Records")}</a>, "/records")
         : Setting.getItem(<Link to="/records">{i18next.t("general:Records")}</Link>, "/records"),
@@ -422,7 +338,7 @@ function ManagementPage(props) {
       Setting.getItem(<Link to="/verifications">{i18next.t("general:Verifications")}</Link>, "/verifications"),
     ]));
 
-    res.push(Setting.getItem(<Link style={{color: textColor}} to="/products">{i18next.t("general:Business & Payments")}</Link>, "/business", <DollarTwoTone twoToneColor={twoToneColor} />, [
+    res.push(Setting.getItem(<Link to="/products">{i18next.t("general:Business & Payments")}</Link>, "/business", <DollarOutlined style={{color: iconColor}} />, [
       Setting.getItem(<Link to="/product-store">{i18next.t("general:Product Store")}</Link>, "/product-store"),
       Setting.getItem(<Link to="/products">{i18next.t("general:Products")}</Link>, "/products"),
       Setting.getItem(<Link to="/cart">{i18next.t("general:Cart")}</Link>, "/cart"),
@@ -435,7 +351,7 @@ function ManagementPage(props) {
     ]));
 
     if (Setting.isAdminUser(props.account)) {
-      res.push(Setting.getItem(<Link style={{color: textColor}} to="/sysinfo">{i18next.t("general:Admin")}</Link>, "/admin", <SettingTwoTone twoToneColor={twoToneColor} />, [
+      res.push(Setting.getItem(<Link to="/sysinfo">{i18next.t("general:Admin")}</Link>, "/admin", <SettingOutlined style={{color: iconColor}} />, [
         Setting.getItem(<Link to="/sysinfo">{i18next.t("general:System Info")}</Link>, "/sysinfo"),
         Setting.getItem(<Link to="/forms">{i18next.t("general:Forms")}</Link>, "/forms"),
         Setting.getItem(<Link to="/syncers">{i18next.t("general:Syncers")}</Link>, "/syncers"),
@@ -443,7 +359,7 @@ function ManagementPage(props) {
         Setting.getItem(<Link to="/tickets">{i18next.t("general:Tickets")}</Link>, "/tickets"),
         Setting.getItem(<a target="_blank" rel="noreferrer" href={Setting.isLocalhost() ? `${Setting.ServerUrl}/swagger` : "/swagger"}>{i18next.t("general:Swagger")}</a>, "/swagger")]));
     } else {
-      res.push(Setting.getItem(<Link style={{color: textColor}} to="/syncers">{i18next.t("general:Admin")}</Link>, "/admin", <SettingTwoTone twoToneColor={twoToneColor} />, [
+      res.push(Setting.getItem(<Link to="/syncers">{i18next.t("general:Admin")}</Link>, "/admin", <SettingOutlined style={{color: iconColor}} />, [
         Setting.getItem(<Link to="/forms">{i18next.t("general:Forms")}</Link>, "/forms"),
         Setting.getItem(<Link to="/syncers">{i18next.t("general:Syncers")}</Link>, "/syncers"),
         Setting.getItem(<Link to="/webhooks">{i18next.t("general:Webhooks")}</Link>, "/webhooks"),
@@ -619,19 +535,9 @@ function ManagementPage(props) {
   return (
     <React.Fragment>
       <EnableMfaNotification account={props.account} />
-      <Header style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0", marginBottom: "4px", backgroundColor: props.themeAlgorithm.includes("dark") ? "black" : "white"}} >
-        {/* 返回主站图标 */}
-        <a
-          href="https://www.itestu.cn"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{display: "flex", alignItems: "center", marginRight: "16px", flexShrink: 0}}
-          title={i18next.t("general:Back to Home")}
-        >
-          <HomeOutlined style={{fontSize: "20px", color: props.themeAlgorithm.includes("dark") ? "#fff" : "#1890ff"}} />
-        </a>
+      <div style={{display: "flex", flex: 1, overflow: "hidden"}}>
         {
-          props.requiredEnableMfa || (Setting.isMobile() ? (
+          props.requiredEnableMfa ? null : (Setting.isMobile() ? (
             <React.Fragment>
               <Drawer title={i18next.t("general:Close")} placement="left" open={menuVisible} onClose={onClose}>
                 <Menu
@@ -643,35 +549,76 @@ function ManagementPage(props) {
                 >
                 </Menu>
               </Drawer>
-              <Button icon={<BarsOutlined />} onClick={showMenu} type="text">
-                {i18next.t("general:Menu")}
-              </Button>
             </React.Fragment>
           ) : (
-            // Padding 1px for Menu Item Highlight border
-            <div style={{flex: 1, overflow: "hidden", paddingBottom: "1px"}}>
+            <Sider
+              collapsible
+              collapsed={collapsed}
+              onCollapse={(val) => setCollapsed(val)}
+              width={220}
+              collapsedWidth={56}
+              trigger={null}
+              style={{
+                overflow: "auto",
+                height: "calc(100vh - 60px)",
+                position: "sticky",
+                top: 60,
+                left: 0,
+                borderRadius: "16px",
+                margin: "4px 0 4px 4px",
+              }}
+            >
+              <div style={{display: "flex", alignItems: "center", justifyContent: collapsed ? "center" : "space-between", padding: collapsed ? "12px 0" : "12px 16px"}}>
+                {!collapsed && (
+                  <Link to="/" style={{display: "flex", alignItems: "center"}}>
+                    <img className="logo" src={(() => {
+                      let logo = props.account?.organization?.logo || Setting.getLogo(props.themeAlgorithm);
+                      if (props.themeAlgorithm.includes("dark") && props.account?.organization?.logoDark) {
+                        logo = props.account.organization.logoDark;
+                      }
+                      return logo ?? props.logo;
+                    })()} alt="logo" style={{maxHeight: "32px"}} />
+                  </Link>
+                )}
+                <Button
+                  type="text"
+                  icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                  onClick={() => setCollapsed(!collapsed)}
+                  style={{fontSize: "16px"}}
+                />
+              </div>
               <Menu
-                onClick={onClose}
                 items={getMenuItems()}
-                mode={"horizontal"}
+                mode={"inline"}
                 selectedKeys={[props.selectedMenuKey]}
-                style={{backgroundColor: props.themeAlgorithm.includes("dark") ? "black" : "white"}}
+                defaultOpenKeys={collapsed ? [] : undefined}
+                inlineCollapsed={collapsed}
+                style={{borderRight: 0}}
               />
-            </div>
+            </Sider>
           ))
         }
-        <div style={{flexShrink: 0}}>
-          {renderAccountMenu()}
+        <div style={{flex: 1, display: "flex", flexDirection: "column", overflow: "auto"}}>
+          <Header style={{display: "flex", justifyContent: "flex-end", alignItems: "center", padding: "0 16px", marginBottom: "4px", height: "48px", lineHeight: "48px", backgroundColor: props.themeAlgorithm.includes("dark") ? "black" : "white"}} >
+            {Setting.isMobile() && (
+              <Button icon={<BarsOutlined />} onClick={showMenu} type="text" style={{marginRight: "auto"}}>
+                {i18next.t("general:Menu")}
+              </Button>
+            )}
+            <div style={{flexShrink: 0, display: "flex", alignItems: "center", gap: "8px"}}>
+              {renderAccountMenu()}
+            </div>
+          </Header>
+          <Content style={{display: "flex", flexDirection: "column", padding: "0 8px"}} >
+            {isWithoutCard() ?
+              renderRouter() :
+              <Card className="content-warp-card">
+                {renderRouter()}
+              </Card>
+            }
+          </Content>
         </div>
-      </Header>
-      <Content style={{display: "flex", flexDirection: "column"}} >
-        {isWithoutCard() ?
-          renderRouter() :
-          <Card className="content-warp-card">
-            {renderRouter()}
-          </Card>
-        }
-      </Content>
+      </div>
     </React.Fragment>
   );
 }

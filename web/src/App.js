@@ -136,13 +136,26 @@ class App extends Component {
       appName: Conf.DefaultApplication, // the application used in Casdoor root path: "/"
     });
 
-    // Listen for cross-app theme changes
+    // Listen for cross-tab theme changes
     this._kxThemeHandler = (e) => {
       if (e.key === "kx-ui-theme" || e.key === "kx-ui-theme-sync") {
         this._syncKxTheme(this.state.themeAlgorithm);
       }
     };
     window.addEventListener("storage", this._kxThemeHandler);
+
+    // Listen for same-tab theme changes (e.g. SharedNavbar toggle)
+    this._themeObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === "data-theme") {
+          const next = this._syncKxTheme(this.state.themeAlgorithm);
+          if (next !== this.state.themeAlgorithm) {
+            this.setState({themeAlgorithm: next, logo: this.getLogo(next)});
+          }
+        }
+      }
+    });
+    this._themeObserver.observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
   }
 
   _syncKxTheme(currentAlgorithm) {
@@ -175,6 +188,9 @@ class App extends Component {
   componentWillUnmount() {
     if (this._kxThemeHandler) {
       window.removeEventListener("storage", this._kxThemeHandler);
+    }
+    if (this._themeObserver) {
+      this._themeObserver.disconnect();
     }
   }
 
@@ -704,7 +720,27 @@ class App extends Component {
         {
           <Suspense fallback={null}>
             <Layout id="parent-area">
-              <SharedNavbar appName="认证中心" />
+              <SharedNavbar
+                appName="认证中心"
+                isAuthenticated={!!this.state.account}
+                hidePortalNav={true}
+                onLogout={() => {
+                  AuthBackend.logout().then((res) => {
+                    if (res.status === "ok") {
+                      this.setState({account: null});
+                      Setting.showMessage("success", i18next.t("application:Logged out successfully"));
+                      const redirectUri = res.data2;
+                      if (redirectUri) {
+                        Setting.goToLink(redirectUri);
+                      } else {
+                        Setting.goToLink("/");
+                      }
+                    } else {
+                      Setting.showMessage("error", `${i18next.t("general:Failed to log out")}: ${res.msg}`);
+                    }
+                  });
+                }}
+              />
               <ManagementPage
                 account={this.state.account}
                 application={this.state.application}
