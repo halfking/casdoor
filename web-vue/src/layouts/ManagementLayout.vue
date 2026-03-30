@@ -5,6 +5,7 @@
       app-name="认证中心"
       :is-authenticated="authStore.isAuthenticated"
       :auth-token="authStore.accessToken"
+      :hide-portal-nav="true"
       @login="handleLogin"
       @logout="handleLogout"
     />
@@ -81,14 +82,13 @@ import { useI18n } from "vue-i18n";
 import {
   BarsOutlined,
   HomeOutlined,
-  AppstoreTwoTone,
-  LockTwoTone,
-  SafetyCertificateTwoTone,
-  CheckCircleTwoTone,
-  WalletTwoTone,
-  DollarTwoTone,
-  SettingTwoTone,
-  HomeTwoTone,
+  AppstoreOutlined,
+  LockOutlined,
+  SafetyCertificateOutlined,
+  CheckCircleOutlined,
+  WalletOutlined,
+  DollarOutlined,
+  SettingOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@kx/shared/components/SharedNavbar.vue";
 import { useAuthStore } from "@/stores/auth";
@@ -151,7 +151,7 @@ function navItemsIsAll() {
 }
 
 function isSpecialMenuItem(item: any) {
-  return item.key === "#" || item.key === "logo" || item.key === "official-portal" || item.key === "kx-products";
+  return item.key === "#" || item.key === "logo";
 }
 
 type MenuItem = {
@@ -168,35 +168,11 @@ const menuItems = computed(() => {
   const color = twoToneColor.value;
   const res: MenuItem[] = [];
 
-  // Official portal link
-  res.push({
-    key: "official-portal",
-    label: h(
-      "a",
-      { href: "https://www.itestu.cn", target: "_blank", rel: "noreferrer" },
-      [h(HomeOutlined), " 返回开轩官网"]
-    ),
-  });
-
-  // Product entries
-  res.push({
-    key: "kx-products",
-    label: "🚀 产品入口",
-    children: [
-      { key: "kx-memora", label: h("a", { href: "https://m.itestu.cn", target: "_blank", rel: "noreferrer" }, "🧠 Memora") },
-      { key: "kx-acc", label: h("a", { href: "https://acc.itestu.cn", target: "_blank", rel: "noreferrer" }, "🤖 控制台") },
-      { key: "kx-docs", label: h("a", { href: "https://docs.itestu.cn", target: "_blank", rel: "noreferrer" }, "📄 文档工具") },
-      { key: "kx-finance", label: h("a", { href: "https://finance.itestu.cn", target: "_blank", rel: "noreferrer" }, "💹 股票推荐") },
-      { key: "kx-trendaradar", label: h("a", { href: "https://trendaradar.itestu.cn", target: "_blank", rel: "noreferrer" }, "📰 消息雷达") },
-      { key: "kx-auth", label: h("a", { href: "https://auth.itestu.cn", target: "_blank", rel: "noreferrer" }, "🔐 账户中心") },
-    ],
-  });
-
   // Home
   res.push({
     key: "/home",
     label: t("general.Home"),
-    icon: () => h(HomeTwoTone, { twoToneColor: color }),
+    icon: () => h(HomeOutlined, { style: { color } }),
     children: [
       { key: "/", label: h("router-link", { to: "/" }, () => t("general.Dashboard")) },
       { key: "/shortcuts", label: h("router-link", { to: "/shortcuts" }, () => t("general.Shortcuts")) },
@@ -208,7 +184,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/orgs",
     label: t("general.User Management"),
-    icon: () => h(AppstoreTwoTone, { twoToneColor: color }),
+    icon: () => h(AppstoreOutlined, { style: { color } }),
     children: [
       { key: "/organizations", label: h("router-link", { to: "/organizations" }, () => t("general.Organizations")) },
       { key: "/groups", label: h("router-link", { to: "/groups" }, () => t("general.Groups")) },
@@ -221,7 +197,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/identity",
     label: t("general.Identity"),
-    icon: () => h(LockTwoTone, { twoToneColor: color }),
+    icon: () => h(LockOutlined, { style: { color } }),
     children: [
       { key: "/applications", label: h("router-link", { to: "/applications" }, () => t("general.Applications")) },
       { key: "/providers", label: h("router-link", { to: "/providers" }, () => t("application.Providers")) },
@@ -247,7 +223,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/auth",
     label: t("general.Authorization"),
-    icon: () => h(SafetyCertificateTwoTone, { twoToneColor: color }),
+    icon: () => h(SafetyCertificateOutlined, { style: { color } }),
     children: authChildren,
   });
 
@@ -255,7 +231,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/gateway",
     label: t("general.Gateway"),
-    icon: () => h(CheckCircleTwoTone, { twoToneColor: color }),
+    icon: () => h(CheckCircleOutlined, { style: { color } }),
     children: [
       { key: "/sites", label: h("router-link", { to: "/sites" }, () => t("general.Sites")) },
       { key: "/certs", label: h("router-link", { to: "/certs" }, () => t("general.Certs")) },
@@ -267,7 +243,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/logs",
     label: t("general.Logging & Auditing"),
-    icon: () => h(WalletTwoTone, { twoToneColor: color }),
+    icon: () => h(WalletOutlined, { style: { color } }),
     children: [
       { key: "/sessions", label: h("router-link", { to: "/sessions" }, () => t("general.Sessions")) },
       { key: "/records", label: h("router-link", { to: "/records" }, () => t("general.Records")) },
@@ -280,7 +256,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/business",
     label: t("general.Business & Payments"),
-    icon: () => h(DollarTwoTone, { twoToneColor: color }),
+    icon: () => h(DollarOutlined, { style: { color } }),
     children: [
       { key: "/product-store", label: h("router-link", { to: "/product-store" }, () => t("general.Product Store")) },
       { key: "/products", label: h("router-link", { to: "/products" }, () => t("general.Products")) },
@@ -314,7 +290,7 @@ const menuItems = computed(() => {
   res.push({
     key: "/admin",
     label: t("general.Admin"),
-    icon: () => h(SettingTwoTone, { twoToneColor: color }),
+    icon: () => h(SettingOutlined, { style: { color } }),
     children: adminChildren,
   });
 
