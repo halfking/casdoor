@@ -70,8 +70,8 @@ async function loadAddressOptions() {
   if (!url) return;
   const addressUrl = url.split('|')[0];
   try {
-    const data = await getAddressOptions(addressUrl);
-    addressOptions.value = data ?? [];
+    const res = await getAddressOptions(addressUrl);
+    addressOptions.value = (res.data as any[]) ?? [];
   } catch { /* ignore */ }
 }
 
@@ -81,8 +81,8 @@ async function loadAffiliationOptions() {
   const affiliationUrl = url.split('|')[1];
   const code = props.user.address[props.user.address.length - 1];
   try {
-    const data = await getAffiliationOptions(affiliationUrl, code as string);
-    affiliationOptions.value = data ?? [];
+    const res = await getAffiliationOptions(affiliationUrl, code as string);
+    affiliationOptions.value = (res.data as any[]) ?? [];
   } catch { /* ignore */ }
 }
 

@@ -154,7 +154,8 @@ function onTokenChange(token: string) {
 }
 
 async function loadCaptcha() {
-  const res = await getCaptcha(props.owner, props.name, props.isCurrentProvider);
+  const resp = await getCaptcha(props.owner, props.name, props.isCurrentProvider);
+  const res = resp as any;
   if (res.type === "none") {
     handleOk();
   } else if (res.type === "Default") {

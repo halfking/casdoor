@@ -32,7 +32,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const selected = ref(props.modelValue);
-const countryCodes = ref(getCountryCodeData("") ?? []);
+const countryCodes = ref(getCountryCodeData() ?? []);
 
 watch(
   () => props.modelValue,

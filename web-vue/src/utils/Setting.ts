@@ -93,7 +93,7 @@ export function getLanguageText(text: string): string {
 /* ───────── Provider visibility ───────── */
 
 export function isProviderVisible(providerItem: {
-  provider?: { category?: string; type?: string };
+  provider?: { category?: string; type?: string } | null;
 }): boolean {
   if (!providerItem?.provider) return false;
   const cat = providerItem.provider.category;
@@ -104,7 +104,7 @@ export function isProviderVisible(providerItem: {
 
 export function isProviderVisibleForSignUp(providerItem: {
   canSignUp?: boolean;
-  provider?: { category?: string; type?: string };
+  provider?: { category?: string; type?: string } | null;
 }): boolean {
   if (providerItem.canSignUp === false) return false;
   return isProviderVisible(providerItem);
@@ -112,7 +112,7 @@ export function isProviderVisibleForSignUp(providerItem: {
 
 export function isProviderVisibleForSignIn(providerItem: {
   canSignIn?: boolean;
-  provider?: { category?: string; type?: string };
+  provider?: { category?: string; type?: string } | null;
 }): boolean {
   if (providerItem.canSignIn === false) return false;
   return isProviderVisible(providerItem);
@@ -120,7 +120,7 @@ export function isProviderVisibleForSignIn(providerItem: {
 
 export function isProviderPrompted(providerItem: {
   prompted?: boolean;
-  provider?: { category?: string; type?: string };
+  provider?: { category?: string; type?: string } | null;
 }): boolean {
   return !!providerItem.prompted && isProviderVisible(providerItem);
 }
@@ -240,7 +240,7 @@ function isAffiliationAnswered(user: User | null, application: Application | nul
   return user.affiliation !== "";
 }
 
-function isProviderItemAnswered(user: User | null, providerItem: { provider?: { type?: string } }): boolean {
+function isProviderItemAnswered(user: User | null, providerItem: { provider?: { type?: string } | null }): boolean {
   if (!user) return false;
   const pType = providerItem.provider?.type?.toLowerCase();
   if (!pType) return false;
@@ -313,7 +313,7 @@ export function getProviderLogoURL(provider: {
 
 /* ───────── Theme ───────── */
 
-export function isDarkTheme(themeAlgorithm: string[]): boolean {
+export function isDarkTheme(themeAlgorithm: string[] = []): boolean {
   return themeAlgorithm.includes("dark");
 }
 

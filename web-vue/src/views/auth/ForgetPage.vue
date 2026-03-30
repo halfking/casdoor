@@ -256,13 +256,14 @@ async function onStep1Finish() {
       showMessage("error", res.msg);
       return;
     }
-    const p = res.data.phone ?? "";
-    const e = res.data.email ?? "";
+    const resData = res.data as any;
+    const p = resData.phone ?? "";
+    const e = resData.email ?? "";
     if (!p && !e) {
       showMessage("error", t("general:No verification method"));
       return;
     }
-    userName.value = res.data.name;
+    userName.value = resData.name;
     phone.value = p;
     email.value = e;
 

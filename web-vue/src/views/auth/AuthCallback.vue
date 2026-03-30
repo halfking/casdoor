@@ -130,7 +130,7 @@ function handleOAuthLoginResult(
   const signinUrl = localStorage.getItem("signinUrl");
   const responseTypes = responseType.split(" ");
 
-  const mfaResult = Setting.checkLoginMfa(res as Setting.LoginResponse);
+  const mfaResult = Setting.checkLoginMfa(res as unknown as Setting.LoginResponse);
 
   if (mfaResult.action === "mfa") {
     // TODO: Navigate to MFA verification page
@@ -332,7 +332,7 @@ onMounted(async () => {
     if (getResponseType() === "cas") {
       const res = await loginCas(body, { service: casService });
       if (res.status === "ok") {
-        handleCasLoginResult(res, casService);
+        handleCasLoginResult(res as unknown as Record<string, unknown>, casService);
       } else {
         Setting.showMessage("error", `${t("application.Failed to sign in")}: ${res.msg}`);
         errorMsg.value = res.msg;
@@ -354,7 +354,7 @@ onMounted(async () => {
     } : undefined);
 
     if (res.status === "ok") {
-      handleOAuthLoginResult(res, innerParams, queryString, applicationName, getResponseType());
+      handleOAuthLoginResult(res as unknown as Record<string, unknown>, innerParams, queryString, applicationName, getResponseType());
     } else {
       errorMsg.value = res.msg;
     }

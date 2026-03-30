@@ -82,10 +82,10 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import type { Application, User } from '../api/types';
-import { getApplication } from '../api/modules/application';
-import { getUser, updateUser } from '../api/modules/user';
-import { logout } from '../api/modules/auth';
+import type { Application, User, ProviderItem } from '../../api/types';
+import { getApplication } from '../../api/modules/application';
+import { getUser, updateUser } from '../../api/modules/user';
+import { logout } from '../../api/modules/auth';
 import {
   showMessage,
   redirectToLoginPage,
@@ -95,10 +95,10 @@ import {
   isSignupItemPrompted,
   isPromptAnswered,
   hasPromptPage,
-} from '../utils/Setting';
-import AffiliationSelect from '../components/AffiliationSelect.vue';
-import OAuthWidget from '../components/OAuthWidget.vue';
-import RegionSelect from '../components/RegionSelect.vue';
+} from '../../utils/Setting';
+import AffiliationSelect from '../../components/AffiliationSelect.vue';
+import OAuthWidget from '../../components/OAuthWidget.vue';
+import RegionSelect from '../../components/RegionSelect.vue';
 
 interface PromptStep {
   name: string;
@@ -129,12 +129,12 @@ const finished = ref(false);
 const account = computed(() => props.account);
 
 const promptedProviders = computed(() =>
-  application.value?.providers?.filter((p) => isProviderPrompted(p)) ?? []
+  application.value?.providers?.filter((p: ProviderItem) => isProviderPrompted(p)) ?? []
 );
 
 const promptedCountryItems = computed(() =>
   application.value?.signupItems
-    ?.filter((s) => isSignupItemPrompted(s) && s.name === 'Country/Region') ?? []
+    ?.filter((s: any) => isSignupItemPrompted(s) && s.name === 'Country/Region') ?? []
 );
 
 function initSteps(u: User, app: Application) {
