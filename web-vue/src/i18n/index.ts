@@ -2,7 +2,8 @@ import { createI18n } from "vue-i18n";
 import * as Conf from "../Conf";
 import en from "../../../web/src/locales/en/data.json";
 
-// Flatten one level: { account: { k: v }, ... } → { "account.k": v, ... }
+// Flatten one level: { account: { k: v }, ... } → { "account:k": v, "account.k": v, ... }
+// Registers both ":" (i18next convention) and "." separators for compatibility.
 function flattenNamespaces(data: Record<string, Record<string, string>>): Record<string, string> {
   const flat: Record<string, string> = {};
   for (const ns of Object.keys(data)) {
@@ -10,6 +11,7 @@ function flattenNamespaces(data: Record<string, Record<string, string>>): Record
     if (typeof entries === "object" && entries !== null) {
       for (const key of Object.keys(entries)) {
         flat[`${ns}:${key}`] = entries[key];
+        flat[`${ns}.${key}`] = entries[key];
       }
     }
   }
@@ -49,7 +51,9 @@ const i18n = createI18n<false>({
     if (import.meta.env.DEV) {
       console.warn(`[i18n] missing: ${key}`);
     }
-    return key;
+    // Strip namespace prefix (e.g. "login:Back" → "Back", "signup.Username" → "Username") like i18next does
+    const idx = key.indexOf(":") >= 0 ? key.indexOf(":") : key.indexOf(".");
+    return idx >= 0 ? key.slice(idx + 1) : key;
   },
 });
 
