@@ -1,7 +1,7 @@
 <template>
   <div class="agreement-modal">
     <a-modal
-      v-model:open="visible"
+      :open="visible"
       :title="t('login:Terms of Use')"
       :width="600"
       :footer="null"

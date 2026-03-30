@@ -57,11 +57,7 @@ export function encryptByPasswordObfuscator(
     return ["", err];
   }
 
-  const keyHex = CryptoJS.enc.Hex.parse(key.repeat(type === "DES" ? 1 : 1));
-  const keyWords =
-    type === "DES"
-      ? CryptoJS.enc.Hex.parse(key)
-      : CryptoJS.enc.Hex.parse(key);
+  const keyWords = CryptoJS.enc.Hex.parse(key);
 
   const ivLen = type === "DES" ? 8 : 16;
   const iv = CryptoJS.lib.WordArray.random(ivLen);

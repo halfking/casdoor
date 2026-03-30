@@ -450,7 +450,7 @@ export function getAuthUrl(
       return `${provider.domain}/login/oauth/authorize?client_id=${provider.clientId}&redirect_uri=${redirectUri}&state=${state}&response_type=code&scope=${scope}`;
 
     case "Infoflow":
-      return `${endpoint}?appid=${provider.clientId}&redirect_uri=${redirectUri}?state=${state}`;
+      return `${endpoint}?appid=${provider.clientId}&redirect_uri=${redirectUri}&state=${state}`;
 
     case "Apple":
       return `${endpoint}?client_id=${provider.clientId}&redirect_uri=${redirectUri}&state=${state}&response_type=code%20id_token&scope=${scope}&response_mode=form_post`;

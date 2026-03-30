@@ -17,6 +17,12 @@ export function openLink(link: string) {
 }
 
 export function goToLink(link: string) {
+  // Block dangerous URI schemes (javascript:, data:, vbscript:) to prevent XSS
+  const normalized = link.trim().toLowerCase();
+  if (normalized.startsWith("javascript:") || normalized.startsWith("data:") || normalized.startsWith("vbscript:")) {
+    console.warn("[Casdoor] Blocked navigation to dangerous URI:", link);
+    return;
+  }
   window.location.href = link;
 }
 

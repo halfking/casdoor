@@ -23,6 +23,18 @@ defineProps<{
 const formRef = ref<HTMLFormElement | null>(null);
 
 onMounted(() => {
-  formRef.value?.submit();
+  // Validate redirectUrl before auto-submitting to prevent open redirect
+  if (props.redirectUrl) {
+    try {
+      const url = new URL(props.redirectUrl);
+      if (url.protocol === "https:" || url.protocol === "http:") {
+        formRef.value?.submit();
+      } else {
+        console.warn("[Casdoor] Blocked SAML redirect to non-HTTP URL:", props.redirectUrl);
+      }
+    } catch {
+      console.warn("[Casdoor] Invalid SAML redirect URL:", props.redirectUrl);
+    }
+  }
 });
 </script>

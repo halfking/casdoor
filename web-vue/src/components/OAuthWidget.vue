@@ -151,6 +151,7 @@ const profileUrl = computed(() => {
 });
 
 async function handleUnlink() {
+  if (!provider.value?.type) return;
   try {
     const res = await unlink({
       providerType: provider.value.type,

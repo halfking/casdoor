@@ -9,7 +9,7 @@ function flattenNamespaces(data: Record<string, Record<string, string>>): Record
     const entries = data[ns];
     if (typeof entries === "object" && entries !== null) {
       for (const key of Object.keys(entries)) {
-        flat[`${ns}.${key}`] = entries[key];
+        flat[`${ns}:${key}`] = entries[key];
       }
     }
   }

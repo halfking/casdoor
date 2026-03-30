@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { onMounted, onBeforeUnmount, watch } from "vue";
 
 const props = defineProps<{
   captchaType: string;
@@ -16,6 +16,19 @@ const props = defineProps<{
 
 const emit = defineEmits<{ change: [token: string] }>();
 
+const activeTimers: ReturnType<typeof setInterval>[] = [];
+
+function clearActiveTimers() {
+  activeTimers.forEach((id) => clearInterval(id));
+  activeTimers.length = 0;
+}
+
+function trackInterval(fn: () => void, ms: number): ReturnType<typeof setInterval> {
+  const id = setInterval(fn, ms);
+  activeTimers.push(id);
+  return id;
+}
+
 function loadScript(src: string) {
   const tag = document.createElement("script");
   tag.async = false;
@@ -24,13 +37,14 @@ function loadScript(src: string) {
 }
 
 function initWidget() {
+  clearActiveTimers();
   const { captchaType, siteKey, clientSecret2, clientId2 } = props;
   const onChange = (token: string) => emit("change", token);
 
   switch (captchaType) {
     case "reCAPTCHA":
     case "reCAPTCHA v2": {
-      const reTimer = setInterval(() => {
+      const reTimer = trackInterval(() => {
         if (!(window as any).grecaptcha) loadScript("https://recaptcha.net/recaptcha/api.js");
         if ((window as any).grecaptcha?.render) {
           (window as any).grecaptcha.render("captcha", { sitekey: siteKey, callback: onChange });
@@ -40,7 +54,7 @@ function initWidget() {
       break;
     }
     case "reCAPTCHA v3": {
-      const reTimer = setInterval(() => {
+      const reTimer = trackInterval(() => {
         if (!(window as any).grecaptcha) loadScript(`https://recaptcha.net/recaptcha/api.js?render=${siteKey}`);
         if ((window as any).grecaptcha?.render) {
           const clientId = (window as any).grecaptcha.render("captcha", {
@@ -68,7 +82,7 @@ function initWidget() {
       break;
     }
     case "hCaptcha": {
-      const hTimer = setInterval(() => {
+      const hTimer = trackInterval(() => {
         if (!(window as any).hcaptcha) loadScript("https://js.hcaptcha.com/1/api.js");
         if ((window as any).hcaptcha?.render) {
           (window as any).hcaptcha.render("captcha", { sitekey: siteKey, callback: onChange });
@@ -79,7 +93,7 @@ function initWidget() {
     }
     case "Aliyun Captcha": {
       (window as any).AliyunCaptchaConfig = { region: "cn", prefix: clientSecret2 };
-      const aTimer = setInterval(() => {
+      const aTimer = trackInterval(() => {
         if (!(window as any).initAliyunCaptcha) {
           loadScript("https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js");
         }
@@ -102,7 +116,7 @@ function initWidget() {
     }
     case "GEETEST": {
       let getLock = false;
-      const gTimer = setInterval(() => {
+      const gTimer = trackInterval(() => {
         if (!(window as any).initGeetest4) loadScript("https://static.geetest.com/v4/gt4.js");
         if ((window as any).initGeetest4 && siteKey && !getLock) {
           (window as any).initGeetest4(
@@ -126,7 +140,7 @@ function initWidget() {
       break;
     }
     case "Cloudflare Turnstile": {
-      const tTimer = setInterval(() => {
+      const tTimer = trackInterval(() => {
         if (!(window as any).turnstile) {
           loadScript("https://challenges.cloudflare.com/turnstile/v0/api.js");
         }
@@ -141,5 +155,6 @@ function initWidget() {
 }
 
 onMounted(() => initWidget());
+onBeforeUnmount(() => clearActiveTimers());
 watch(() => [props.captchaType, props.subType, props.siteKey, props.clientSecret, props.clientId2, props.clientSecret2], () => initWidget());
 </script>

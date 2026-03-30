@@ -387,9 +387,12 @@ export function useLogin(props: {
     // noRedirect mode for embedded
     const oAuthParams = Provider.getOAuthGetParameters();
     if (oAuthParams?.noRedirect === "true") {
+      const targetOrigin = oAuthParams.redirectUri
+        ? new URL(oAuthParams.redirectUri).origin
+        : window.location.origin;
       window.parent.postMessage(
         { tag: "Casdoor", type: "LoginOk", data: res },
-        "*"
+        targetOrigin
       );
       return;
     }

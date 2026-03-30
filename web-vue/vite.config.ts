@@ -39,6 +39,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     rollupOptions: {
+      external: ['/kxmemory-icon.svg'],
       output: {
         manualChunks: {
           vendor: ['vue', 'vue-router', 'pinia'],

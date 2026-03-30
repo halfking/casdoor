@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
 // ── Auth / Entry pages (eager-loaded placeholder views for now) ──
 const entryRoutes: RouteRecordRaw[] = [
@@ -115,10 +116,11 @@ const router = createRouter({
 
 // Navigation guard
 router.beforeEach((to) => {
-  // Pages requiring auth will be guarded once auth store is wired up
-  // For now, just pass through (placeholder implementation)
   if (to.meta.requiresAuth) {
-    // TODO: check useAuthStore().isAuthenticated and redirect to /login
+    const authStore = useAuthStore();
+    if (!authStore.isAuthenticated) {
+      return { path: "/login", query: { redirect: to.fullPath } };
+    }
   }
   return true;
 });

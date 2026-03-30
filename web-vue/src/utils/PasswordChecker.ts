@@ -1,4 +1,4 @@
-import { useI18n } from "vue-i18n";
+// Password complexity checker — ported from Casdoor web
 
 const checkers: Record<string, (password: string, t: (key: string) => string) => string> = {
   AtLeast6: (password, t) =>
