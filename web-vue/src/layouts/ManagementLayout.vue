@@ -118,7 +118,7 @@ const logoSrc = computed(() => {
   const isDark = appStore.themeAlgorithm.includes("dark");
   if (isDark && org?.logoDark) return String(org.logoDark);
   if (org?.logo) return String(org.logo);
-  return isDark ? "/logo-dark.png" : "/logo.png";
+  return isDark ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
 });
 
 // Current path → selected menu key
