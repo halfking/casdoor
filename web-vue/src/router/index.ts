@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { getAccount } from "@/api/modules/auth";
 
 // ── Auth / Entry pages (eager-loaded placeholder views for now) ──
 const entryRoutes: RouteRecordRaw[] = [
@@ -114,12 +115,40 @@ const router = createRouter({
   routes: [...entryRoutes, ...managementRoutes],
 });
 
-// Navigation guard
-router.beforeEach((to) => {
+// Navigation guard — restore auth state from session cookie on first protected navigation
+let fetchingAccount: Promise<boolean> | null = null;
+
+router.beforeEach(async (to) => {
   if (to.meta.requiresAuth) {
     const authStore = useAuthStore();
     if (!authStore.isAuthenticated) {
-      return { path: "/login", query: { redirect: to.fullPath } };
+      // Deduplicate concurrent getAccount calls
+      if (!fetchingAccount) {
+        fetchingAccount = getAccount("")
+          .then((res) => {
+            if (res.status === "ok" && res.data) {
+              const acc = res.data as Record<string, unknown>;
+              if (res.data2) {
+                acc.organization = res.data2;
+              }
+              authStore.setAccount(acc as import("@/stores/auth").Account);
+              if (typeof acc.accessToken === "string") {
+                authStore.setAccessToken(acc.accessToken);
+              }
+              return true;
+            }
+            return false;
+          })
+          .catch(() => false)
+          .finally(() => {
+            fetchingAccount = null;
+          });
+      }
+
+      const ok = await fetchingAccount;
+      if (!ok) {
+        return { path: "/login", query: { redirect: to.fullPath } };
+      }
     }
   }
   return true;

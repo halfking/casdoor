@@ -44,3 +44,4 @@ server
 
 # Vue frontend dependencies
 web-vue/node_modules/
+.playwright-mcp/

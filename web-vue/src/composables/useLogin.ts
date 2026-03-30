@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import * as Setting from "@/utils/Setting";
 import * as Provider from "@/utils/Provider";
+import { DefaultApplication } from "@/Conf";
 import { encryptByPasswordObfuscator } from "@/utils/Obfuscator";
 import * as AuthApi from "@/api/modules/auth";
 import { getApplication, getDefaultApplication } from "@/api/modules/application";
@@ -166,8 +167,8 @@ export function useLogin(props: {
           if (appName) {
             res = await getApplication("admin", appName);
           } else {
-            msg.value = t("login:Unknown application");
-            return;
+            // Self-login — load the built-in application
+            res = await getApplication("admin", DefaultApplication);
           }
         }
       }
@@ -266,11 +267,15 @@ export function useLogin(props: {
   /* ── Build login values ── */
 
   function populateOauthValues(values: Record<string, unknown>) {
-    const oAuthParams = Provider.getOAuthGetParameters();
-    if (!oAuthParams) return;
-    values["type"] = type.value || oAuthParams.type;
+    const app = applicationObj.value;
+    if (app?.organization) {
+      values["organization"] = app.organization;
+    }
 
-    if (oAuthParams.samlRequest && oAuthParams.samlRequest !== "") {
+    const oAuthParams = Provider.getOAuthGetParameters();
+    values["type"] = oAuthParams?.type ?? type.value;
+
+    if (oAuthParams?.samlRequest && oAuthParams.samlRequest !== "") {
       values["samlRequest"] = oAuthParams.samlRequest;
       values["relayState"] = oAuthParams.relayState;
       values["type"] = "saml";
@@ -338,7 +343,13 @@ export function useLogin(props: {
     }
 
     if (responseType === "login") {
-      postCodeLoginAction(res);
+      if (res.data3) {
+        sessionStorage.setItem("signinUrl", window.location.pathname + window.location.search);
+        Setting.goToLink(`/forget/${applicationName.value}`);
+        return;
+      }
+      Setting.showMessage("success", t("login:Successfully logged in"));
+      Setting.goToLink("/");
     } else if (responseType === "code") {
       postCodeLoginAction(res);
     } else if (responseType === "token" || responseType === "id_token") {
