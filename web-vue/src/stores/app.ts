@@ -6,6 +6,12 @@ import type { CasdoorThemeData } from "../styles/antd-theme";
 export const useAppStore = defineStore("app", () => {
   const serverUrl = ref("");
   const themeData = ref<CasdoorThemeData>({ ...Conf.ThemeDefault });
+  const SHARED_THEME_MAP: Record<string, "light" | "dark"> = {
+    daylight: "light",
+    light: "light",
+    night: "dark",
+    dark: "dark",
+  };
 
   // Theme algorithm names: ["default"] or ["dark"] or ["default","compact"] etc.
   const themeAlgorithm = ref<string[]>(getStoredThemeAlgorithm());
@@ -29,19 +35,20 @@ export const useAppStore = defineStore("app", () => {
 
     // Sync data-theme attribute
     const isDarkTheme = algorithms.includes("dark");
-    document.documentElement.setAttribute("data-theme", isDarkTheme ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", isDarkTheme ? "night" : "daylight");
 
     // Cross-app sync
-    localStorage.setItem("kx-ui-theme", isDarkTheme ? "dark" : "light");
+    localStorage.setItem("kx-ui-theme", isDarkTheme ? "night" : "daylight");
   }
 
   function syncKxTheme() {
     try {
       const kxTheme = localStorage.getItem("kx-ui-theme");
-      if (kxTheme === "dark" && !themeAlgorithm.value.includes("dark")) {
+      const normalizedTheme = SHARED_THEME_MAP[kxTheme ?? ""];
+      if (normalizedTheme === "dark" && !themeAlgorithm.value.includes("dark")) {
         const next = [...themeAlgorithm.value.filter((a) => a !== "default"), "dark"];
         setThemeAlgorithm(next);
-      } else if (kxTheme === "light" && themeAlgorithm.value.includes("dark")) {
+      } else if (normalizedTheme === "light" && themeAlgorithm.value.includes("dark")) {
         const next = themeAlgorithm.value.filter((a) => a !== "dark");
         if (!next.includes("default")) next.push("default");
         setThemeAlgorithm(next);
@@ -63,7 +70,7 @@ export const useAppStore = defineStore("app", () => {
   // Initialize data-theme attribute
   document.documentElement.setAttribute(
     "data-theme",
-    themeAlgorithm.value.includes("dark") ? "dark" : "light"
+    themeAlgorithm.value.includes("dark") ? "night" : "daylight"
   );
 
   return {

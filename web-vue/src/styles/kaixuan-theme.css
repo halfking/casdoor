@@ -1,3 +1,5 @@
+@import '../../../../../shared/styles/kx-tokens.css';
+
 /**
  * 开轩平台 — 统一设计令牌 (Design Tokens)
  * kaixuan-theme.css  (official-portal)
@@ -6,7 +8,9 @@
  *   v1.0  2026-03-14  初始版本
  *   v1.1  2026-03-15  与 ACC kaixuan-tokens.css 对齐：补充语义状态色、统一 bg-page 值
  */
-:root {
+:root,
+:root[data-theme="daylight"],
+:root[data-theme="light"] {
   /* ── 品牌主色 ── */
   --kx-blue:            #1677ff;
   --kx-blue-hover:      #4096ff;
@@ -55,6 +59,7 @@
   --kx-font:            "PingFang SC", "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
 }
 
+:root[data-theme="night"],
 :root[data-theme="dark"] {
   --kx-blue:            #3b89ff;
   --kx-blue-hover:      #5a9fff;
