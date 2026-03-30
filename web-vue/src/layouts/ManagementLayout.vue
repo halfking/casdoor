@@ -8,7 +8,19 @@
       :hide-portal-nav="true"
       @login="handleLogin"
       @logout="handleLogout"
-    />
+    >
+      <template #status-actions>
+        <LanguageSelect />
+        <button
+          type="button"
+          class="kx-shared-navbar__btn-link kx-shared-navbar__theme-toggle"
+          :title="appStore.isDark ? '浅色模式' : '暗色模式'"
+          @click="toggleTheme"
+        >
+          <span class="kx-shared-navbar__theme-toggle-label">{{ appStore.isDark ? '浅色' : '暗色' }}</span>
+        </button>
+      </template>
+    </SharedNavbar>
 
     <a-layout>
       <!-- Sidebar (desktop) -->
@@ -18,7 +30,7 @@
         :width="220"
         :collapsed-width="64"
         collapsible
-        theme="light"
+        :theme="siderTheme"
         class="management-sider"
       >
         <!-- Logo -->
@@ -91,6 +103,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@kx/shared/components/SharedNavbar.vue";
+import LanguageSelect from "@/components/LanguageSelect.vue";
 import { useAuthStore } from "@/stores/auth";
 import { useAppStore } from "@/stores/app";
 import * as Conf from "@/Conf";
@@ -104,6 +117,21 @@ const appStore = useAppStore();
 const collapsed = ref(false);
 const drawerVisible = ref(false);
 const isMobile = ref(false);
+
+// Sidebar theme follows dark mode
+const siderTheme = computed(() => (appStore.isDark ? "dark" : "light"));
+
+// Theme toggle
+function toggleTheme() {
+  if (appStore.isDark) {
+    const next = appStore.themeAlgorithm.filter((a: string) => a !== "dark");
+    if (!next.includes("default")) next.push("default");
+    appStore.setThemeAlgorithm(next);
+  } else {
+    const next = [...appStore.themeAlgorithm.filter((a: string) => a !== "default"), "dark"];
+    appStore.setThemeAlgorithm(next);
+  }
+}
 
 // Detect mobile
 function checkMobile() {
@@ -174,9 +202,9 @@ const menuItems = computed(() => {
     label: t("general.Home"),
     icon: () => h(HomeOutlined, { style: { color } }),
     children: [
-      { key: "/", label: h("router-link", { to: "/" }, () => t("general.Dashboard")) },
-      { key: "/shortcuts", label: h("router-link", { to: "/shortcuts" }, () => t("general.Shortcuts")) },
-      { key: "/apps", label: h("router-link", { to: "/apps" }, () => t("general.Apps")) },
+      { key: "/", label: t("general.Dashboard") },
+      { key: "/shortcuts", label: t("general.Shortcuts") },
+      { key: "/apps", label: t("general.Apps") },
     ],
   });
 
@@ -186,10 +214,10 @@ const menuItems = computed(() => {
     label: t("general.User Management"),
     icon: () => h(AppstoreOutlined, { style: { color } }),
     children: [
-      { key: "/organizations", label: h("router-link", { to: "/organizations" }, () => t("general.Organizations")) },
-      { key: "/groups", label: h("router-link", { to: "/groups" }, () => t("general.Groups")) },
-      { key: "/users", label: h("router-link", { to: "/users" }, () => t("general.Users")) },
-      { key: "/invitations", label: h("router-link", { to: "/invitations" }, () => t("general.Invitations")) },
+      { key: "/organizations", label: t("general.Organizations") },
+      { key: "/groups", label: t("general.Groups") },
+      { key: "/users", label: t("general.Users") },
+      { key: "/invitations", label: t("general.Invitations") },
     ],
   });
 
@@ -199,25 +227,25 @@ const menuItems = computed(() => {
     label: t("general.Identity"),
     icon: () => h(LockOutlined, { style: { color } }),
     children: [
-      { key: "/applications", label: h("router-link", { to: "/applications" }, () => t("general.Applications")) },
-      { key: "/providers", label: h("router-link", { to: "/providers" }, () => t("application.Providers")) },
-      { key: "/resources", label: h("router-link", { to: "/resources" }, () => t("general.Resources")) },
-      { key: "/certs", label: h("router-link", { to: "/certs" }, () => t("general.Certs")) },
-      { key: "/sites", label: h("router-link", { to: "/sites" }, () => t("general.Sites")) },
-      { key: "/rules", label: h("router-link", { to: "/rules" }, () => t("general.Rules")) },
+      { key: "/applications", label: t("general.Applications") },
+      { key: "/providers", label: t("application.Providers") },
+      { key: "/resources", label: t("general.Resources") },
+      { key: "/certs", label: t("general.Certs") },
+      { key: "/sites", label: t("general.Sites") },
+      { key: "/rules", label: t("general.Rules") },
     ],
   });
 
   // Authorization
   const authChildren: MenuItem[] = [
-    { key: "/roles", label: h("router-link", { to: "/roles" }, () => t("general.Roles")) },
-    { key: "/permissions", label: h("router-link", { to: "/permissions" }, () => t("general.Permissions")) },
+    { key: "/roles", label: t("general.Roles") },
+    { key: "/permissions", label: t("general.Permissions") },
   ];
   if (authStore.isAdmin) {
     authChildren.push(
-      { key: "/models", label: h("router-link", { to: "/models" }, () => t("general.Models")) },
-      { key: "/adapters", label: h("router-link", { to: "/adapters" }, () => t("general.Adapters")) },
-      { key: "/enforcers", label: h("router-link", { to: "/enforcers" }, () => t("general.Enforcers")) },
+      { key: "/models", label: t("general.Models") },
+      { key: "/adapters", label: t("general.Adapters") },
+      { key: "/enforcers", label: t("general.Enforcers") },
     );
   }
   res.push({
@@ -233,9 +261,9 @@ const menuItems = computed(() => {
     label: t("general.Gateway"),
     icon: () => h(CheckCircleOutlined, { style: { color } }),
     children: [
-      { key: "/sites", label: h("router-link", { to: "/sites" }, () => t("general.Sites")) },
-      { key: "/certs", label: h("router-link", { to: "/certs" }, () => t("general.Certs")) },
-      { key: "/rules", label: h("router-link", { to: "/rules" }, () => t("general.Rules")) },
+      { key: "/sites", label: t("general.Sites") },
+      { key: "/certs", label: t("general.Certs") },
+      { key: "/rules", label: t("general.Rules") },
     ],
   });
 
@@ -245,10 +273,10 @@ const menuItems = computed(() => {
     label: t("general.Logging & Auditing"),
     icon: () => h(WalletOutlined, { style: { color } }),
     children: [
-      { key: "/sessions", label: h("router-link", { to: "/sessions" }, () => t("general.Sessions")) },
-      { key: "/records", label: h("router-link", { to: "/records" }, () => t("general.Records")) },
-      { key: "/tokens", label: h("router-link", { to: "/tokens" }, () => t("general.Tokens")) },
-      { key: "/verifications", label: h("router-link", { to: "/verifications" }, () => t("general.Verifications")) },
+      { key: "/sessions", label: t("general.Sessions") },
+      { key: "/records", label: t("general.Records") },
+      { key: "/tokens", label: t("general.Tokens") },
+      { key: "/verifications", label: t("general.Verifications") },
     ],
   });
 
@@ -258,28 +286,28 @@ const menuItems = computed(() => {
     label: t("general.Business & Payments"),
     icon: () => h(DollarOutlined, { style: { color } }),
     children: [
-      { key: "/product-store", label: h("router-link", { to: "/product-store" }, () => t("general.Product Store")) },
-      { key: "/products", label: h("router-link", { to: "/products" }, () => t("general.Products")) },
-      { key: "/cart", label: h("router-link", { to: "/cart" }, () => t("general.Cart")) },
-      { key: "/orders", label: h("router-link", { to: "/orders" }, () => t("general.Orders")) },
-      { key: "/payments", label: h("router-link", { to: "/payments" }, () => t("general.Payments")) },
-      { key: "/plans", label: h("router-link", { to: "/plans" }, () => t("general.Plans")) },
-      { key: "/pricings", label: h("router-link", { to: "/pricings" }, () => t("general.Pricings")) },
-      { key: "/subscriptions", label: h("router-link", { to: "/subscriptions" }, () => t("general.Subscriptions")) },
-      { key: "/transactions", label: h("router-link", { to: "/transactions" }, () => t("general.Transactions")) },
+      { key: "/product-store", label: t("general.Product Store") },
+      { key: "/products", label: t("general.Products") },
+      { key: "/cart", label: t("general.Cart") },
+      { key: "/orders", label: t("general.Orders") },
+      { key: "/payments", label: t("general.Payments") },
+      { key: "/plans", label: t("general.Plans") },
+      { key: "/pricings", label: t("general.Pricings") },
+      { key: "/subscriptions", label: t("general.Subscriptions") },
+      { key: "/transactions", label: t("general.Transactions") },
     ],
   });
 
   // Admin
   const adminChildren: MenuItem[] = [];
   if (authStore.isAdmin) {
-    adminChildren.push({ key: "/sysinfo", label: h("router-link", { to: "/sysinfo" }, () => t("general.System Info")) });
+    adminChildren.push({ key: "/sysinfo", label: t("general.System Info") });
   }
   adminChildren.push(
-    { key: "/forms", label: h("router-link", { to: "/forms" }, () => t("general.Forms")) },
-    { key: "/syncers", label: h("router-link", { to: "/syncers" }, () => t("general.Syncers")) },
-    { key: "/webhooks", label: h("router-link", { to: "/webhooks" }, () => t("general.Webhooks")) },
-    { key: "/tickets", label: h("router-link", { to: "/tickets" }, () => t("general.Tickets")) },
+    { key: "/forms", label: t("general.Forms") },
+    { key: "/syncers", label: t("general.Syncers") },
+    { key: "/webhooks", label: t("general.Webhooks") },
+    { key: "/tickets", label: t("general.Tickets") },
   );
   if (authStore.isAdmin) {
     adminChildren.push({
@@ -330,8 +358,11 @@ function maybeFlat(items: MenuItem[]): MenuItem[] {
 }
 
 function handleMenuClick(info: { key: string }) {
-  // External links handled by <a> href; internal by <router-link>
   drawerVisible.value = false;
+  // External links (Swagger) handled by <a> href; internal routes via router.push
+  if (info.key && !info.key.startsWith("http")) {
+    router.push(info.key);
+  }
 }
 
 function handleLogin() {

@@ -1,54 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4b0e9f"/>
-      <stop offset="100%" stop-color="#722ed1"/>
+    <linearGradient id="authGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1677ff"/>
+      <stop offset="100%" stop-color="#0fb37a"/>
     </linearGradient>
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00b96b"/>
-      <stop offset="100%" stop-color="#3b89ff"/>
-    </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
   </defs>
 
-  <!-- 背景圆形 -->
-  <circle cx="100" cy="100" r="100" fill="url(#bgGrad)"/>
+  <!-- 背景圆角矩形 -->
+  <rect x="10" y="10" width="180" height="180" rx="48" fill="url(#authGrad)"/>
 
-  <!-- 外环装饰 -->
-  <circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="1" opacity="0.12"/>
-  <circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="1" opacity="0.08"/>
+  <!-- 盾牌轮廓 -->
+  <path d="M100 40 L145 60 V110 C145 140 100 165 100 165 C100 165 55 140 55 110 V60 Z"
+        fill="none" stroke="white" stroke-width="4" opacity="0.3"/>
 
-  <!-- 中心主节点 -->
-  <circle cx="100" cy="100" r="20" fill="white" opacity="0.95" filter="url(#glow)"/>
+  <!-- 盾牌填充 -->
+  <path d="M100 50 L138 67 V108 C138 133 100 155 100 155 C100 155 62 133 62 108 V67 Z"
+        fill="white" opacity="0.2"/>
 
-  <!-- 6个外围知识节点（六边形分布）-->
-  <circle cx="100" cy="42" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-  <circle cx="151" cy="71" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-  <circle cx="151" cy="129" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-  <circle cx="100" cy="158" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-  <circle cx="49" cy="129" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-  <circle cx="49" cy="71" r="10" fill="url(#accentGrad)" opacity="0.95"/>
-
-  <!-- 斜向小节点 -->
-  <circle cx="134" cy="66" r="6" fill="white" opacity="0.45"/>
-  <circle cx="134" cy="134" r="6" fill="white" opacity="0.45"/>
-  <circle cx="66" cy="66" r="6" fill="white" opacity="0.45"/>
-  <circle cx="66" cy="134" r="6" fill="white" opacity="0.45"/>
-
-  <!-- 连接线（中心 → 外围节点）-->
-  <line x1="100" y1="80" x2="100" y2="52" stroke="white" stroke-width="2" opacity="0.55"/>
-  <line x1="117" y1="91" x2="141" y2="75" stroke="white" stroke-width="2" opacity="0.55"/>
-  <line x1="117" y1="109" x2="141" y2="125" stroke="white" stroke-width="2" opacity="0.55"/>
-  <line x1="100" y1="120" x2="100" y2="148" stroke="white" stroke-width="2" opacity="0.55"/>
-  <line x1="83" y1="109" x2="59" y2="125" stroke="white" stroke-width="2" opacity="0.55"/>
-  <line x1="83" y1="91" x2="59" y2="75" stroke="white" stroke-width="2" opacity="0.55"/>
-
-  <!-- 斜向连接线（更细） -->
-  <line x1="114" y1="86" x2="128" y2="70" stroke="white" stroke-width="1.5" opacity="0.28"/>
-  <line x1="114" y1="114" x2="128" y2="130" stroke="white" stroke-width="1.5" opacity="0.28"/>
-  <line x1="86" y1="86" x2="72" y2="70" stroke="white" stroke-width="1.5" opacity="0.28"/>
-  <line x1="86" y1="114" x2="72" y2="130" stroke="white" stroke-width="1.5" opacity="0.28"/>
+  <!-- 锁孔图标 -->
+  <circle cx="100" cy="95" r="14" fill="white" opacity="0.95"/>
+  <rect x="93" y="105" width="14" height="20" rx="4" fill="white" opacity="0.95"/>
 </svg>
