@@ -225,12 +225,18 @@ const legacyToManagementRouteMap: Record<string, string> = {
   "/tokens": "/management/tokens",
   "/verifications": "/management/verifications",
   "/products": "/management/products",
+  "/product-store": "/product-store",
+  "/cart": "/cart",
+  "/buy": "/buy",
+  "/order-pay": "/order-pay",
   "/payments": "/management/payments",
   "/plans": "/management/plans",
   "/pricings": "/management/pricings",
   "/subscriptions": "/management/subscriptions",
   "/transactions": "/management/transactions",
   "/orders": "/management/orders",
+  "/ldaps": "/management/ldaps",
+  "/ldap": "/management/ldaps",
   "/invitations": "/management/invitations",
   "/adapters": "/management/adapters",
   "/enforcers": "/management/enforcers",
@@ -393,6 +399,7 @@ const menuItems = computed(() => {
     { key: resolveMenuRoute("/syncers"), label: t("general.Syncers") },
     { key: resolveMenuRoute("/webhooks"), label: t("general.Webhooks") },
     { key: resolveMenuRoute("/tickets"), label: t("general.Tickets") },
+    { key: resolveMenuRoute("/ldaps"), label: t("general.LDAP") },
   );
   if (authStore.isAdmin) {
     adminChildren.push({

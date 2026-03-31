@@ -87,6 +87,18 @@ const managementRoutes: RouteRecordRaw[] = [
   // Business
   { path: "/products", redirect: "/management/products" },
   { path: "/products/:organizationName/:productName", redirect: (to) => ({ name: "management-products-edit", params: { owner: to.params.organizationName, name: to.params.productName } }) },
+  { path: "/product-store", component: () => import("@/views/management/ProductStorePage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/cart", component: () => import("@/views/management/CartListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/buy", component: () => import("@/views/management/ProductBuyPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/order-pay", component: () => import("@/views/management/OrderPayPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  // LDAP
+  { path: "/ldap", redirect: "/management/ldaps" },
+  { path: "/management/ldaps", name: "management-ldaps", component: () => import("@/views/management/GenericResourceListPage.vue"), meta: { layout: "management", requiresAuth: true, resourceKey: "ldaps" } },
+  { path: "/management/ldaps/new", name: "management-ldaps-new", component: () => import("@/views/management/GenericResourceEditPage.vue"), meta: { layout: "management", requiresAuth: true, resourceKey: "ldaps" } },
+  { path: "/management/ldaps/:owner/:name", name: "management-ldaps-edit", component: () => import("@/views/management/GenericResourceEditPage.vue"), meta: { layout: "management", requiresAuth: true, resourceKey: "ldaps" } },
+  { path: "/ldap/:organizationName/:ldapId", component: () => import("@/views/management/GenericResourceEditPage.vue"), meta: { layout: "management", requiresAuth: true, resourceKey: "ldaps" } },
+  { path: "/ldap/sync/:organizationName/:ldapId", component: () => import("@/views/management/LdapSyncPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/payments", redirect: "/management/payments" },
   { path: "/payments/:organizationName/:paymentName", redirect: (to) => ({ name: "management-payments-edit", params: { owner: to.params.organizationName, name: to.params.paymentName } }) },
   { path: "/plans", redirect: "/management/plans" },

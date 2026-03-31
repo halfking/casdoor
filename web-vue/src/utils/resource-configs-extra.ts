@@ -28,6 +28,7 @@ import * as TransactionApi from "@/api/modules/transaction";
 import * as UserApi from "@/api/modules/user";
 import * as VerificationApi from "@/api/modules/verification";
 import * as WebhookApi from "@/api/modules/webhook";
+import * as LdapApi from "@/api/modules/ldap";
 import * as SiteApi from "@/api/modules/site";
 import * as RuleApi from "@/api/modules/rule";
 import {
@@ -1529,6 +1530,77 @@ export const extraResourceConfigs: Record<string, ResourceConfig> = {
       { key: "priority", label: "rule:Priority", type: "number" },
       { key: "action", label: "rule:Action", type: "text" },
       { key: "resource", label: "rule:Resource", type: "text" },
+    ],
+  },
+  // LDAP
+  ldaps: {
+    resourceKey: "ldaps",
+    list: async (params, context) => unwrapList(await LdapApi.getLdaps(ownerFromContext(context))),
+    get: async (owner, name) => unwrap(await LdapApi.getLdap(owner, name)),
+    create: async (entity) => unwrap(await LdapApi.addLdap(entity)),
+    update: async (entity) => unwrap(await LdapApi.updateLdap(entity)),
+    remove: async (entity) => unwrap(await LdapApi.deleteLdap(entity)),
+    createDefault: (context) => ({
+      owner: context.organization || getStoredOrganization(),
+      name: "",
+      serverName: "",
+      host: "",
+      port: 389,
+      useSSL: false,
+      baseDn: "",
+      bindDn: "",
+      bindPassword: "",
+      filters: {
+        user: "(objectClass=person)",
+        group: "(objectClass=group)",
+      },
+      attributeMapping: {
+        user: {
+          id: "uid",
+          displayName: "cn",
+          email: "mail",
+          phone: "telephoneNumber",
+          photo: "jpegPhoto",
+        },
+        group: {
+          id: "cn",
+          name: "cn",
+          members: "member",
+        },
+      },
+      syncUsers: false,
+      syncGroups: false,
+      autoSync: false,
+      syncInterval: 0,
+      interval: 0,
+      isEnabled: true,
+    }),
+    loadOptions: async (_entity) => ({
+      organizations: await loadOrganizationOptions(),
+    }),
+    columns: [
+      { key: "owner", title: "general:Owner", width: 120, sorter: true },
+      { key: "name", title: "general:Name", width: 180, sorter: true, render: (_value, record) => renderTextLink(`/ldap/${record.owner}/${encodeURIComponent(String(record.name))}`, String(record.name)) },
+      { key: "serverName", title: "ldap:Server Name", ellipsis: true },
+      { key: "host", title: "ldap:Host", ellipsis: true },
+      { key: "port", title: "ldap:Port", width: 80 },
+      { key: "isEnabled", title: "general:Enabled", width: 80, render: (value) => renderBoolean(value) },
+    ],
+    fields: [
+      { key: "owner", label: "general:Organization", type: "select", required: true, optionSource: "organizations" },
+      { key: "name", label: "general:Name", type: "text", required: true },
+      { key: "serverName", label: "ldap:Server Name", type: "text", required: true },
+      { key: "host", label: "ldap:Host", type: "text", required: true },
+      { key: "port", label: "ldap:Port", type: "number", required: true },
+      { key: "useSSL", label: "ldap:Use SSL", type: "switch" },
+      { key: "baseDn", label: "ldap:Base DN", type: "text" },
+      { key: "bindDn", label: "ldap:Bind DN", type: "text" },
+      { key: "bindPassword", label: "ldap:Bind Password", type: "text" },
+      { key: "syncUsers", label: "ldap:Sync Users", type: "switch" },
+      { key: "syncGroups", label: "ldap:Sync Groups", type: "switch" },
+      { key: "autoSync", label: "ldap:Auto Sync", type: "switch" },
+      { key: "syncInterval", label: "ldap:Sync Interval (minutes)", type: "number" },
+      { key: "isEnabled", label: "general:Enabled", type: "switch" },
     ],
   },
 };
