@@ -17,6 +17,11 @@ import ProviderEditPage from "@/views/management/ProviderEditPage.vue";
 import GroupListPage from "@/views/management/GroupListPage.vue";
 import GroupEditPage from "@/views/management/GroupEditPage.vue";
 import GroupTreePage from "@/views/management/GroupTreePage.vue";
+import ProductStorePage from "@/views/management/ProductStorePage.vue";
+import CartListPage from "@/views/management/CartListPage.vue";
+import ProductBuyPage from "@/views/management/ProductBuyPage.vue";
+import OrderPayPage from "@/views/management/OrderPayPage.vue";
+import LdapSyncPage from "@/views/management/LdapSyncPage.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -55,6 +60,11 @@ const router = createRouter({
         { path: "groups/new", name: "management-groups-new", component: GroupEditPage },
         { path: "groups/:owner/:name", name: "management-groups-edit", component: GroupEditPage },
         { path: "groups/tree", name: "management-groups-tree", component: GroupTreePage },
+        { path: "product-store", name: "management-product-store", component: ProductStorePage },
+        { path: "cart", name: "management-cart", component: CartListPage },
+        { path: "buy", name: "management-buy", component: ProductBuyPage },
+        { path: "order-pay", name: "management-order-pay", component: OrderPayPage },
+        { path: "ldap/sync/:organizationName/:ldapId", name: "management-ldap-sync", component: LdapSyncPage },
       ],
     },
   ],
