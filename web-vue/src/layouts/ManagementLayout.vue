@@ -215,6 +215,29 @@ const legacyToManagementRouteMap: Record<string, string> = {
   "/posts": "/management/posts",
   "/menus": "/management/menus",
   "/permission-rules": "/management/permission-rules",
+  "/sites": "/management/sites",
+  "/rules": "/management/rules",
+  "/resources": "/management/resources",
+  "/certs": "/management/certs",
+  "/sessions": "/management/sessions",
+  "/records": "/management/records",
+  "/tokens": "/management/tokens",
+  "/verifications": "/management/verifications",
+  "/products": "/management/products",
+  "/payments": "/management/payments",
+  "/plans": "/management/plans",
+  "/pricings": "/management/pricings",
+  "/subscriptions": "/management/subscriptions",
+  "/transactions": "/management/transactions",
+  "/orders": "/management/orders",
+  "/invitations": "/management/invitations",
+  "/adapters": "/management/adapters",
+  "/enforcers": "/management/enforcers",
+  "/forms": "/management/forms",
+  "/syncers": "/management/syncers",
+  "/webhooks": "/management/webhooks",
+  "/tickets": "/management/tickets",
+  "/sysinfo": "/management/sysinfo",
 };
 
 function resolveMenuRoute(key: string): string {
@@ -264,7 +287,7 @@ const menuItems = computed(() => {
       { key: resolveMenuRoute("/organizations"), label: t("general.Organizations") },
       { key: resolveMenuRoute("/groups"), label: t("general.Groups") },
       { key: resolveMenuRoute("/users"), label: t("general.Users") },
-      { key: "/invitations", label: t("general.Invitations") },
+      { key: resolveMenuRoute("/invitations"), label: t("general.Invitations") },
     ],
   });
 
@@ -276,10 +299,10 @@ const menuItems = computed(() => {
     children: [
       { key: resolveMenuRoute("/applications"), label: t("general.Applications") },
       { key: resolveMenuRoute("/providers"), label: t("application.Providers") },
-      { key: "/resources", label: t("general.Resources") },
-      { key: "/certs", label: t("general.Certs") },
-      { key: "/sites", label: t("general.Sites") },
-      { key: "/rules", label: t("general.Rules") },
+      { key: resolveMenuRoute("/resources"), label: t("general.Resources") },
+      { key: resolveMenuRoute("/certs"), label: t("general.Certs") },
+      { key: resolveMenuRoute("/sites"), label: t("general.Sites") },
+      { key: resolveMenuRoute("/rules"), label: t("general.Rules") },
     ],
   });
 
@@ -291,8 +314,8 @@ const menuItems = computed(() => {
   if (authStore.isAdmin) {
     authChildren.push(
       { key: resolveMenuRoute("/models"), label: t("general.Models") },
-      { key: "/adapters", label: t("general.Adapters") },
-      { key: "/enforcers", label: t("general.Enforcers") },
+      { key: resolveMenuRoute("/adapters"), label: t("general.Adapters") },
+      { key: resolveMenuRoute("/enforcers"), label: t("general.Enforcers") },
     );
   }
   res.push({
@@ -321,9 +344,9 @@ const menuItems = computed(() => {
     label: t("general.Gateway"),
     icon: () => h(CheckCircleOutlined, { style: { color } }),
     children: [
-      { key: "/sites", label: t("general.Sites") },
-      { key: "/certs", label: t("general.Certs") },
-      { key: "/rules", label: t("general.Rules") },
+      { key: resolveMenuRoute("/sites"), label: t("general.Sites") },
+      { key: resolveMenuRoute("/certs"), label: t("general.Certs") },
+      { key: resolveMenuRoute("/rules"), label: t("general.Rules") },
     ],
   });
 
@@ -333,10 +356,10 @@ const menuItems = computed(() => {
     label: t("general.Logging & Auditing"),
     icon: () => h(WalletOutlined, { style: { color } }),
     children: [
-      { key: "/sessions", label: t("general.Sessions") },
-      { key: "/records", label: t("general.Records") },
-      { key: "/tokens", label: t("general.Tokens") },
-      { key: "/verifications", label: t("general.Verifications") },
+      { key: resolveMenuRoute("/sessions"), label: t("general.Sessions") },
+      { key: resolveMenuRoute("/records"), label: t("general.Records") },
+      { key: resolveMenuRoute("/tokens"), label: t("general.Tokens") },
+      { key: resolveMenuRoute("/verifications"), label: t("general.Verifications") },
     ],
   });
 
@@ -347,27 +370,27 @@ const menuItems = computed(() => {
     icon: () => h(DollarOutlined, { style: { color } }),
     children: [
       { key: "/product-store", label: t("general.Product Store") },
-      { key: "/products", label: t("general.Products") },
+      { key: resolveMenuRoute("/products"), label: t("general.Products") },
       { key: "/cart", label: t("general.Cart") },
-      { key: "/orders", label: t("general.Orders") },
-      { key: "/payments", label: t("general.Payments") },
-      { key: "/plans", label: t("general.Plans") },
-      { key: "/pricings", label: t("general.Pricings") },
-      { key: "/subscriptions", label: t("general.Subscriptions") },
-      { key: "/transactions", label: t("general.Transactions") },
+      { key: resolveMenuRoute("/orders"), label: t("general.Orders") },
+      { key: resolveMenuRoute("/payments"), label: t("general.Payments") },
+      { key: resolveMenuRoute("/plans"), label: t("general.Plans") },
+      { key: resolveMenuRoute("/pricings"), label: t("general.Pricings") },
+      { key: resolveMenuRoute("/subscriptions"), label: t("general.Subscriptions") },
+      { key: resolveMenuRoute("/transactions"), label: t("general.Transactions") },
     ],
   });
 
   // Admin
   const adminChildren: MenuItem[] = [];
   if (authStore.isAdmin) {
-    adminChildren.push({ key: "/sysinfo", label: t("general.System Info") });
+    adminChildren.push({ key: resolveMenuRoute("/sysinfo"), label: t("general.System Info") });
   }
   adminChildren.push(
-    { key: "/forms", label: t("general.Forms") },
-    { key: "/syncers", label: t("general.Syncers") },
-    { key: "/webhooks", label: t("general.Webhooks") },
-    { key: "/tickets", label: t("general.Tickets") },
+    { key: resolveMenuRoute("/forms"), label: t("general.Forms") },
+    { key: resolveMenuRoute("/syncers"), label: t("general.Syncers") },
+    { key: resolveMenuRoute("/webhooks"), label: t("general.Webhooks") },
+    { key: resolveMenuRoute("/tickets"), label: t("general.Tickets") },
   );
   if (authStore.isAdmin) {
     adminChildren.push({
