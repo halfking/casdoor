@@ -48,6 +48,8 @@ const managementRoutes: RouteRecordRaw[] = [
   { path: "/organizations/:organizationName", redirect: (to) => ({ name: "management-organizations-edit", params: { name: to.params.organizationName } }) },
   { path: "/organizations/:organizationName/users", redirect: "/management/users" },
   { path: "/groups", redirect: "/management/groups" },
+  { path: "/trees/:organizationName", component: () => import("@/views/management/GroupTreePage.vue"), meta: { layout: "management", requiresAuth: true, isWithoutCard: true } },
+  { path: "/trees/:organizationName/:groupName", component: () => import("@/views/management/GroupTreePage.vue"), meta: { layout: "management", requiresAuth: true, isWithoutCard: true } },
   { path: "/groups/:organizationName/:groupName", redirect: (to) => ({ name: "management-groups-edit", params: { owner: to.params.organizationName, name: to.params.groupName } }) },
   { path: "/users", redirect: "/management/users" },
   { path: "/users/:organizationName/:userName", redirect: (to) => ({ name: "management-users-edit", params: { owner: to.params.organizationName, name: to.params.userName } }) },

@@ -217,6 +217,7 @@ const legacyToManagementRouteMap: Record<string, string> = {
   "/permission-rules": "/management/permission-rules",
   "/sites": "/management/sites",
   "/rules": "/management/rules",
+  "/trees": "/trees",
   "/resources": "/management/resources",
   "/certs": "/management/certs",
   "/sessions": "/management/sessions",
@@ -285,6 +286,7 @@ const menuItems = computed(() => {
     icon: () => h(AppstoreOutlined, { style: { color } }),
     children: [
       { key: resolveMenuRoute("/organizations"), label: t("general.Organizations") },
+      { key: "/trees", label: t("general.Group Tree") },
       { key: resolveMenuRoute("/groups"), label: t("general.Groups") },
       { key: resolveMenuRoute("/users"), label: t("general.Users") },
       { key: resolveMenuRoute("/invitations"), label: t("general.Invitations") },
