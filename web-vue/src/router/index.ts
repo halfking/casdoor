@@ -38,8 +38,10 @@ const entryRoutes: RouteRecordRaw[] = [
 const managementRoutes: RouteRecordRaw[] = [
   // Home
   { path: "/", component: () => import("@/views/basic/DashboardPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/shortcuts", component: () => import("@/views/basic/ShortcutsPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/apps", component: () => import("@/views/basic/AppListPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/shortcuts", redirect: "/" },
-  { path: "/apps", redirect: "/management/applications" },
+  { path: "/apps", component: () => import("@/views/basic/AppListPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // User Management
   { path: "/organizations", redirect: "/management/organizations" },
