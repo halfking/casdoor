@@ -38,3 +38,10 @@ server
 
 # include helm-chart
 !manifests/casdoor
+
+# Vite cache
+.vite/
+
+# Vue frontend dependencies
+web-vue/node_modules/
+.playwright-mcp/

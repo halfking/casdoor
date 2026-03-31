@@ -16,11 +16,57 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/beego/beego/v2/core/utils/pagination"
 	"github.com/casdoor/casdoor/object"
 	"github.com/casdoor/casdoor/util"
 )
+
+type FeatureCheckRequest struct {
+	Tenant   string                 `json:"tenant"`
+	Subject  string                 `json:"subject"`
+	Resource string                 `json:"resource"`
+	Action   string                 `json:"action"`
+	Context  map[string]interface{} `json:"context"`
+}
+
+type FeatureBatchCheckRequest struct {
+	Tenant string                `json:"tenant"`
+	Checks []FeatureCheckRequest `json:"checks"`
+}
+
+type DataScopeCheckRequest struct {
+	Tenant       string                 `json:"tenant"`
+	Subject      string                 `json:"subject"`
+	ResourceType string                 `json:"resourceType"`
+	Operation    string                 `json:"operation"`
+	RecordContext map[string]interface{} `json:"recordContext"`
+}
+
+func normalizeActionToMethod(action string) string {
+	action = strings.TrimSpace(strings.ToUpper(action))
+	switch action {
+	case "", "READ", "LIST", "GET":
+		return "GET"
+	case "WRITE", "CREATE", "UPDATE", "DELETE", "POST", "PUT", "PATCH":
+		return "POST"
+	default:
+		return action
+	}
+}
+
+func normalizeFeaturePath(resource string) string {
+	resource = strings.TrimSpace(resource)
+	if resource == "" {
+		return resource
+	}
+	if strings.HasPrefix(resource, "/") {
+		return resource
+	}
+	return "/" + resource
+}
 
 // GetPermissions
 // @Title GetPermissions
@@ -133,6 +179,10 @@ func (c *ApiController) GetPermission() {
 // @router /update-permission [post]
 func (c *ApiController) UpdatePermission() {
 	id := c.Ctx.Input.Query("id")
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
 
 	var permission object.Permission
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &permission)
@@ -140,6 +190,24 @@ func (c *ApiController) UpdatePermission() {
 		c.ResponseError(err.Error())
 		return
 	}
+
+	idOwner, _, err := util.GetOwnerAndNameFromIdWithError(id)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	if permission.Owner != "" && permission.Owner != idOwner {
+		c.ResponseError("permission owner and id owner mismatch")
+		return
+	}
+
+	if !user.IsGlobalAdmin() && idOwner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", idOwner))
+		return
+	}
+
+	permission.Owner = idOwner
 
 	c.Data["json"] = wrapActionResponse(object.UpdatePermission(id, &permission))
 	c.ServeJSON()
@@ -153,10 +221,24 @@ func (c *ApiController) UpdatePermission() {
 // @Success 200 {object} controllers.Response The Response object
 // @router /add-permission [post]
 func (c *ApiController) AddPermission() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
 	var permission object.Permission
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &permission)
 	if err != nil {
 		c.ResponseError(err.Error())
+		return
+	}
+
+	if permission.Owner == "" {
+		permission.Owner = user.Owner
+	}
+
+	if !user.IsGlobalAdmin() && permission.Owner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", permission.Owner))
 		return
 	}
 
@@ -172,6 +254,11 @@ func (c *ApiController) AddPermission() {
 // @Success 200 {object} controllers.Response The Response object
 // @router /delete-permission [post]
 func (c *ApiController) DeletePermission() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
 	var permission object.Permission
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &permission)
 	if err != nil {
@@ -179,6 +266,237 @@ func (c *ApiController) DeletePermission() {
 		return
 	}
 
+	if !user.IsGlobalAdmin() && permission.Owner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", permission.Owner))
+		return
+	}
+
 	c.Data["json"] = wrapActionResponse(object.DeletePermission(&permission))
 	c.ServeJSON()
+}
+
+// CheckFeature
+// @Title CheckFeature
+// @Tag Permission API
+// @Description check one feature permission for current tenant
+// @Param   body    body   controllers.FeatureCheckRequest  true        "The feature check request"
+// @Success 200 {object} controllers.Response The Response object
+// @router /authz/check-feature [post]
+func (c *ApiController) CheckFeature() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
+	var req FeatureCheckRequest
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	tenant := req.Tenant
+	if tenant == "" {
+		tenant = user.Owner
+	}
+
+	if !user.IsGlobalAdmin() && tenant != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", tenant))
+		return
+	}
+
+	subject := req.Subject
+	if subject == "" {
+		subject = user.GetId()
+	}
+
+	subjectUser, err := object.GetUser(subject)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+	if subjectUser == nil {
+		c.ResponseError(fmt.Sprintf(c.T("general:The user: %s doesn't exist"), subject))
+		return
+	}
+	if !user.IsGlobalAdmin() && subjectUser.Owner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized subject: %s", subject))
+		return
+	}
+
+	resource := normalizeFeaturePath(req.Resource)
+	if resource == "" {
+		c.ResponseError("resource is required")
+		return
+	}
+
+	method := normalizeActionToMethod(req.Action)
+	allowed, err := object.CheckApiPermission(subject, tenant, resource, method)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	c.ResponseOk(map[string]interface{}{
+		"allowed":       allowed,
+		"reason":        "",
+		"matchedPolicy": "api-permission",
+		"traceId":       util.GetRandomName(),
+	})
+}
+
+// CheckFeatureBatch
+// @Title CheckFeatureBatch
+// @Tag Permission API
+// @Description check batch feature permissions for current tenant
+// @Param   body    body   controllers.FeatureBatchCheckRequest  true        "The feature batch check request"
+// @Success 200 {object} controllers.Response The Response object
+// @router /authz/check-feature-batch [post]
+func (c *ApiController) CheckFeatureBatch() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
+	var req FeatureBatchCheckRequest
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	tenant := req.Tenant
+	if tenant == "" {
+		tenant = user.Owner
+	}
+
+	if !user.IsGlobalAdmin() && tenant != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", tenant))
+		return
+	}
+
+	results := make([]map[string]interface{}, 0, len(req.Checks))
+	for _, item := range req.Checks {
+		subject := item.Subject
+		if subject == "" {
+			subject = user.GetId()
+		}
+
+		subjectUser, err := object.GetUser(subject)
+		if err != nil {
+			c.ResponseError(err.Error())
+			return
+		}
+		if subjectUser == nil {
+			c.ResponseError(fmt.Sprintf(c.T("general:The user: %s doesn't exist"), subject))
+			return
+		}
+		if !user.IsGlobalAdmin() && subjectUser.Owner != user.Owner {
+			c.ResponseError(fmt.Sprintf("unauthorized subject: %s", subject))
+			return
+		}
+
+		resource := normalizeFeaturePath(item.Resource)
+		if resource == "" {
+			c.ResponseError("resource is required")
+			return
+		}
+
+		method := normalizeActionToMethod(item.Action)
+		allowed, err := object.CheckApiPermission(subject, tenant, resource, method)
+		if err != nil {
+			c.ResponseError(err.Error())
+			return
+		}
+
+		results = append(results, map[string]interface{}{
+			"subject":       subject,
+			"resource":      resource,
+			"action":        method,
+			"allowed":       allowed,
+			"matchedPolicy": "api-permission",
+		})
+	}
+
+	c.ResponseOk(map[string]interface{}{
+		"results": results,
+		"traceId": util.GetRandomName(),
+	})
+}
+
+// CheckDataScope
+// @Title CheckDataScope
+// @Tag Permission API
+// @Description check data scope permission and return a policy envelope
+// @Param   body    body   controllers.DataScopeCheckRequest  true        "The data scope check request"
+// @Success 200 {object} controllers.Response The Response object
+// @router /authz/check-data-scope [post]
+func (c *ApiController) CheckDataScope() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
+	var req DataScopeCheckRequest
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	tenant := req.Tenant
+	if tenant == "" {
+		tenant = user.Owner
+	}
+
+	if !user.IsGlobalAdmin() && tenant != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", tenant))
+		return
+	}
+
+	subject := req.Subject
+	if subject == "" {
+		subject = user.GetId()
+	}
+
+	subjectUser, err := object.GetUser(subject)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+	if subjectUser == nil {
+		c.ResponseError(fmt.Sprintf(c.T("general:The user: %s doesn't exist"), subject))
+		return
+	}
+	if !user.IsGlobalAdmin() && subjectUser.Owner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized subject: %s", subject))
+		return
+	}
+
+	if strings.TrimSpace(req.ResourceType) == "" {
+		c.ResponseError("resourceType is required")
+		return
+	}
+
+	policyPath := fmt.Sprintf("/data/%s", strings.TrimSpace(req.ResourceType))
+	method := normalizeActionToMethod(req.Operation)
+	allowed, err := object.CheckApiPermission(subject, tenant, policyPath, method)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	scopeFilter := map[string]interface{}{}
+	if allowed {
+		scopeFilter["tenant"] = tenant
+	}
+
+	c.ResponseOk(map[string]interface{}{
+		"allowed":      allowed,
+		"scopeFilter":  scopeFilter,
+		"fieldRules":   []map[string]interface{}{},
+		"obligations":  []string{},
+		"matchedPolicy": "api-permission",
+		"traceId":      util.GetRandomName(),
+	})
 }

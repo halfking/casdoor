@@ -1,0 +1,158 @@
+/**
+ * 开轩统一设计令牌 (Kaixuan Unified Design Tokens)
+ * 由 shared/styles/kx-tokens.css 内置到 Casdoor Web Vue，避免部署依赖外部目录。
+ */
+
+:root,
+[data-theme="daylight"] {
+  --kx-navbar-height: 56px;
+  --kx-navbar-bg: #ffffff;
+  --kx-navbar-border: #e5e7eb;
+  --kx-navbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --kx-navbar-text-primary: #1f2937;
+  --kx-navbar-text-secondary: #4b5563;
+  --kx-navbar-text-tertiary: #6b7280;
+  --kx-navbar-text-disabled: #9ca3af;
+  --kx-navbar-text-inverse: #ffffff;
+  --kx-navbar-link: #374151;
+  --kx-navbar-link-hover: #2563eb;
+  --kx-navbar-link-active: #1d4ed8;
+  --kx-navbar-bg-hover: #f3f4f6;
+  --kx-navbar-bg-active: #e5e7eb;
+  --kx-navbar-highlight-bg: #eff6ff;
+  --kx-navbar-highlight-border: #bfdbfe;
+  --kx-sidebar-width: 220px;
+  --kx-sidebar-collapsed-width: 60px;
+  --kx-sidebar-bg: #f9fafb;
+  --kx-sidebar-border: #e5e7eb;
+  --kx-sidebar-menu-bg: transparent;
+  --kx-sidebar-menu-bg-hover: #e5e7eb;
+  --kx-sidebar-menu-bg-active: #e0f2fe;
+  --kx-sidebar-menu-text: #374151;
+  --kx-sidebar-menu-text-hover: #1f2937;
+  --kx-sidebar-menu-text-active: #0369a1;
+  --kx-sidebar-menu-icon: #6b7280;
+  --kx-sidebar-menu-icon-active: #0ea5e9;
+  --kx-sidebar-submenu-bg: #f3f4f6;
+  --kx-sidebar-submenu-bg-hover: #e5e7eb;
+  --kx-sidebar-submenu-text: #4b5563;
+  --kx-sidebar-submenu-text-hover: #1f2937;
+  --kx-sidebar-submenu-text-active: #0369a1;
+  --kx-dropdown-bg: #ffffff;
+  --kx-dropdown-border: #e5e7eb;
+  --kx-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --kx-dropdown-text: #374151;
+  --kx-dropdown-text-hover: #1f2937;
+  --kx-dropdown-bg-hover: #f3f4f6;
+  --kx-dropdown-bg-active: #eff6ff;
+  --kx-dropdown-divider: #e5e7eb;
+  --kx-status-bar-height: 32px;
+  --kx-status-bar-bg: #f3f4f6;
+  --kx-status-bar-border: #e5e7eb;
+  --kx-status-bar-text: #6b7280;
+  --kx-status-bar-text-highlight: #374151;
+  --kx-card-bg: #ffffff;
+  --kx-card-border: #e5e7eb;
+  --kx-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --kx-card-radius: 12px;
+  --kx-card-text: #374151;
+  --kx-card-text-secondary: #6b7280;
+  --kx-card-header-bg: #f9fafb;
+  --kx-color-success: #10b981;
+  --kx-color-success-bg: #d1fae5;
+  --kx-color-success-text: #065f46;
+  --kx-color-warning: #f59e0b;
+  --kx-color-warning-bg: #fef3c7;
+  --kx-color-warning-text: #92400e;
+  --kx-color-error: #ef4444;
+  --kx-color-error-bg: #fee2e2;
+  --kx-color-error-text: #991b1b;
+  --kx-color-info: #3b82f6;
+  --kx-color-info-bg: #dbeafe;
+  --kx-color-info-text: #1e40af;
+  --kx-brand-primary: #2563eb;
+  --kx-brand-primary-hover: #1d4ed8;
+  --kx-brand-primary-light: #eff6ff;
+  --kx-brand-secondary: #7c3aed;
+  --kx-brand-secondary-light: #f5f3ff;
+  --kx-page-bg: #f5f5f5;
+}
+
+[data-theme="night"],
+[data-theme="dark"] {
+  --kx-navbar-height: 56px;
+  --kx-navbar-bg: #1f2937;
+  --kx-navbar-border: #374151;
+  --kx-navbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --kx-navbar-text-primary: #f9fafb;
+  --kx-navbar-text-secondary: #d1d5db;
+  --kx-navbar-text-tertiary: #9ca3af;
+  --kx-navbar-text-disabled: #6b7280;
+  --kx-navbar-text-inverse: #1f2937;
+  --kx-navbar-link: #e5e7eb;
+  --kx-navbar-link-hover: #60a5fa;
+  --kx-navbar-link-active: #93c5fd;
+  --kx-navbar-bg-hover: #374151;
+  --kx-navbar-bg-active: #4b5563;
+  --kx-navbar-highlight-bg: #1e3a5f;
+  --kx-navbar-highlight-border: #1e40af;
+  --kx-sidebar-width: 220px;
+  --kx-sidebar-collapsed-width: 60px;
+  --kx-sidebar-bg: #111827;
+  --kx-sidebar-border: #1f2937;
+  --kx-sidebar-menu-bg: transparent;
+  --kx-sidebar-menu-bg-hover: #1f2937;
+  --kx-sidebar-menu-bg-active: #0c4a6e;
+  --kx-sidebar-menu-text: #e5e7eb;
+  --kx-sidebar-menu-text-hover: #f9fafb;
+  --kx-sidebar-menu-text-active: #38bdf8;
+  --kx-sidebar-menu-icon: #9ca3af;
+  --kx-sidebar-menu-icon-active: #38bdf8;
+  --kx-sidebar-submenu-bg: #1a1a2e;
+  --kx-sidebar-submenu-bg-hover: #1f2937;
+  --kx-sidebar-submenu-text: #9ca3af;
+  --kx-sidebar-submenu-text-hover: #e5e7eb;
+  --kx-sidebar-submenu-text-active: #38bdf8;
+  --kx-dropdown-bg: #1f2937;
+  --kx-dropdown-border: #374151;
+  --kx-dropdown-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --kx-dropdown-text: #e5e7eb;
+  --kx-dropdown-text-hover: #f9fafb;
+  --kx-dropdown-bg-hover: #374151;
+  --kx-dropdown-bg-active: #1e3a5f;
+  --kx-dropdown-divider: #374151;
+  --kx-status-bar-height: 32px;
+  --kx-status-bar-bg: #111827;
+  --kx-status-bar-border: #1f2937;
+  --kx-status-bar-text: #9ca3af;
+  --kx-status-bar-text-highlight: #e5e7eb;
+  --kx-card-bg: #1f2937;
+  --kx-card-border: #374151;
+  --kx-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --kx-card-radius: 12px;
+  --kx-card-text: #e5e7eb;
+  --kx-card-text-secondary: #9ca3af;
+  --kx-card-header-bg: #111827;
+  --kx-color-success: #34d399;
+  --kx-color-success-bg: #064e3b;
+  --kx-color-success-text: #a7f3d0;
+  --kx-color-warning: #fbbf24;
+  --kx-color-warning-bg: #78350f;
+  --kx-color-warning-text: #fcd34d;
+  --kx-color-error: #f87171;
+  --kx-color-error-bg: #7f1d1d;
+  --kx-color-error-text: #fca5a5;
+  --kx-color-info: #60a5fa;
+  --kx-color-info-bg: #1e3a8a;
+  --kx-color-info-text: #93c5fd;
+  --kx-brand-primary: #3b82f6;
+  --kx-brand-primary-hover: #60a5fa;
+  --kx-brand-primary-light: #1e3a5f;
+  --kx-brand-secondary: #8b5cf6;
+  --kx-brand-secondary-light: #2e1065;
+  --kx-page-bg: #0f172a;
+}
+
+html {
+  color-scheme: light dark;
+}

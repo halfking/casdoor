@@ -1,16 +1,11 @@
 FROM --platform=$BUILDPLATFORM node:20.20.1 AS FRONT
-WORKDIR /web
+WORKDIR /web-vue
 
-# Copy only dependency files first for better caching
-COPY ./casdoor/web/package.json ./casdoor/web/yarn.lock ./
-RUN yarn install --frozen-lockfile --network-timeout 1000000
-
-# Copy shared components (used by SharedNavbar)
-COPY ./shared /shared
-
-# Copy source files and build
-COPY ./casdoor/web .
-RUN NODE_OPTIONS="--max-old-space-size=4096" yarn run build
+# Build Vue frontend and publish artifact to /web/build for Go static server compatibility.
+COPY ./casdoor/web-vue/package.json ./casdoor/web-vue/package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY ./casdoor/web-vue .
+RUN npm run build
 
 FROM --platform=$BUILDPLATFORM golang:1.24.13 AS BACK
 WORKDIR /go/src/casdoor
@@ -20,7 +15,7 @@ COPY ./casdoor/go.mod ./casdoor/go.sum ./
 RUN go mod download
 
 # Copy source files
-COPY ./casdoor . .
+COPY ./casdoor .
 
 RUN ./build.sh
 
@@ -48,7 +43,7 @@ WORKDIR /
 COPY --from=BACK --chown=$USER:$USER /go/src/casdoor/server_${BUILDX_ARCH} ./server
 COPY --from=BACK --chown=$USER:$USER /go/src/casdoor/swagger ./swagger
 COPY --from=BACK --chown=$USER:$USER /go/src/casdoor/conf/app.conf ./conf/app.conf
-COPY --from=FRONT --chown=$USER:$USER /web/build ./web/build
+COPY --from=FRONT --chown=$USER:$USER /web-vue/dist ./web/build
 
 ENTRYPOINT ["/server"]
 
@@ -67,7 +62,7 @@ COPY --from=BACK /go/src/casdoor/server_${BUILDX_ARCH} ./server
 COPY --from=BACK /go/src/casdoor/swagger ./swagger
 COPY --from=BACK /go/src/casdoor/docker-entrypoint.sh /docker-entrypoint.sh
 COPY --from=BACK /go/src/casdoor/conf/app.conf ./conf/app.conf
-COPY --from=FRONT /web/build ./web/build
+COPY --from=FRONT /web-vue/dist ./web/build
 
 ENTRYPOINT ["/bin/bash"]
 CMD ["/docker-entrypoint.sh"]

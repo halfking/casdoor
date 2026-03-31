@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="authGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1677ff"/>
+      <stop offset="100%" stop-color="#0fb37a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 背景圆角矩形 -->
+  <rect x="10" y="10" width="180" height="180" rx="48" fill="url(#authGrad)"/>
+
+  <!-- 盾牌轮廓 -->
+  <path d="M100 40 L145 60 V110 C145 140 100 165 100 165 C100 165 55 140 55 110 V60 Z"
+        fill="none" stroke="white" stroke-width="4" opacity="0.3"/>
+
+  <!-- 盾牌填充 -->
+  <path d="M100 50 L138 67 V108 C138 133 100 155 100 155 C100 155 62 133 62 108 V67 Z"
+        fill="white" opacity="0.2"/>
+
+  <!-- 锁孔图标 -->
+  <circle cx="100" cy="95" r="14" fill="white" opacity="0.95"/>
+  <rect x="93" y="105" width="14" height="20" rx="4" fill="white" opacity="0.95"/>
+</svg>

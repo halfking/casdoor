@@ -68,7 +68,7 @@ backend-vendor: vendor fmt vet ## Build backend binary with vendor.
 
 .PHONY: frontend
 frontend: ## Build backend binary.
-	cd web/ && yarn && yarn run build && cd -
+	bash ./scripts/build-web-vue-release.sh
 
 .PHONY: vendor
 vendor: ## Update vendor.

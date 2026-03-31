@@ -1,0 +1,97 @@
+@import './kx-tokens.css';
+
+/**
+ * 开轩平台 — 统一设计令牌 (Design Tokens)
+ * kaixuan-theme.css  (official-portal)
+ *
+ * 版本历史:
+ *   v1.0  2026-03-14  初始版本
+ *   v1.1  2026-03-15  与 ACC kaixuan-tokens.css 对齐：补充语义状态色、统一 bg-page 值
+ */
+:root,
+:root[data-theme="daylight"],
+:root[data-theme="light"] {
+  /* ── 品牌主色 ── */
+  --kx-blue:            #1677ff;
+  --kx-blue-hover:      #4096ff;
+  --kx-blue-active:     #0958d9;
+  --kx-blue-light:      #e6f4ff;
+
+  /* ── 模块专属色 ── */
+  --kx-green:           #00b96b;
+  --kx-orange:          #fa8c16;
+  --kx-purple:          #722ed1;
+
+  /* ── 语义状态色（与 ACC tokens 对齐）── */
+  --kx-success:         #52c41a;
+  --kx-success-bg:      #f6ffed;
+  --kx-warning:         #faad14;
+  --kx-warning-bg:      #fffbe6;
+  --kx-error:           #ff4d4f;
+  --kx-error-bg:        #fff2f0;
+
+  /* ── 背景层级（与 ACC tokens 对齐，bg-page 统一 #f0f2f5）── */
+  --kx-bg-page:         #f0f2f5;
+  --kx-bg-card:         #ffffff;
+  --kx-bg-soft:         #fafcff;
+  --kx-bg-header:       rgba(255, 255, 255, 0.92);
+
+  /* ── 文字 ── */
+  --kx-text-1:          #1a1a2e;
+  --kx-text-2:          #6b7280;
+  --kx-text-3:          #7b8aa0;
+
+  /* ── 边框 ── */
+  --kx-border:          #d9e1ea;
+  --kx-border-strong:   #c4ceda;
+
+  /* ── 阴影 ── */
+  --kx-shadow-sm:       0 10px 24px rgba(15, 23, 42, 0.06);
+  --kx-shadow-md:       0 20px 48px rgba(15, 23, 42, 0.1);
+  --kx-shadow-lg:       0 28px 72px rgba(15, 23, 42, 0.12);
+
+  /* ── 圆角 ── */
+  --kx-radius-sm:       8px;
+  --kx-radius-md:       12px;
+  --kx-radius-lg:       16px;
+
+  /* ── 字体 ── */
+  --kx-font:            "PingFang SC", "Noto Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+}
+
+:root[data-theme="night"],
+:root[data-theme="dark"] {
+  --kx-blue:            #3b89ff;
+  --kx-blue-hover:      #5a9fff;
+  --kx-blue-active:     #1a6fff;
+  --kx-blue-light:      #1a3a5c;
+
+  --kx-green:           #4ade80;
+  --kx-orange:          #ffa940;
+  --kx-purple:          #9254de;
+
+  --kx-success:         #73d13d;
+  --kx-success-bg:      #162312;
+  --kx-warning:         #ffc53d;
+  --kx-warning-bg:      #2b2111;
+  --kx-error:           #ff7875;
+  --kx-error-bg:        #2a1215;
+
+  /* 暗色主题背景层次优化 - 增强视觉区分度 */
+  --kx-bg-page:         #0a0c10;
+  --kx-bg-card:         #1a1d24;
+  --kx-bg-soft:         #14161c;
+  --kx-bg-header:       rgba(13, 15, 18, 0.92);
+  --kx-bg-hover:        rgba(59, 137, 255, 0.12);
+
+  --kx-text-1:          #e8eaf0;
+  --kx-text-2:          #a0aec0;
+  --kx-text-3:          #718096;
+
+  --kx-border:          #2a2f3a;
+  --kx-border-strong:   #3a4556;
+
+  --kx-shadow-sm:       0 10px 24px rgba(0, 0, 0, 0.3);
+  --kx-shadow-md:       0 20px 48px rgba(0, 0, 0, 0.38);
+  --kx-shadow-lg:       0 28px 72px rgba(0, 0, 0, 0.46);
+}
