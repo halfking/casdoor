@@ -162,6 +162,8 @@ func InitAPI() {
 	web.Router("/api/update-permission", &controllers.ApiController{}, "POST:UpdatePermission")
 	web.Router("/api/add-permission", &controllers.ApiController{}, "POST:AddPermission")
 	web.Router("/api/delete-permission", &controllers.ApiController{}, "POST:DeletePermission")
+	web.Router("/api/authz/check-feature", &controllers.ApiController{}, "POST:CheckFeature")
+	web.Router("/api/authz/check-feature-batch", &controllers.ApiController{}, "POST:CheckFeatureBatch")
 	web.Router("/api/upload-permissions", &controllers.ApiController{}, "POST:UploadPermissions")
 
 	web.Router("/api/get-models", &controllers.ApiController{}, "GET:GetModels")
