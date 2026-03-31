@@ -803,7 +803,24 @@
     "Website URL": "主页地址",
     "Website URL - Tooltip": "组织的主页地址URL，该字段在Casdoor平台中未被使用",
     "Widget items": "功能按钮",
-    "Widget items - Tooltip": "小部件中显示的项目"
+    "Widget items - Tooltip": "小部件中显示的项目",
+    "Departments": "部门管理",
+    "Department": "部门",
+    "New Department": "新建部门",
+    "Edit Department": "编辑部门",
+    "Level": "层级",
+    "Parent department": "上级部门",
+    "Posts": "岗位管理",
+    "Post": "岗位",
+    "New Post": "新建岗位",
+    "Edit Post": "编辑岗位",
+    "Code": "编码",
+    "Menus": "菜单管理",
+    "Menu": "菜单",
+    "New Menu": "新建菜单",
+    "Edit Menu": "编辑菜单",
+    "Parent menu": "上级菜单",
+    "Component": "组件路径"
   },
   "payment": {
     "Confirm your invoice information": "确认您的发票信息",
@@ -877,7 +894,12 @@
     "Submitter": "申请者",
     "Submitter - Tooltip": "申请该授权的人",
     "TreeNode": "树节点",
-    "Write": "写权限"
+    "Write": "写权限",
+    "Permission Rules": "权限规则管理",
+    "New Permission Rule": "新建权限规则",
+    "Edit Permission Rule": "编辑权限规则",
+    "Rule type": "规则类型",
+    "Expression": "表达式"
   },
   "plan": {
     "Edit Plan": "编辑计划",

@@ -16,7 +16,7 @@ const entryRoutes: RouteRecordRaw[] = [
   { path: "/forget/:applicationName", component: () => import("@/views/auth/ForgetPage.vue"), meta: { layout: "entry" } },
   { path: "/prompt", component: () => import("@/views/auth/PromptPage.vue"), meta: { layout: "entry", requiresAuth: true } },
   { path: "/prompt/:applicationName", component: () => import("@/views/auth/PromptPage.vue"), meta: { layout: "entry", requiresAuth: true } },
-  { path: "/consent/:applicationName", component: () => import("@/views/auth/PlaceholderPage.vue"), meta: { layout: "entry", requiresAuth: true } },
+  { path: "/consent/:applicationName", component: () => import("@/views/auth/ConsentPage.vue"), meta: { layout: "entry", requiresAuth: true } },
   { path: "/result", component: () => import("@/views/auth/ResultPage.vue"), meta: { layout: "entry", guest: true } },
   { path: "/result/:applicationName", component: () => import("@/views/auth/ResultPage.vue"), meta: { layout: "entry", guest: true } },
   { path: "/cas/:owner/:casApplicationName/logout", component: () => import("@/views/auth/PlaceholderPage.vue"), meta: { layout: "entry", guest: true } },
@@ -29,7 +29,8 @@ const entryRoutes: RouteRecordRaw[] = [
   // OAuth callbacks
   { path: "/callback", component: () => import("@/views/auth/AuthCallback.vue"), meta: { layout: "entry" } },
   { path: "/callback/saml", component: () => import("@/views/auth/AuthCallback.vue"), meta: { layout: "entry" } },
-  { path: "/callback/telegram", component: () => import("@/views/auth/AuthCallback.vue"), meta: { layout: "entry" } },
+  { path: "/callback/telegram", component: () => import("@/views/auth/TelegramLoginPage.vue"), meta: { layout: "entry" } },
+  { path: "/oidc/discovery", component: () => import("@/views/auth/OidcDiscoveryPage.vue"), meta: { layout: "entry" } },
 ];
 
 // ── Management pages (lazy-loaded placeholders) ──
@@ -104,9 +105,58 @@ const managementRoutes: RouteRecordRaw[] = [
   { path: "/swagger", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // MFA setup
-  { path: "/mfa/setup", component: () => import("@/views/auth/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/mfa/setup", component: () => import("@/views/auth/MfaSetupPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // Catch-all
+  // ── Management resource routes ──
+  { path: "/management/users", name: "management-users", component: () => import("@/views/management/UserListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/users/new", name: "management-users-new", component: () => import("@/views/management/UserEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/users/:owner/:name", name: "management-users-edit", component: () => import("@/views/management/UserEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/organizations", name: "management-organizations", component: () => import("@/views/management/OrganizationListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/organizations/new", name: "management-organizations-new", component: () => import("@/views/management/OrganizationEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/organizations/:name", name: "management-organizations-edit", component: () => import("@/views/management/OrganizationEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/applications", name: "management-applications", component: () => import("@/views/management/ApplicationListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/applications/new", name: "management-applications-new", component: () => import("@/views/management/ApplicationEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/applications/:organization/:name", name: "management-applications-edit", component: () => import("@/views/management/ApplicationEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/roles", name: "management-roles", component: () => import("@/views/management/RoleListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/roles/new", name: "management-roles-new", component: () => import("@/views/management/RoleEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/roles/:owner/:name", name: "management-roles-edit", component: () => import("@/views/management/RoleEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/permissions", name: "management-permissions", component: () => import("@/views/management/PermissionListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/permissions/new", name: "management-permissions-new", component: () => import("@/views/management/PermissionEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/permissions/:owner/:name", name: "management-permissions-edit", component: () => import("@/views/management/PermissionEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/models", name: "management-models", component: () => import("@/views/management/ModelListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/models/new", name: "management-models-new", component: () => import("@/views/management/ModelEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/models/:owner/:name", name: "management-models-edit", component: () => import("@/views/management/ModelEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/providers", name: "management-providers", component: () => import("@/views/management/ProviderListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/providers/new", name: "management-providers-new", component: () => import("@/views/management/ProviderEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/providers/:owner/:name", name: "management-providers-edit", component: () => import("@/views/management/ProviderEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/groups", name: "management-groups", component: () => import("@/views/management/GroupListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/groups/new", name: "management-groups-new", component: () => import("@/views/management/GroupEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/groups/:owner/:name", name: "management-groups-edit", component: () => import("@/views/management/GroupEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/departments", name: "management-departments", component: () => import("@/views/management/DepartmentListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/departments/new", name: "management-departments-new", component: () => import("@/views/management/DepartmentEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/departments/:owner/:name", name: "management-departments-edit", component: () => import("@/views/management/DepartmentEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/posts", name: "management-posts", component: () => import("@/views/management/PostListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/posts/new", name: "management-posts-new", component: () => import("@/views/management/PostEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/posts/:owner/:name", name: "management-posts-edit", component: () => import("@/views/management/PostEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/menus", name: "management-menus", component: () => import("@/views/management/MenuListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/menus/new", name: "management-menus-new", component: () => import("@/views/management/MenuEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/menus/:owner/:name", name: "management-menus-edit", component: () => import("@/views/management/MenuEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/permission-rules", name: "management-permission-rules", component: () => import("@/views/management/PermissionRuleListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/permission-rules/new", name: "management-permission-rules-new", component: () => import("@/views/management/PermissionRuleEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/permission-rules/:owner/:name", name: "management-permission-rules-edit", component: () => import("@/views/management/PermissionRuleEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
   { path: "/:pathMatch(.*)*", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management" } },
 ];
 

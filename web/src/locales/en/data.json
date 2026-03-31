@@ -803,7 +803,26 @@
     "Website URL": "Website URL",
     "Website URL - Tooltip": "The homepage URL of the organization. This field is not used in Casdoor",
     "Widget items": "Widget items",
-    "Widget items - Tooltip": "Items displayed in the widget"
+    "Widget items - Tooltip": "Items displayed in the widget",
+    "Departments": "Departments",
+    "Department": "Department",
+    "New Department": "New Department",
+    "Edit Department": "Edit Department",
+    "Level": "Level",
+    "Parent department": "Parent Department",
+    "Posts": "Posts",
+    "Post": "Post",
+    "New Post": "New Post",
+    "Edit Post": "Edit Post",
+    "Code": "Code",
+    "Menus": "Menus",
+    "Menu": "Menu",
+    "New Menu": "New Menu",
+    "Edit Menu": "Edit Menu",
+    "Parent menu": "Parent Menu",
+    "Component": "Component",
+    "Widget items - Tooltip": "Items displayed in the widget",
+    "Committees": "Committees"
   },
   "payment": {
     "Confirm your invoice information": "Confirm your invoice information",
@@ -877,7 +896,8 @@
     "Submitter": "Submitter",
     "Submitter - Tooltip": "The person applying for this permission",
     "TreeNode": "TreeNode",
-    "Write": "Write"
+    "Write": "Write",
+    "Permission Rules": "Permission Rules"
   },
   "plan": {
     "Edit Plan": "Edit Plan",
