@@ -162,6 +162,12 @@ func InitAPI() {
 	web.Router("/api/update-permission", &controllers.ApiController{}, "POST:UpdatePermission")
 	web.Router("/api/add-permission", &controllers.ApiController{}, "POST:AddPermission")
 	web.Router("/api/delete-permission", &controllers.ApiController{}, "POST:DeletePermission")
+	web.Router("/api/authz/check-feature", &controllers.ApiController{}, "POST:CheckFeature")
+	web.Router("/api/authz/check-feature-batch", &controllers.ApiController{}, "POST:CheckFeatureBatch")
+	web.Router("/api/authz/check-data-scope", &controllers.ApiController{}, "POST:CheckDataScope")
+	web.Router("/api/bff/resolve-permissions", &controllers.ApiController{}, "POST:ResolvePermissionsForBff")
+	web.Router("/api/bff/check-data-scope", &controllers.ApiController{}, "POST:CheckDataScopeForBff")
+	web.Router("/api/bff/tenant-tree", &controllers.ApiController{}, "GET:GetTenantTreeForBff")
 	web.Router("/api/upload-permissions", &controllers.ApiController{}, "POST:UploadPermissions")
 
 	web.Router("/api/get-models", &controllers.ApiController{}, "GET:GetModels")
