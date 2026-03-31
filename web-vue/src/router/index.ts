@@ -36,36 +36,36 @@ const entryRoutes: RouteRecordRaw[] = [
 // ── Management pages (lazy-loaded placeholders) ──
 const managementRoutes: RouteRecordRaw[] = [
   // Home
-  { path: "/", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/", component: () => import("@/views/basic/DashboardPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/shortcuts", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/apps", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // User Management
-  { path: "/organizations", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/organizations", redirect: "/management/organizations" },
   { path: "/organizations/:organizationName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/organizations/:organizationName/users", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
-  { path: "/groups", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/groups", redirect: "/management/groups" },
   { path: "/groups/:organizationName/:groupName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
-  { path: "/users", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/users", redirect: "/management/users" },
   { path: "/users/:organizationName/:userName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/invitations", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/invitations/:organizationName/:invitationName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // Identity
-  { path: "/applications", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/applications", redirect: "/management/applications" },
   { path: "/applications/:organizationName/:applicationName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
-  { path: "/providers", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/providers", redirect: "/management/providers" },
   { path: "/providers/:organizationName/:providerName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/resources", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/certs", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/certs/:organizationName/:certName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
   // Authorization
-  { path: "/roles", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/roles", redirect: "/management/roles" },
   { path: "/roles/:organizationName/:roleName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
-  { path: "/permissions", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/permissions", redirect: "/management/permissions" },
   { path: "/permissions/:organizationName/:permissionName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
-  { path: "/models", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/models", redirect: "/management/models" },
   { path: "/models/:organizationName/:modelName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/adapters", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/adapters/:organizationName/:adapterName", component: () => import("@/views/basic/PlaceholderPage.vue"), meta: { layout: "management", requiresAuth: true } },

@@ -10,6 +10,7 @@ import * as PermissionApi from "@/api/modules/permission";
 import * as ModelApi from "@/api/modules/model";
 import * as ProviderApi from "@/api/modules/provider";
 import * as GroupApi from "@/api/modules/group";
+import { extraResourceConfigs } from "@/utils/resource-configs-extra";
 import {
   RBAC_MODEL,
   builtInObject,
@@ -1072,4 +1073,5 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
       { key: "enabled", label: "general:Enabled", type: "switch" },
     ],
   },
+  ...extraResourceConfigs,
 };

@@ -29,15 +29,16 @@
         v-model:collapsed="collapsed"
         :width="220"
         :collapsed-width="64"
-        collapsible
+        :trigger="null"
         :theme="siderTheme"
         class="management-sider"
       >
-        <!-- Logo -->
-        <div class="sider-logo">
-          <router-link to="/">
-            <img :src="logoSrc" alt="logo" class="logo-img" />
-          </router-link>
+        <!-- Collapse toggle -->
+        <div class="sider-collapse-toggle">
+          <button type="button" class="sider-collapse-btn" @click="collapsed = !collapsed">
+            <menu-unfold-outlined v-if="collapsed" />
+            <menu-fold-outlined v-else />
+          </button>
         </div>
 
         <a-menu
@@ -134,6 +135,8 @@ import {
   DollarOutlined,
   SettingOutlined,
   FolderOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@/shared/components/SharedNavbar.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";
@@ -482,7 +485,7 @@ watch(
   border-right: 1px solid var(--kx-border, #d9e1ea);
 }
 
-.management-sider .sider-logo {
+.sider-collapse-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -490,10 +493,23 @@ watch(
   padding: 8px;
 }
 
-.sider-logo .logo-img {
+.sider-collapse-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
   height: 32px;
-  max-width: 100%;
-  object-fit: contain;
+  border: none;
+  border-radius: var(--kx-radius, 6px);
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.sider-collapse-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .management-content {

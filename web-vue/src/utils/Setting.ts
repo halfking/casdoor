@@ -76,12 +76,12 @@ export function isMobile(): boolean {
 /* ───────── Language ───────── */
 
 export function getLanguage(): string {
-  const stored = localStorage.getItem("i18nextLng");
+  const stored = localStorage.getItem("language");
   return stored || Conf.DefaultLanguage;
 }
 
 export function setLanguage(lang: string) {
-  localStorage.setItem("i18nextLng", lang);
+  localStorage.setItem("language", lang);
 }
 
 /**

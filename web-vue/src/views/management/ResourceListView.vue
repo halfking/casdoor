@@ -18,7 +18,7 @@
           style="min-width: 180px"
           @change="table.setFilter(filter.key, $event)"
         />
-        <a-button type="primary" @click="handleCreate">
+        <a-button v-if="resource.allowCreate !== false" type="primary" @click="handleCreate">
           {{ $t("general:Add") }}
         </a-button>
         <a-button @click="table.refresh()">
@@ -95,6 +95,10 @@ const columns = computed<TableColumnType[]>(() => {
       : undefined,
   }));
 
+  if (props.resource.showActions === false) {
+    return baseColumns;
+  }
+
   return [
     ...baseColumns,
     {
@@ -104,8 +108,10 @@ const columns = computed<TableColumnType[]>(() => {
       fixed: "right" as const,
       customRender: ({ record }: { record: Record<string, unknown> }) =>
         h(ActionButton, {
-          disableEdit: props.resource.canEdit ? !props.resource.canEdit(record) : false,
-          disableDelete: props.resource.canDelete ? !props.resource.canDelete(record) : false,
+          hideEdit: props.resource.showEditAction === false,
+          hideDelete: props.resource.showDeleteAction === false,
+          disableEdit: props.resource.showEditAction === false || (props.resource.canEdit ? !props.resource.canEdit(record) : false),
+          disableDelete: props.resource.showDeleteAction === false || (props.resource.canDelete ? !props.resource.canDelete(record) : false),
           onEdit: () => handleEdit(record),
           onDelete: () => table.confirmDelete(record),
         }),

@@ -71,6 +71,10 @@ export interface ResourceConfig {
   editTitle: string;
   routeBase: string;
   searchField: string;
+  allowCreate?: boolean;
+  showActions?: boolean;
+  showEditAction?: boolean;
+  showDeleteAction?: boolean;
   filters?: ResourceFilter[];
   columns: ResourceColumn[];
   fields: ResourceField[];

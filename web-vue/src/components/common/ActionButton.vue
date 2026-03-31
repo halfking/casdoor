@@ -1,6 +1,7 @@
 <template>
   <a-space>
     <a-button
+      v-if="!hideEdit"
       type="primary"
       size="small"
       :disabled="disableEdit"
@@ -9,6 +10,7 @@
       Edit
     </a-button>
     <a-button
+      v-if="!hideDelete"
       danger
       size="small"
       :disabled="disableDelete"
@@ -24,10 +26,14 @@ withDefaults(
   defineProps<{
     disableEdit?: boolean;
     disableDelete?: boolean;
+    hideEdit?: boolean;
+    hideDelete?: boolean;
   }>(),
   {
     disableEdit: false,
     disableDelete: false,
+    hideEdit: false,
+    hideDelete: false,
   },
 );
 
