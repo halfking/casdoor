@@ -37,6 +37,14 @@ type FeatureBatchCheckRequest struct {
 	Checks []FeatureCheckRequest `json:"checks"`
 }
 
+type DataScopeCheckRequest struct {
+	Tenant       string                 `json:"tenant"`
+	Subject      string                 `json:"subject"`
+	ResourceType string                 `json:"resourceType"`
+	Operation    string                 `json:"operation"`
+	RecordContext map[string]interface{} `json:"recordContext"`
+}
+
 func normalizeActionToMethod(action string) string {
 	action = strings.TrimSpace(strings.ToUpper(action))
 	switch action {
@@ -413,5 +421,82 @@ func (c *ApiController) CheckFeatureBatch() {
 	c.ResponseOk(map[string]interface{}{
 		"results": results,
 		"traceId": util.GetRandomName(),
+	})
+}
+
+// CheckDataScope
+// @Title CheckDataScope
+// @Tag Permission API
+// @Description check data scope permission and return a policy envelope
+// @Param   body    body   controllers.DataScopeCheckRequest  true        "The data scope check request"
+// @Success 200 {object} controllers.Response The Response object
+// @router /authz/check-data-scope [post]
+func (c *ApiController) CheckDataScope() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
+	var req DataScopeCheckRequest
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &req)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	tenant := req.Tenant
+	if tenant == "" {
+		tenant = user.Owner
+	}
+
+	if !user.IsGlobalAdmin() && tenant != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized tenant operation: %s", tenant))
+		return
+	}
+
+	subject := req.Subject
+	if subject == "" {
+		subject = user.GetId()
+	}
+
+	subjectUser, err := object.GetUser(subject)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+	if subjectUser == nil {
+		c.ResponseError(fmt.Sprintf(c.T("general:The user: %s doesn't exist"), subject))
+		return
+	}
+	if !user.IsGlobalAdmin() && subjectUser.Owner != user.Owner {
+		c.ResponseError(fmt.Sprintf("unauthorized subject: %s", subject))
+		return
+	}
+
+	if strings.TrimSpace(req.ResourceType) == "" {
+		c.ResponseError("resourceType is required")
+		return
+	}
+
+	policyPath := fmt.Sprintf("/data/%s", strings.TrimSpace(req.ResourceType))
+	method := normalizeActionToMethod(req.Operation)
+	allowed, err := object.CheckApiPermission(subject, tenant, policyPath, method)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	scopeFilter := map[string]interface{}{}
+	if allowed {
+		scopeFilter["tenant"] = tenant
+	}
+
+	c.ResponseOk(map[string]interface{}{
+		"allowed":      allowed,
+		"scopeFilter":  scopeFilter,
+		"fieldRules":   []map[string]interface{}{},
+		"obligations":  []string{},
+		"matchedPolicy": "api-permission",
+		"traceId":      util.GetRandomName(),
 	})
 }
