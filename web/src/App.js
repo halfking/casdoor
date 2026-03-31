@@ -22,7 +22,7 @@ import {GithubOutlined, InfoCircleFilled, ShareAltOutlined} from "@ant-design/ic
 import {Alert, Button, ConfigProvider, Drawer, FloatButton, Layout, Result, Tooltip} from "antd";
 import {Route, Switch, withRouter} from "react-router-dom";
 import CustomGithubCorner from "./common/CustomGithubCorner";
-import SharedNavbar from "@kx/shared/components/SharedNavbar";
+import SharedNavbar from "./shared/components/SharedNavbar";
 import * as Conf from "./Conf";
 
 import * as Auth from "./auth/Auth";

@@ -7,11 +7,6 @@ const BACKEND_TARGET = process.env.REACT_APP_BACKEND_URL || "http://localhost:80
 
 const makeProxy = (target) => ({ target, changeOrigin: true, secure: target.startsWith("https") });
 
-// Shared components directory (used by SharedNavbar)
-// In Docker: /shared is copied alongside /web
-// In local dev: ../../shared relative to casdoor/web
-const SHARED_DIR = path.resolve(__dirname, "../../shared");
-
 module.exports = {
   devServer: {
     proxy: {
@@ -46,36 +41,10 @@ module.exports = {
       paths.appBuild = path.resolve(__dirname, "build-temp");
       webpackConfig.output.path = path.resolve(__dirname, "build-temp");
 
-      // Allow importing from @kx/shared (../../shared) outside of src/
-      webpackConfig.resolve.alias = {
-        ...webpackConfig.resolve.alias,
-        "@kx/shared": path.resolve(__dirname, "../../shared"),
-      };
-
       // Remove ModuleScopePlugin to allow imports from outside src/
       webpackConfig.resolve.plugins = webpackConfig.resolve.plugins.filter(
         (plugin) => plugin.constructor.name !== "ModuleScopePlugin"
       );
-
-      // Allow babel-loader to process JSX files in @kx/shared directory
-      // Insert a rule before the oneOf to ensure shared/ files get transpiled
-      const sharedDir = path.resolve(__dirname, "../../shared");
-      webpackConfig.module.rules.unshift({
-        test: /\.(js|jsx|mjs)$/,
-        include: sharedDir,
-        use: {
-          loader: require.resolve("babel-loader"),
-          options: {
-            babelrc: false,
-            configFile: false,
-            presets: [require.resolve("@babel/preset-react")],
-            plugins: [
-              [require.resolve("@babel/plugin-proposal-private-methods"), { loose: true }],
-            ],
-            cacheDirectory: true,
-          },
-        },
-      });
 
       // ignore webpack warnings by source-map-loader
       // https://github.com/facebook/create-react-app/pull/11752#issuecomment-1345231546

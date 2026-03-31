@@ -9,9 +9,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      '@kx/shared': resolve(__dirname, '../../shared'),
-      // SharedNavbar.vue internally imports from @kaixuan/shared/*
-      '@kaixuan/shared': resolve(__dirname, '../../shared'),
     },
   },
   css: {

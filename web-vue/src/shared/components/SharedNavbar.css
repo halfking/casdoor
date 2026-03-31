@@ -1,0 +1,361 @@
+/**
+ * SharedNavbar 统一导航栏样式
+ * 由 shared/components/SharedNavbar.css 内置到 Casdoor Web Vue，避免部署依赖外部目录。
+ */
+
+.kx-shared-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.kx-shared-navbar__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 24px;
+  min-height: var(--kx-navbar-height, 56px);
+  background: color-mix(in srgb, var(--kx-navbar-bg, #ffffff) 92%, transparent);
+  border-bottom: 1px solid var(--kx-navbar-border, #e5e7eb);
+  backdrop-filter: blur(24px);
+  box-shadow: var(--kx-navbar-shadow, 0 1px 3px rgba(0, 0, 0, 0.08));
+}
+
+.kx-shared-navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.kx-shared-navbar__logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.kx-shared-navbar__logo-text strong {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--kx-navbar-text-primary, #1f2937);
+  white-space: nowrap;
+}
+
+.kx-brand-main {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--kx-navbar-text-primary, #1f2937);
+  white-space: nowrap;
+}
+
+.kx-brand-separator {
+  margin: 0 4px;
+  color: var(--kx-navbar-text-tertiary, #6b7280);
+  font-weight: 400;
+}
+
+.kx-brand-product {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--kx-navbar-text-secondary, #4b5563);
+  white-space: nowrap;
+}
+
+.kx-shared-navbar__links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: visible;
+}
+
+.kx-shared-navbar__links--workspace-mode {
+  justify-content: flex-start;
+}
+
+.kx-shared-navbar__workspace-spacer {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kx-shared-navbar__link,
+.kx-shared-navbar__btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--kx-navbar-text-secondary, #4b5563);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.kx-shared-navbar__link:hover,
+.kx-shared-navbar__btn-link:hover {
+  background: var(--kx-navbar-bg-hover, #f3f4f6);
+  color: var(--kx-brand-primary, #2563eb);
+}
+
+.kx-shared-navbar__link--active,
+.kx-shared-navbar__btn-link[aria-current='page'] {
+  position: relative;
+  background: color-mix(in srgb, var(--kx-brand-primary, #2563eb) 10%, transparent);
+  color: var(--kx-brand-primary, #2563eb);
+}
+
+.kx-shared-navbar__link--active::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.kx-shared-navbar__link--portal {
+  color: var(--kx-navbar-text-tertiary, #6b7280);
+  font-size: 0.8125rem;
+}
+
+.kx-shared-navbar__link--highlight {
+  background: linear-gradient(135deg, var(--kx-brand-primary, #2563eb) 0%, var(--kx-brand-primary-hover, #1d4ed8) 100%);
+  color: #ffffff !important;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.kx-shared-navbar__link--highlight:hover {
+  background: var(--kx-brand-primary-hover, #1d4ed8) !important;
+  color: #ffffff !important;
+}
+
+.kx-shared-navbar__link--highlight.kx-shared-navbar__link--active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, var(--kx-brand-primary, #2563eb) 0%, var(--kx-brand-primary-hover, #1d4ed8) 100%);
+}
+
+.kx-shared-navbar__link--highlight.kx-shared-navbar__link--active::after {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.kx-shared-navbar__divider {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background: var(--kx-navbar-border, rgba(0, 0, 0, 0.12));
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.kx-shared-navbar__link:focus-visible,
+.kx-shared-navbar__btn-link:focus-visible,
+.kx-shared-navbar__dropdown-item:focus-visible {
+  outline: 2px solid var(--kx-brand-primary, #2563eb);
+  outline-offset: 2px;
+}
+
+.kx-shared-navbar__btn-link--danger:hover {
+  background: rgba(255, 77, 79, 0.06);
+  color: var(--kx-color-error, #ef4444);
+}
+
+.kx-shared-navbar__theme-toggle {
+  min-width: 72px;
+  justify-content: center;
+}
+
+.kx-shared-navbar__btn-link--dropdown,
+.kx-shared-navbar__command-btn,
+.kx-shared-navbar__theme-toggle {
+  border: 1px solid var(--kx-navbar-border, #e5e7eb);
+  background: var(--kx-navbar-bg, #fafcff);
+  color: var(--kx-navbar-text-secondary, #4b5563);
+}
+
+.kx-shared-navbar__login-btn {
+  background: linear-gradient(135deg, var(--kx-brand-primary, #2563eb) 0%, var(--kx-brand-primary-hover, #1d4ed8) 100%) !important;
+  color: #ffffff !important;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.kx-shared-navbar__dropdown {
+  position: relative;
+}
+
+.kx-shared-navbar__dropdown-arrow {
+  font-size: 10px;
+  transition: transform 0.15s ease;
+}
+
+.kx-shared-navbar__dropdown-arrow.is-open,
+.kx-shared-navbar__dropdown:focus-within .kx-shared-navbar__dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.kx-shared-navbar__dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  min-width: 260px;
+  background: var(--kx-dropdown-bg, #ffffff);
+  border: 1px solid var(--kx-dropdown-border, rgba(22, 119, 255, 0.15));
+  border-radius: 14px;
+  box-shadow: var(--kx-dropdown-shadow, 0 12px 40px rgba(15, 23, 42, 0.14));
+  padding: 10px 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  z-index: 1200;
+}
+
+.kx-shared-navbar__dropdown:focus-within .kx-shared-navbar__dropdown-menu,
+.kx-shared-navbar__dropdown-menu--open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.kx-shared-navbar__dropdown-section {
+  padding: 8px 14px 4px;
+}
+
+.kx-shared-navbar__dropdown-section-title {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--kx-brand-primary, #2563eb);
+  opacity: 0.8;
+}
+
+.kx-shared-navbar__dropdown-divider {
+  height: 1px;
+  margin: 8px 14px;
+  background: var(--kx-dropdown-divider, rgba(22, 119, 255, 0.2));
+}
+
+.kx-shared-navbar__dropdown-trigger-icon,
+.kx-shared-navbar__dropdown-item-icon {
+  font-size: 16px;
+}
+
+.kx-shared-navbar__dropdown-item-label {
+  flex: 1;
+}
+
+.kx-shared-navbar__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--kx-dropdown-text, #475569);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  border-radius: 8px;
+  margin: 2px 6px;
+}
+
+.kx-shared-navbar__dropdown-item:hover {
+  background: var(--kx-dropdown-bg-hover, rgba(22, 119, 255, 0.06));
+  color: var(--kx-brand-primary, #2563eb);
+  transform: translateX(2px);
+}
+
+.kx-shared-navbar__dropdown-item--recent {
+  font-weight: 600;
+}
+
+.kx-shared-navbar__mobile-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--kx-navbar-border, #e5e7eb);
+  border-radius: 10px;
+  background: var(--kx-navbar-bg, #fafcff);
+  color: var(--kx-navbar-text-secondary, #4b5563);
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-family: inherit;
+  transition: background 0.15s ease;
+}
+
+.kx-shared-navbar__mobile-toggle:hover {
+  background: var(--kx-navbar-bg-hover, rgba(22, 119, 255, 0.06));
+}
+
+@media (max-width: 768px) {
+  .kx-shared-navbar__container {
+    padding: 8px 14px;
+    flex-wrap: wrap;
+  }
+
+  .kx-shared-navbar__mobile-toggle {
+    display: inline-flex;
+  }
+
+  .kx-shared-navbar__links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding-bottom: 8px;
+  }
+
+  .kx-shared-navbar__links--mobile-open {
+    display: flex;
+  }
+
+  .kx-shared-navbar__divider,
+  .kx-shared-navbar__workspace-spacer {
+    display: none;
+  }
+
+  .kx-shared-navbar__dropdown {
+    width: 100%;
+  }
+
+  .kx-shared-navbar__dropdown-menu {
+    position: static;
+    min-width: 0;
+    margin-top: 6px;
+  }
+}
