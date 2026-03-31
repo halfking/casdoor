@@ -9,15 +9,17 @@
       @login="handleLogin"
       @logout="handleLogout"
     >
-      <LanguageSelect />
-      <button
-        type="button"
-        class="kx-shared-navbar__btn-link kx-shared-navbar__theme-toggle"
-        :title="appStore.isDark ? '浅色模式' : '暗色模式'"
-        @click="toggleTheme"
-      >
-        <span class="kx-shared-navbar__theme-toggle-label">{{ appStore.isDark ? '浅色' : '暗色' }}</span>
-      </button>
+      <template #status-actions>
+        <LanguageSelect />
+        <button
+          type="button"
+          class="kx-shared-navbar__btn-link kx-shared-navbar__theme-toggle"
+          :title="appStore.isDark ? '浅色模式' : '暗色模式'"
+          @click="toggleTheme"
+        >
+          <span class="kx-shared-navbar__theme-toggle-label">{{ appStore.isDark ? '浅色' : '暗色' }}</span>
+        </button>
+      </template>
     </SharedNavbar>
 
     <a-layout>

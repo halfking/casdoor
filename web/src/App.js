@@ -22,7 +22,6 @@ import {GithubOutlined, InfoCircleFilled, ShareAltOutlined} from "@ant-design/ic
 import {Alert, Button, ConfigProvider, Drawer, FloatButton, Layout, Result, Tooltip} from "antd";
 import {Route, Switch, withRouter} from "react-router-dom";
 import CustomGithubCorner from "./common/CustomGithubCorner";
-import SharedNavbar from "./shared/components/SharedNavbar";
 import * as Conf from "./Conf";
 
 import * as Auth from "./auth/Auth";
@@ -720,27 +719,6 @@ class App extends Component {
         {
           <Suspense fallback={null}>
             <Layout id="parent-area">
-              <SharedNavbar
-                appName="认证中心"
-                isAuthenticated={!!this.state.account}
-                hidePortalNav={true}
-                onLogout={() => {
-                  AuthBackend.logout().then((res) => {
-                    if (res.status === "ok") {
-                      this.setState({account: null});
-                      Setting.showMessage("success", i18next.t("application:Logged out successfully"));
-                      const redirectUri = res.data2;
-                      if (redirectUri) {
-                        Setting.goToLink(redirectUri);
-                      } else {
-                        Setting.goToLink("/");
-                      }
-                    } else {
-                      Setting.showMessage("error", `${i18next.t("general:Failed to log out")}: ${res.msg}`);
-                    }
-                  });
-                }}
-              />
               <ManagementPage
                 account={this.state.account}
                 application={this.state.application}
