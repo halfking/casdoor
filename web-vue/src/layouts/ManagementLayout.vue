@@ -33,14 +33,6 @@
         :theme="siderTheme"
         class="management-sider"
       >
-        <!-- Collapse toggle -->
-        <div class="sider-collapse-toggle">
-          <button type="button" class="sider-collapse-btn" @click="collapsed = !collapsed">
-            <menu-unfold-outlined v-if="collapsed" />
-            <menu-fold-outlined v-else />
-          </button>
-        </div>
-
         <a-menu
           v-model:selectedKeys="selectedKeys"
           v-model:openKeys="openKeys"
@@ -135,8 +127,6 @@ import {
   DollarOutlined,
   SettingOutlined,
   FolderOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@/shared/components/SharedNavbar.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";
@@ -178,15 +168,6 @@ function checkMobile() {
 }
 checkMobile();
 window.addEventListener("resize", checkMobile);
-
-// Logo
-const logoSrc = computed(() => {
-  const org = authStore.account?.organization;
-  const isDark = appStore.themeAlgorithm.includes("dark");
-  if (isDark && org?.logoDark) return String(org.logoDark);
-  if (org?.logo) return String(org.logo);
-  return isDark ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
-});
 
 // Current path → selected menu key
 const selectedKeys = computed({
@@ -483,33 +464,6 @@ watch(
 
 .management-sider {
   border-right: 1px solid var(--kx-border, #d9e1ea);
-}
-
-.sider-collapse-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 8px;
-}
-
-.sider-collapse-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: var(--kx-radius, 6px);
-  background: transparent;
-  cursor: pointer;
-  color: inherit;
-  font-size: 16px;
-  transition: background 0.2s;
-}
-
-.sider-collapse-btn:hover {
-  background: rgba(0, 0, 0, 0.06);
 }
 
 .management-content {

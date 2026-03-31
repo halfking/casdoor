@@ -21,6 +21,8 @@ import { getResourceContext, showMessage } from "@/utils/management";
 
 const props = defineProps<{
   resource: ResourceConfig;
+  isAccount?: boolean;
+  accountPage?: boolean;
 }>();
 
 const route = useRoute();
