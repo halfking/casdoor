@@ -3,7 +3,7 @@ WORKDIR /web-vue
 
 # Build Vue frontend and publish artifact to /web/build for Go static server compatibility.
 COPY ./web-vue/package.json ./web-vue/package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN npm config set registry https://registry.npmmirror.com && npm ci --no-audit --no-fund
 COPY ./web-vue .
 RUN npm run build
 
@@ -12,6 +12,7 @@ WORKDIR /go/src/casdoor
 
 # Copy only go.mod and go.sum first for dependency caching
 COPY ./go.mod ./go.sum ./
+ENV GOPROXY=https://goproxy.cn,direct
 RUN go mod download
 
 # Copy source files
