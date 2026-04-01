@@ -5,6 +5,7 @@ WORKDIR /web-vue
 COPY ./web-vue/package.json ./web-vue/package-lock.json ./
 RUN npm config set registry https://registry.npmmirror.com && npm ci --no-audit --no-fund
 COPY ./web-vue .
+COPY ./web-old/src/locales /web-old/src/locales
 RUN npm run build
 
 FROM --platform=$BUILDPLATFORM golang:1.24.13 AS BACK
