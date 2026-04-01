@@ -1,6 +1,6 @@
 import { createI18n } from "vue-i18n";
 import * as Conf from "../Conf";
-import en from "../../../web-old/src/locales/en/data.json";
+import en from "../locales/en/data.json";
 
 // Flatten one level: { account: { k: v }, ... } → { "account:k": v, "account.k": v, ... }
 // Registers both ":" (i18next convention) and "." separators for compatibility.
@@ -63,7 +63,7 @@ const loadedLocales = new Set<string>(["en"]);
 export async function loadLocale(lang: string) {
   if (loadedLocales.has(lang)) return;
   try {
-    const data = await import(`../../../web-old/src/locales/${lang}/data.json`);
+    const data = await import(`../locales/${lang}/data.json`);
     const messages = flattenNamespaces(data.default ?? data);
     i18n.global.setLocaleMessage(lang, messages);
     loadedLocales.add(lang);
