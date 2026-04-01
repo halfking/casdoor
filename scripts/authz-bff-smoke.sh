@@ -9,8 +9,33 @@ if [[ -z "$COOKIE" ]]; then
   exit 1
 fi
 
-echo "[1/3] resolve-permissions"
-curl -sS "$BASE_URL/api/bff/resolve-permissions" \
+PASS=0
+FAIL=0
+
+check() {
+  local label="$1" status="$2"
+  if [[ "$status" == "ok" ]]; then
+    PASS=$((PASS + 1))
+    echo "  ✅ $label"
+  else
+    FAIL=$((FAIL + 1))
+    echo "  ❌ $label (status=$status)"
+  fi
+}
+
+APP="${APP:-agent-control-center}"
+
+echo "=== BFF Smoke Test ==="
+
+echo "[1/4] app-menus"
+RESP=$(curl -sS "$BASE_URL/api/bff/app-menus?application=$APP" \
+  -H "Cookie: $COOKIE")
+STATUS=$(echo "$RESP" | jq -r '.status // "error"')
+check "GET /api/bff/app-menus?application=$APP" "$STATUS"
+echo "$RESP" | jq .
+
+echo "[2/4] resolve-permissions"
+RESP=$(curl -sS "$BASE_URL/api/bff/resolve-permissions" \
   -H "Content-Type: application/json" \
   -H "Cookie: $COOKIE" \
   -X POST \
@@ -18,10 +43,13 @@ curl -sS "$BASE_URL/api/bff/resolve-permissions" \
     "tenant": "built-in",
     "subject": "built-in/admin",
     "checks": ["/management/users", "/management/roles"]
-  }' | jq .
+  }')
+STATUS=$(echo "$RESP" | jq -r '.status // "error"')
+check "POST /api/bff/resolve-permissions" "$STATUS"
+echo "$RESP" | jq .
 
-echo "[2/3] check-data-scope"
-curl -sS "$BASE_URL/api/bff/check-data-scope" \
+echo "[3/4] check-data-scope"
+RESP=$(curl -sS "$BASE_URL/api/bff/check-data-scope" \
   -H "Content-Type: application/json" \
   -H "Cookie: $COOKIE" \
   -X POST \
@@ -31,10 +59,20 @@ curl -sS "$BASE_URL/api/bff/check-data-scope" \
     "resourceType": "user",
     "operation": "read",
     "recordContext": {}
-  }' | jq .
+  }')
+STATUS=$(echo "$RESP" | jq -r '.status // "error"')
+check "POST /api/bff/check-data-scope" "$STATUS"
+echo "$RESP" | jq .
 
-echo "[3/3] tenant-tree"
-curl -sS "$BASE_URL/api/bff/tenant-tree?owner=built-in" \
-  -H "Cookie: $COOKIE" | jq .
+echo "[4/4] tenant-tree"
+RESP=$(curl -sS "$BASE_URL/api/bff/tenant-tree?owner=built-in" \
+  -H "Cookie: $COOKIE")
+STATUS=$(echo "$RESP" | jq -r '.status // "error"')
+check "GET /api/bff/tenant-tree" "$STATUS"
+echo "$RESP" | jq .
 
-echo "Done"
+echo ""
+echo "=== Results: $PASS passed, $FAIL failed ==="
+if [[ $FAIL -gt 0 ]]; then
+  exit 1
+fi
