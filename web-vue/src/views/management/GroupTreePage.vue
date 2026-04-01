@@ -18,10 +18,10 @@
       <a-row :gutter="16" class="tree-user-row">
         <!-- Tree panel -->
         <a-col :span="selectedUser ? 8 : 24">
-          <a-card title="Groups" size="small">
+          <a-card :title="t('general.Groups')" size="small">
             <template #extra>
               <a-button type="text" size="small" @click="addGroup">
-                <plus-outlined /> Add
+                <plus-outlined /> {{ t('general.Add') }}
               </a-button>
             </template>
             <a-tree
@@ -41,7 +41,7 @@
                 </span>
               </template>
             </a-tree>
-            <a-empty v-else description="No groups" />
+            <a-empty v-else :description="t('general.No data')" />
           </a-card>
         </a-col>
 
@@ -50,7 +50,7 @@
           <a-card :title="selectedGroupTitle" size="small">
             <template #extra>
               <a-button type="text" size="small" @click="selectedUser = false">
-                <close-outlined /> Close
+                <close-outlined /> {{ t('general.Close') }}
               </a-button>
             </template>
             <a-table

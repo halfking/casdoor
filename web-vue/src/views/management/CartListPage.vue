@@ -279,7 +279,7 @@ onMounted(() => {
 <style scoped lang="less">
 .cart-list-container {
   padding: 24px;
-  background: #fff;
+  background: var(--kx-bg-card, #fff);
   border-radius: 8px;
 }
 

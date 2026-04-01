@@ -13,6 +13,6 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: #fff;
+  background: var(--kx-bg-card, #fff);
 }
 </style>

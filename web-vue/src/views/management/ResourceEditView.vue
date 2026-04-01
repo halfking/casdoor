@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import BaseEntityModal from "@/components/common/BaseEntityModal.vue";
 import type { ResourceConfig, SelectOption } from "@/types/management";
 import { getResourceContext, showMessage } from "@/utils/management";
@@ -27,6 +28,7 @@ const props = defineProps<{
 
 const route = useRoute();
 const router = useRouter();
+const { t } = useI18n();
 const loading = ref(false);
 const submitting = ref(false);
 const entity = ref<Record<string, unknown> | null>(null);
@@ -34,7 +36,7 @@ const optionStore = ref<Record<string, SelectOption[]>>({});
 
 const context = computed(() => getResourceContext());
 const isCreate = computed(() => String(route.name || "").endsWith("-new"));
-const modalTitle = computed(() => (isCreate.value ? props.resource.createTitle : props.resource.editTitle));
+const modalTitle = computed(() => t(isCreate.value ? props.resource.createTitle : props.resource.editTitle));
 const routeState = computed(() => ({
   params: route.params as Record<string, unknown>,
   query: route.query as Record<string, unknown>,

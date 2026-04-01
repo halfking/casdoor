@@ -39,6 +39,7 @@
           mode="inline"
           :items="menuItems"
           @click="handleMenuClick"
+          @openChange="handleOpenChange"
         />
 
         <!-- Sidebar bottom: AI chat quick entry -->
@@ -66,6 +67,7 @@
           mode="inline"
           :items="menuItems"
           @click="drawerVisible = false"
+          @openChange="handleOpenChange"
         />
       </a-drawer>
 
@@ -308,9 +310,6 @@ const menuItems = computed(() => {
       { key: resolveMenuRoute("/applications"), label: t("general.Applications") },
       { key: resolveMenuRoute("/providers"), label: t("application.Providers") },
       { key: resolveMenuRoute("/resources"), label: t("general.Resources") },
-      { key: resolveMenuRoute("/certs"), label: t("general.Certs") },
-      { key: resolveMenuRoute("/sites"), label: t("general.Sites") },
-      { key: resolveMenuRoute("/rules"), label: t("general.Rules") },
     ],
   });
 
@@ -457,6 +456,17 @@ function handleMenuClick(info: { key: string }) {
   }
 }
 
+// Accordion: only one submenu open at a time
+function handleOpenChange(keys: string[]) {
+  const rootKeys = menuItems.value.map((item) => item.key);
+  const latestOpen = keys.find((k) => !openKeys.value.includes(k));
+  if (latestOpen && rootKeys.includes(latestOpen)) {
+    openKeys.value = [latestOpen];
+  } else {
+    openKeys.value = keys;
+  }
+}
+
 function handleAiChat() {
   window.open('/', '_blank');
 }
@@ -470,15 +480,13 @@ function handleLogout() {
   router.push("/login");
 }
 
-// Auto-expand menu based on current route
+// Auto-expand menu based on current route (accordion: only one group)
 watch(
   () => route.path,
   (path) => {
     for (const item of menuItems.value) {
       if (item.children?.some((c) => c.key === path || path.startsWith(c.key + "/"))) {
-        if (!openKeys.value.includes(item.key)) {
-          openKeys.value = [...openKeys.value, item.key];
-        }
+        openKeys.value = [item.key];
         break;
       }
     }

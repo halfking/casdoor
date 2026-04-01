@@ -967,7 +967,7 @@ onMounted(() => {
 .login-panel,
 .login-panel-dark {
   display: flex;
-  background: #fff;
+  background: var(--kx-bg-card, #fff);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 40px;
@@ -975,7 +975,7 @@ onMounted(() => {
 }
 
 .login-panel-dark {
-  background: #1f1f1f;
+  background: var(--kx-bg-card, #1f1f1f);
 }
 
 .side-image {

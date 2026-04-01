@@ -64,13 +64,14 @@ const entityLabels: Record<string, string> = {
 // Statistics cards: total users, today's new, 7-day new, 30-day new
 const statCards = computed(() => {
   const userCounts = dashboardData.value.userCounts;
-  if (!userCounts || userCounts.length < 31) {
+  if (!userCounts || userCounts.length === 0) {
     return [];
   }
-  const total = userCounts[30]; // latest (cumulative)
-  const todayNew = userCounts[30] - (userCounts[29] ?? 0);
-  const weekNew = userCounts[30] - (userCounts[23] ?? 0);
-  const monthNew = userCounts[30] - (userCounts[0] ?? 0);
+  const len = userCounts.length;
+  const total = userCounts[len - 1] ?? 0;
+  const todayNew = total - (userCounts[len - 2] ?? total);
+  const weekNew = total - (userCounts[Math.max(0, len - 8)] ?? total);
+  const monthNew = total - (userCounts[0] ?? total);
   return [
     { label: t("general.Users") + " (" + t("general.Total") + ")", value: total },
     { label: t("general.Users") + " (" + t("general.Today") + ")", value: todayNew },

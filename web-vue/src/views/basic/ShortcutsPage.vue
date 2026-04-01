@@ -1,7 +1,6 @@
 <template>
   <div class="shortcuts-container">
-    <a-spin v-if="loading" tip="Loading..." />
-    <div v-else class="shortcuts-grid">
+    <div class="shortcuts-grid">
       <a-row :gutter="[24, 24]" justify="center">
         <a-col
           v-for="item in shortcuts"
@@ -15,7 +14,7 @@
             <a-card hoverable class="shortcut-card">
               <template #cover>
                 <div class="card-cover">
-                  <img :alt="item.name" :src="item.logo" class="card-logo" />
+                  <component :is="item.icon" class="card-icon" />
                 </div>
               </template>
               <a-card-meta :title="item.name">
@@ -32,75 +31,71 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+  BankOutlined,
+  UserOutlined,
+  ApiOutlined,
+  AppstoreOutlined,
+  SafetyCertificateOutlined,
+  LockOutlined,
+  TeamOutlined,
+  DatabaseOutlined,
+} from "@ant-design/icons-vue";
 
 const { t } = useI18n();
-const loading = ref(true);
 
-interface ShortcutItem {
-  link: string;
-  name: string;
-  description: string;
-  logo: string;
-}
-
-const shortcuts = ref<ShortcutItem[]>([]);
-
-onMounted(() => {
-  // Build shortcuts items using i18n
-  shortcuts.value = [
-    {
-      link: "/management/organizations",
-      name: t("general:Organizations"),
-      description: t("general:User containers"),
-      logo: "/img/organizations.png",
-    },
-    {
-      link: "/management/users",
-      name: t("general:Users"),
-      description: t("general:Users under all organizations"),
-      logo: "/img/users.png",
-    },
-    {
-      link: "/management/providers",
-      name: t("application:Providers"),
-      description: t("general:OAuth providers"),
-      logo: "/img/providers.png",
-    },
-    {
-      link: "/management/applications",
-      name: t("general:Applications"),
-      description: t("general:Applications that require authentication"),
-      logo: "/img/applications.png",
-    },
-    {
-      link: "/management/roles",
-      name: t("general:Roles"),
-      description: t("general:Manage roles for users"),
-      logo: "/img/roles.png",
-    },
-    {
-      link: "/management/permissions",
-      name: t("general:Permissions"),
-      description: t("general:Manage permissions for resources"),
-      logo: "/img/permissions.png",
-    },
-    {
-      link: "/management/groups",
-      name: t("general:Groups"),
-      description: t("general:User groups"),
-      logo: "/img/groups.png",
-    },
-    {
-      link: "/management/adapters",
-      name: t("general:Adapters"),
-      description: t("general:Manage adapters"),
-      logo: "/img/adapters.png",
-    },
-  ];
-  loading.value = false;
-});
+const shortcuts = computed(() => [
+  {
+    link: "/management/organizations",
+    name: t("general:Organizations"),
+    description: t("general:User containers"),
+    icon: BankOutlined,
+  },
+  {
+    link: "/management/users",
+    name: t("general:Users"),
+    description: t("general:Users under all organizations"),
+    icon: UserOutlined,
+  },
+  {
+    link: "/management/providers",
+    name: t("application:Providers"),
+    description: t("general:OAuth providers"),
+    icon: ApiOutlined,
+  },
+  {
+    link: "/management/applications",
+    name: t("general:Applications"),
+    description: t("general:Applications that require authentication"),
+    icon: AppstoreOutlined,
+  },
+  {
+    link: "/management/roles",
+    name: t("general:Roles"),
+    description: t("general:Manage roles for users"),
+    icon: SafetyCertificateOutlined,
+  },
+  {
+    link: "/management/permissions",
+    name: t("general:Permissions"),
+    description: t("general:Manage permissions for resources"),
+    icon: LockOutlined,
+  },
+  {
+    link: "/management/groups",
+    name: t("general:Groups"),
+    description: t("general:User groups"),
+    icon: TeamOutlined,
+  },
+  {
+    link: "/management/adapters",
+    name: t("general:Adapters"),
+    description: t("general:Manage adapters"),
+    icon: DatabaseOutlined,
+  },
+]);
 </script>
 
 <style scoped>
@@ -137,12 +132,11 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding: 24px;
-  background: #f5f5f5;
+  background: var(--kx-bg-card, #f5f5f5);
 }
 
-.card-logo {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
+.card-icon {
+  font-size: 48px;
+  color: var(--ant-color-primary, #1677ff);
 }
 </style>
