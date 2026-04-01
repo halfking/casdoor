@@ -48,6 +48,9 @@ type InitData struct {
 	Transactions  []*Transaction        `json:"transactions"`
 	Sites         []*Site               `json:"sites"`
 	Rules         []*Rule               `json:"rules"`
+	Menus         []*Menu               `json:"menus"`
+	Departments   []*Department         `json:"departments"`
+	Posts         []*Post               `json:"posts"`
 
 	EnforcerPolicies map[string][][]string `json:"enforcerPolicies"`
 }
@@ -150,6 +153,15 @@ func InitFromFile() {
 		for _, site := range initData.Sites {
 			initDefinedSite(site)
 		}
+		for _, menu := range initData.Menus {
+			initDefinedMenu(menu)
+		}
+		for _, department := range initData.Departments {
+			initDefinedDepartment(department)
+		}
+		for _, post := range initData.Posts {
+			initDefinedPost(post)
+		}
 	}
 }
 
@@ -188,6 +200,9 @@ func readInitDataFromFile(filePath string) (*InitData, error) {
 		Transactions:  []*Transaction{},
 		Sites:         []*Site{},
 		Rules:         []*Rule{},
+		Menus:         []*Menu{},
+		Departments:   []*Department{},
+		Posts:         []*Post{},
 
 		EnforcerPolicies: map[string][][]string{},
 	}
@@ -931,6 +946,78 @@ func initDefinedRule(rule *Rule) {
 	}
 	rule.CreatedTime = util.GetCurrentTime()
 	_, err = AddRule(rule)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initDefinedMenu(menu *Menu) {
+	existed, err := getMenu(menu.Owner, menu.Name)
+	if err != nil {
+		panic(err)
+	}
+	if existed != nil {
+		if initDataNewOnly {
+			return
+		}
+		affected, err := DeleteMenu(menu)
+		if err != nil {
+			panic(err)
+		}
+		if !affected {
+			panic("Fail to delete menu")
+		}
+	}
+	menu.CreatedTime = util.GetCurrentTime()
+	_, err = AddMenu(menu)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initDefinedDepartment(department *Department) {
+	existed, err := getDepartment(department.Owner, department.Name)
+	if err != nil {
+		panic(err)
+	}
+	if existed != nil {
+		if initDataNewOnly {
+			return
+		}
+		affected, err := DeleteDepartment(department)
+		if err != nil {
+			panic(err)
+		}
+		if !affected {
+			panic("Fail to delete department")
+		}
+	}
+	department.CreatedTime = util.GetCurrentTime()
+	_, err = AddDepartment(department)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initDefinedPost(post *Post) {
+	existed, err := getPost(post.Owner, post.Name)
+	if err != nil {
+		panic(err)
+	}
+	if existed != nil {
+		if initDataNewOnly {
+			return
+		}
+		affected, err := DeletePost(post)
+		if err != nil {
+			panic(err)
+		}
+		if !affected {
+			panic("Fail to delete post")
+		}
+	}
+	post.CreatedTime = util.GetCurrentTime()
+	_, err = AddPost(post)
 	if err != nil {
 		panic(err)
 	}

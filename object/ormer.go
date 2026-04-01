@@ -469,4 +469,19 @@ func (a *Ormer) createTable() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = a.Engine.Sync2(new(Menu))
+	if err != nil {
+		panic(err)
+	}
+
+	err = a.Engine.Sync2(new(Department))
+	if err != nil {
+		panic(err)
+	}
+
+	err = a.Engine.Sync2(new(Post))
+	if err != nil {
+		panic(err)
+	}
 }
