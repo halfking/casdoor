@@ -2,20 +2,20 @@ FROM --platform=$BUILDPLATFORM node:20.20.1 AS FRONT
 WORKDIR /web-vue
 
 # Build Vue frontend and publish artifact to /web/build for Go static server compatibility.
-COPY ./casdoor/web-vue/package.json ./casdoor/web-vue/package-lock.json ./
+COPY ./web-vue/package.json ./web-vue/package-lock.json ./
 RUN npm ci --no-audit --no-fund
-COPY ./casdoor/web-vue .
+COPY ./web-vue .
 RUN npm run build
 
 FROM --platform=$BUILDPLATFORM golang:1.24.13 AS BACK
 WORKDIR /go/src/casdoor
 
 # Copy only go.mod and go.sum first for dependency caching
-COPY ./casdoor/go.mod ./casdoor/go.sum ./
+COPY ./go.mod ./go.sum ./
 RUN go mod download
 
 # Copy source files
-COPY ./casdoor .
+COPY . .
 
 RUN ./build.sh
 
