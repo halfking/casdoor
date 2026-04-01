@@ -1,4 +1,4 @@
-web-old/
+web-old/node_modules/
 web-vue/node_modules/
 web/node_modules/
 web/build/
