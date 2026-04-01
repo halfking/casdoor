@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
+  <title id="title">开轩平台</title>
+  <desc id="desc">开轩平台统一认证品牌标识</desc>
+  <defs>
+    <linearGradient id="kxLightGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1677ff"/>
+      <stop offset="100%" stop-color="#0fb37a"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="88" height="88" rx="24" fill="url(#kxLightGradient)"/>
+  <text x="44" y="57" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#ffffff" letter-spacing="2">开轩</text>
+  <text x="110" y="38" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1">开轩平台</text>
+  <text x="110" y="62" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif" font-size="13" fill="#6b7280" letter-spacing="0.12em">KX UNIFIED AUTH</text>
+</svg>
