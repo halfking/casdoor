@@ -74,11 +74,12 @@ func loginAndGetToken() {
 	}
 
 	body := map[string]interface{}{
-		"owner":        testOrg,
-		"name":         testUser,
-		"organization": testOrg,
-		"username":     testUser,
-		"password":     password,
+		"owner":         testOrg,
+		"name":          testUser,
+		"organization":  testOrg,
+		"username":      testUser,
+		"password":      password,
+		"application":   testApp,
 	}
 
 	bodyBytes, _ := json.Marshal(body)
