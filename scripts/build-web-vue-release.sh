@@ -5,6 +5,11 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 WEB_VUE_DIR="$ROOT_DIR/web-vue"
 WEB_BUILD_DIR="$ROOT_DIR/web/build"
 
+# Ensure npm/node are on PATH (homebrew on macOS)
+for p in /opt/homebrew/bin /usr/local/bin; do
+  [[ -d "$p" ]] && export PATH="$p:$PATH"
+done
+
 echo "[build-web-vue-release] building web-vue"
 cd "$WEB_VUE_DIR"
 npm ci
