@@ -119,6 +119,10 @@ p, *, *, POST, /api/refresh-engines, *, *
 p, *, *, GET, /api/get-invitation-info, *, *
 p, *, *, GET, /api/faceid-signin-begin, *, *
 p, *, *, GET, /api/kerberos-login, *, *
+p, *, *, POST, /api/bff/resolve-permissions, *, *
+p, *, *, POST, /api/bff/check-data-scope, *, *
+p, *, *, GET, /api/bff/tenant-tree, *, *
+p, *, *, GET, /api/bff/app-menus, *, *
 `
 
 		sa := stringadapter.NewAdapter(ruleText)
