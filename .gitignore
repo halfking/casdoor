@@ -42,6 +42,10 @@ server
 # Vite cache
 .vite/
 
+# Build output directories
+web-vue/dist/
+web/dist/
+
 # Vue frontend dependencies
 web-vue/node_modules/
 .playwright-mcp/
