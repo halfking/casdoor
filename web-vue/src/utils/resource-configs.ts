@@ -10,6 +10,9 @@ import * as PermissionApi from "@/api/modules/permission";
 import * as ModelApi from "@/api/modules/model";
 import * as ProviderApi from "@/api/modules/provider";
 import * as GroupApi from "@/api/modules/group";
+import * as MenuApi from "@/api/modules/menu";
+import * as DepartmentApi from "@/api/modules/department";
+import * as PostApi from "@/api/modules/post";
 import { extraResourceConfigs } from "@/utils/resource-configs-extra";
 import {
   RBAC_MODEL,
@@ -894,12 +897,26 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     createRoute: () => ({ name: "management-departments-new" }),
     editRoute: (record) => ({ name: "management-departments-edit", params: { owner: String(record.owner), name: String(record.name) } }),
     list: async (params, context) => {
-      return { data: [], data2: 0 };
+      const field = String(params.searchedColumn || "name");
+      const value = String(params.searchText || "");
+      return unwrapList(await DepartmentApi.getDepartments({
+        owner: ownerFromContext(context),
+        withTree: false,
+        page: Number(params.page || 1),
+        pageSize: Number(params.pageSize || 10),
+        field,
+        value,
+        sortField: String(params.sortField || ""),
+        sortOrder: String(params.sortOrder || ""),
+      }) as AnyResponse);
     },
-    get: async (params) => unwrap({ status: "ok", data: { owner: params.owner, name: params.name, displayName: "", level: 1, status: "Active" }, msg: "" } as AnyResponse) as ApiResponse<Entity>,
-    create: async (entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    update: async (params, entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    removeByKey: async (key, records) => unwrap({ status: "ok", data: null, msg: "" } as AnyResponse),
+    get: async (params) => unwrap(await DepartmentApi.getDepartment(decodeRouteValue(params.owner), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    create: async (entity) => unwrap(await DepartmentApi.addDepartment(entity as Parameters<typeof DepartmentApi.addDepartment>[0]) as AnyResponse),
+    update: async (params, entity) => unwrap(await DepartmentApi.updateDepartment(decodeRouteValue(params.owner), decodeRouteValue(params.name), entity as Parameters<typeof DepartmentApi.updateDepartment>[2]) as AnyResponse),
+    removeByKey: async (key, records) => {
+      const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.name}`);
+      return unwrap(await DepartmentApi.deleteDepartment(record as Parameters<typeof DepartmentApi.deleteDepartment>[0] || {}) as AnyResponse);
+    },
     createDefault: (context) => {
       const organization = currentOrganization(context);
       const suffix = randomName();
@@ -945,11 +962,26 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     listRoute: () => ({ name: "management-posts" }),
     createRoute: () => ({ name: "management-posts-new" }),
     editRoute: (record) => ({ name: "management-posts-edit", params: { owner: String(record.owner), name: String(record.name) } }),
-    list: async (params, context) => ({ data: [], data2: 0 }),
-    get: async (params) => unwrap({ status: "ok", data: { owner: params.owner, name: params.name, displayName: "", code: "", priority: 0, status: "Active" }, msg: "" } as AnyResponse) as ApiResponse<Entity>,
-    create: async (entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    update: async (params, entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    removeByKey: async (key, records) => unwrap({ status: "ok", data: null, msg: "" } as AnyResponse),
+    list: async (params, context) => {
+      const field = String(params.searchedColumn || "name");
+      const value = String(params.searchText || "");
+      return unwrapList(await PostApi.getPosts({
+        owner: ownerFromContext(context),
+        page: Number(params.page || 1),
+        pageSize: Number(params.pageSize || 10),
+        field,
+        value,
+        sortField: String(params.sortField || ""),
+        sortOrder: String(params.sortOrder || ""),
+      }) as AnyResponse);
+    },
+    get: async (params) => unwrap(await PostApi.getPost(decodeRouteValue(params.owner), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    create: async (entity) => unwrap(await PostApi.addPost(entity as Parameters<typeof PostApi.addPost>[0]) as AnyResponse),
+    update: async (params, entity) => unwrap(await PostApi.updatePost(decodeRouteValue(params.owner), decodeRouteValue(params.name), entity as Parameters<typeof PostApi.updatePost>[2]) as AnyResponse),
+    removeByKey: async (key, records) => {
+      const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.name}`);
+      return unwrap(await PostApi.deletePost(record as Parameters<typeof PostApi.deletePost>[0] || {}) as AnyResponse);
+    },
     createDefault: (context) => {
       const organization = currentOrganization(context);
       const suffix = randomName();
@@ -991,11 +1023,27 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     listRoute: () => ({ name: "management-menus" }),
     createRoute: () => ({ name: "management-menus-new" }),
     editRoute: (record) => ({ name: "management-menus-edit", params: { owner: String(record.owner), name: String(record.name) } }),
-    list: async (params, context) => ({ data: [], data2: 0 }),
-    get: async (params) => unwrap({ status: "ok", data: { owner: params.owner, name: params.name, title: "", path: "", component: "", visible: true, type: "Menu" }, msg: "" } as AnyResponse) as ApiResponse<Entity>,
-    create: async (entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    update: async (params, entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    removeByKey: async (key, records) => unwrap({ status: "ok", data: null, msg: "" } as AnyResponse),
+    list: async (params, context) => {
+      const field = String(params.searchedColumn || "name");
+      const value = String(params.searchText || "");
+      return unwrapList(await MenuApi.getMenus({
+        owner: ownerFromContext(context),
+        withTree: false,
+        page: Number(params.page || 1),
+        pageSize: Number(params.pageSize || 10),
+        field,
+        value,
+        sortField: String(params.sortField || ""),
+        sortOrder: String(params.sortOrder || ""),
+      }) as AnyResponse);
+    },
+    get: async (params) => unwrap(await MenuApi.getMenu(decodeRouteValue(params.owner), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    create: async (entity) => unwrap(await MenuApi.addMenu(entity as Parameters<typeof MenuApi.addMenu>[0]) as AnyResponse),
+    update: async (params, entity) => unwrap(await MenuApi.updateMenu(decodeRouteValue(params.owner), decodeRouteValue(params.name), entity as Parameters<typeof MenuApi.updateMenu>[2]) as AnyResponse),
+    removeByKey: async (key, records) => {
+      const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.name}`);
+      return unwrap(await MenuApi.deleteMenu(record as Parameters<typeof MenuApi.deleteMenu>[0] || {}) as AnyResponse);
+    },
     createDefault: (context) => {
       const organization = currentOrganization(context);
       const suffix = randomName();

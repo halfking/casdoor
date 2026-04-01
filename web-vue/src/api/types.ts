@@ -1073,5 +1073,52 @@ export interface ConsentForm {
   accepted: boolean;
 }
 
+// ---------- Menu ----------
+export interface Menu {
+  owner: string;
+  name: string;
+  createdTime: string;
+  updatedTime: string;
+  displayName: string;
+  application: string;
+  parentId: string;
+  path: string;
+  icon: string;
+  component: string;
+  type: string;
+  sortOrder: number;
+  visible: boolean;
+  isEnabled: boolean;
+  children?: Menu[];
+}
+
+// ---------- Department ----------
+export interface Department {
+  owner: string;
+  name: string;
+  createdTime: string;
+  updatedTime: string;
+  displayName: string;
+  parentId: string;
+  code: string;
+  level: number;
+  sortOrder: number;
+  leader: string;
+  isEnabled: boolean;
+  children?: Department[];
+}
+
+// ---------- Post ----------
+export interface Post {
+  owner: string;
+  name: string;
+  createdTime: string;
+  updatedTime: string;
+  displayName: string;
+  code: string;
+  sortOrder: number;
+  isEnabled: boolean;
+}
+
 // ---------- Re-export ApiResponse from request ----------
 export type { ApiResponse, PaginatedResponse } from "./request";

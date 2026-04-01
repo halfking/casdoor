@@ -146,6 +146,21 @@ func writeInitDataToFile(filePath string) error {
 		return err
 	}
 
+	menus, err := GetMenus("")
+	if err != nil {
+		return err
+	}
+
+	departments, err := GetDepartments("")
+	if err != nil {
+		return err
+	}
+
+	posts, err := GetPosts("")
+	if err != nil {
+		return err
+	}
+
 	enforcerPolicies := make(map[string][][]string)
 	for _, enforcer := range enforcers {
 		err = enforcer.InitEnforcer()
@@ -182,6 +197,9 @@ func writeInitDataToFile(filePath string) error {
 		Sessions:      sessions,
 		Subscriptions: subscriptions,
 		Transactions:  transactions,
+		Menus:         menus,
+		Departments:   departments,
+		Posts:         posts,
 
 		EnforcerPolicies: enforcerPolicies,
 	}

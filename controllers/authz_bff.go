@@ -227,3 +227,59 @@ func (c *ApiController) GetTenantTreeForBff() {
 		"traceId": util.GetRandomName(),
 	})
 }
+
+// GetAppMenusForBff
+// @Title GetAppMenusForBff
+// @Tag Menu API
+// @Description get application menus filtered by user permissions for BFF integration
+// @Param   application     query    string  true        "The application name"
+// @Success 200 {object} controllers.Response The Response object
+// @router /bff/app-menus [get]
+func (c *ApiController) GetAppMenusForBff() {
+	user, ok := c.RequireSignedInUser()
+	if !ok {
+		return
+	}
+
+	application := c.Ctx.Input.Query("application")
+	if application == "" {
+		c.ResponseError("application is required")
+		return
+	}
+
+	owner := user.Owner
+
+	menus, err := object.GetMenusByApplication(owner, application)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	// Filter menus by user permissions
+	subject := user.GetId()
+	filteredMenus := make([]*object.Menu, 0)
+	for _, menu := range menus {
+		if menu.Path == "" {
+			// Menus without path (e.g. parent containers) are always included
+			filteredMenus = append(filteredMenus, menu)
+			continue
+		}
+
+		allowed, err := object.CheckApiPermission(subject, owner, menu.Path, "GET")
+		if err != nil {
+			// If permission check fails, skip this menu
+			continue
+		}
+		if allowed {
+			filteredMenus = append(filteredMenus, menu)
+		}
+	}
+
+	tree := object.BuildMenuTree(filteredMenus)
+
+	c.ResponseOk(map[string]interface{}{
+		"application": application,
+		"menus":       tree,
+		"traceId":     util.GetRandomName(),
+	})
+}
