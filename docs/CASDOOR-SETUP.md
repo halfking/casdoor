@@ -108,7 +108,7 @@ node ./scripts/upsert-casdoor-acc-app.js \
 node ./scripts/upsert-casdoor-portal-app.js \
   --endpoint=http://192.168.31.28:8000 \
   --admin-user=admin \
-  --admin-password='Veritrans&9527*#' \
+  --admin-password='<casdoor-admin-password>' \
   --portal-url=http://192.168.31.28:8081
 ```
 

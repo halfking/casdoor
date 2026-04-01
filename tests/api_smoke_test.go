@@ -70,7 +70,8 @@ func loginAndGetToken() {
 	// 获取环境变量中的密码，如果没有则使用默认密码
 	password := os.Getenv("CASDOOR_TEST_ADMIN_PASSWORD")
 	if password == "" {
-		password = "admin" // 默认密码，需要根据实际情况修改
+		fmt.Println("警告: 未设置CASDOOR_TEST_ADMIN_PASSWORD环境变量，测试可能失败")
+		password = "" // 密码必须通过环境变量设置
 	}
 
 	body := map[string]interface{}{
