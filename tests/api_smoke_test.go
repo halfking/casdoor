@@ -32,7 +32,6 @@ import (
 )
 
 const (
-	baseURL     = "http://127.0.0.1:8000"
 	testTimeout = 30 * time.Second
 )
 
@@ -40,12 +39,21 @@ const (
 var (
 	httpClient  *http.Client
 	testToken   string
-	testOrg     = "built-in"
+	testOrg     = getEnv("CASDOOR_TEST_ORG", "kaixuan")
 	testUser    = "admin"
-	testApp     = "app-built-in"
+	testApp     = getEnv("CASDOOR_TEST_APP", "acc")
 	testUserID  = ""
-	testOwner   = "built-in"
+	testOwner   = getEnv("CASDOOR_TEST_OWNER", "kaixuan")
+	testBaseURL = getEnv("CASDOOR_TEST_BASE_URL", "http://127.0.0.1:8000")
 )
+
+// getEnv 获取环境变量，如果未设置则返回默认值
+func getEnv(key, defaultValue string) string {
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
+	return defaultValue
+}
 
 func TestMain(m *testing.M) {
 	// 初始化HTTP客户端
@@ -89,7 +97,7 @@ func loginAndGetToken() {
 	}
 
 	bodyBytes, _ := json.Marshal(body)
-	resp, err := httpClient.Post(baseURL+"/api/login", "application/json", bytes.NewReader(bodyBytes))
+	resp, err := httpClient.Post(testBaseURL+"/api/login", "application/json", bytes.NewReader(bodyBytes))
 	if err != nil {
 		fmt.Printf("登录请求失败: %v\n", err)
 		return
@@ -136,7 +144,7 @@ func cleanup() {
 		return
 	}
 	// 发送登出请求
-	req, _ := http.NewRequest(http.MethodPost, baseURL+"/api/logout", nil)
+	req, _ := http.NewRequest(http.MethodPost, testBaseURL+"/api/logout", nil)
 	if testToken != "" {
 		req.Header.Set("Authorization", "Bearer "+testToken)
 	}
@@ -152,7 +160,7 @@ func doRequest(method, path string, body interface{}) (*http.Response, error) {
 		bodyReader = bytes.NewReader(bodyBytes)
 	}
 
-	req, err := http.NewRequest(method, baseURL+path, bodyReader)
+	req, err := http.NewRequest(method, testBaseURL+path, bodyReader)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +175,7 @@ func doRequest(method, path string, body interface{}) (*http.Response, error) {
 
 // doGet GET请求
 func doGet(path string, queryParams map[string]string) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodGet, baseURL+path, nil)
+	req, err := http.NewRequest(http.MethodGet, testBaseURL+path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -202,7 +210,7 @@ func parseResponse(resp *http.Response) (map[string]interface{}, error) {
 
 // TestHealth 健康检查
 func TestHealth(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/health")
+	resp, err := httpClient.Get(testBaseURL + "/api/health")
 	if err != nil {
 		t.Skipf("服务未运行或无法访问: %v", err)
 		return
@@ -221,7 +229,7 @@ func TestHealth(t *testing.T) {
 
 // TestGetVersionInfo 获取版本信息
 func TestGetVersionInfo(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-version-info")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-version-info")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
@@ -346,7 +354,7 @@ func TestAuthzCheckDataScope(t *testing.T) {
 
 // TestGetAccount 获取账户信息
 func TestGetAccount(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-account")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-account")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
@@ -358,7 +366,7 @@ func TestGetAccount(t *testing.T) {
 
 // TestUserinfo 获取用户信息
 func TestUserinfo(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/userinfo")
+	resp, err := httpClient.Get(testBaseURL + "/api/userinfo")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
@@ -409,14 +417,14 @@ func TestBffResolvePermissions(t *testing.T) {
 
 // TestLogout 登出
 func TestLogout(t *testing.T) {
-	resp, err := httpClient.Post(baseURL+"/api/logout", "", nil)
+	resp, err := httpClient.Post(testBaseURL+"/api/logout", "", nil)
 	assert.NoError(t, err)
 	fmt.Printf("[P0] 登出状态码: %d\n", resp.StatusCode)
 }
 
 // TestGetDashBoard 获取仪表盘信息
 func TestGetDashBoard(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-dashboard")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-dashboard")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_, _ = parseResponse(resp)
@@ -425,7 +433,7 @@ func TestGetDashBoard(t *testing.T) {
 
 // TestGetAppLogin 获取应用登录信息
 func TestGetAppLogin(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-app-login")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-app-login")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_, _ = parseResponse(resp)
@@ -434,7 +442,7 @@ func TestGetAppLogin(t *testing.T) {
 
 // TestGetSystemInfo 获取系统信息
 func TestGetSystemInfo(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-system-info")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-system-info")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	_, _ = parseResponse(resp)
@@ -443,7 +451,7 @@ func TestGetSystemInfo(t *testing.T) {
 
 // TestOidcDiscovery OIDC发现
 func TestOidcDiscovery(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/.well-known/openid-configuration")
+	resp, err := httpClient.Get(testBaseURL + "/.well-known/openid-configuration")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
@@ -455,7 +463,7 @@ func TestOidcDiscovery(t *testing.T) {
 
 // TestJwks 获取JWKS
 func TestJwks(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/.well-known/jwks")
+	resp, err := httpClient.Get(testBaseURL + "/.well-known/jwks")
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 
@@ -732,7 +740,7 @@ func TestUserRegistrationLoginFlow(t *testing.T) {
 
 	// 3. 获取账户信息
 	if flowToken != "" {
-		req, _ := http.NewRequest(http.MethodGet, baseURL+"/api/get-account", nil)
+		req, _ := http.NewRequest(http.MethodGet, testBaseURL+"/api/get-account", nil)
 		req.Header.Set("Authorization", "Bearer "+flowToken)
 		resp, _ = httpClient.Do(req)
 		assert.Equal(t, http.StatusOK, resp.StatusCode)
@@ -1194,14 +1202,14 @@ func TestInvalidPassword(t *testing.T) {
 
 // TestMissingAuthToken 缺少认证Token
 func TestMissingAuthToken(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/get-users")
+	resp, err := httpClient.Get(testBaseURL + "/api/get-users")
 	assert.NoError(t, err)
 	fmt.Printf("[P2] 无token请求状态码: %d\n", resp.StatusCode)
 }
 
 // TestInvalidAuthToken 无效认证Token
 func TestInvalidAuthToken(t *testing.T) {
-	req, _ := http.NewRequest(http.MethodGet, baseURL+"/api/get-users", nil)
+	req, _ := http.NewRequest(http.MethodGet, testBaseURL+"/api/get-users", nil)
 	req.Header.Set("Authorization", "Bearer invalid_token_12345")
 	resp, err := httpClient.Do(req)
 	assert.NoError(t, err)
@@ -1238,7 +1246,7 @@ func TestJsonInjection(t *testing.T) {
 // TestMalformedJSON 格式错误的JSON
 func TestMalformedJSON(t *testing.T) {
 	body := []byte(`{"owner": "test", name: "invalid"}`)
-	req, _ := http.NewRequest(http.MethodPost, baseURL+"/api/add-organization", bytes.NewReader(body))
+	req, _ := http.NewRequest(http.MethodPost, testBaseURL+"/api/add-organization", bytes.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := httpClient.Do(req)
 	assert.NoError(t, err)
@@ -1247,7 +1255,7 @@ func TestMalformedJSON(t *testing.T) {
 
 // TestWrongHTTPMethod 错误的HTTP方法
 func TestWrongHTTPMethod(t *testing.T) {
-	resp, err := httpClient.Get(baseURL + "/api/add-organization")
+	resp, err := httpClient.Get(testBaseURL + "/api/add-organization")
 	assert.NoError(t, err)
 	fmt.Printf("[P2] 错误HTTP方法状态码: %d\n", resp.StatusCode)
 }
@@ -1259,7 +1267,7 @@ func TestConcurrentRequests(t *testing.T) {
 
 	for i := 0; i < concurrency; i++ {
 		go func() {
-			resp, err := httpClient.Get(baseURL + "/api/get-users")
+			resp, err := httpClient.Get(testBaseURL + "/api/get-users")
 			if err == nil {
 				fmt.Printf("[P2] 并发请求状态码: %d\n", resp.StatusCode)
 			}
