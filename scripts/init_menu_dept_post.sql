@@ -54,23 +54,23 @@ CREATE TABLE IF NOT EXISTS post (
 
 -- ========== ACC 菜单 (17条) ==========
 INSERT INTO menu (owner, name, created_time, updated_time, display_name, application, parent_id, path, icon, component, type, sort_order, visible, is_enabled) VALUES
-('kaixuan','acc-dashboard','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','仪表板','acc','','/dashboard','DashboardOutlined','DashboardPage','Menu',1,true,true),
-('kaixuan','acc-apps','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','应用管理','acc','','/management/applications','AppstoreOutlined','ResourceListView','Menu',2,true,true),
-('kaixuan','acc-users','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','用户管理','acc','','/management/users','UserOutlined','ResourceListView','Menu',3,true,true),
-('kaixuan','acc-orgs','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','组织管理','acc','','/management/organizations','BankOutlined','ResourceListView','Menu',4,true,true),
-('kaixuan','acc-rbac','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限控制','acc','','','SafetyOutlined','','Menu',5,true,true),
-('kaixuan','acc-roles','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','角色管理','acc','acc-rbac','/management/roles','TeamOutlined','ResourceListView','Menu',1,true,true),
-('kaixuan','acc-permissions','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限管理','acc','acc-rbac','/management/permissions','KeyOutlined','ResourceListView','Menu',2,true,true),
-('kaixuan','acc-models','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限模型','acc','acc-rbac','/management/models','BlockOutlined','ResourceListView','Menu',3,true,true),
-('kaixuan','acc-org-structure','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','组织架构','acc','','','ApartmentOutlined','','Menu',6,true,true),
-('kaixuan','acc-departments','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','部门管理','acc','acc-org-structure','/management/departments','ClusterOutlined','ResourceListView','Menu',1,true,true),
-('kaixuan','acc-posts','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','岗位管理','acc','acc-org-structure','/management/posts','IdcardOutlined','ResourceListView','Menu',2,true,true),
-('kaixuan','acc-groups','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','分组管理','acc','acc-org-structure','/management/groups','GroupOutlined','ResourceListView','Menu',3,true,true),
-('kaixuan','acc-menus','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','菜单管理','acc','acc-org-structure','/management/menus','MenuOutlined','ResourceListView','Menu',4,true,true),
-('kaixuan','acc-system','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','系统管理','acc','','','SettingOutlined','','Menu',7,true,true),
-('kaixuan','acc-providers','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','提供商','acc','acc-system','/management/providers','CloudServerOutlined','ResourceListView','Menu',1,true,true),
-('kaixuan','acc-certs','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','证书管理','acc','acc-system','/management/certs','SafetyCertificateOutlined','ResourceListView','Menu',2,true,true),
-('kaixuan','acc-rules','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','安全规则','acc','acc-system','/management/permission-rules','FireOutlined','ResourceListView','Menu',3,true,true)
+('kaixuan','acc-dashboard','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','仪表板','agent-control-center','','/dashboard','DashboardOutlined','DashboardPage','Menu',1,true,true),
+('kaixuan','acc-apps','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','应用管理','agent-control-center','','/management/applications','AppstoreOutlined','ResourceListView','Menu',2,true,true),
+('kaixuan','acc-users','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','用户管理','agent-control-center','','/management/users','UserOutlined','ResourceListView','Menu',3,true,true),
+('kaixuan','acc-orgs','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','组织管理','agent-control-center','','/management/organizations','BankOutlined','ResourceListView','Menu',4,true,true),
+('kaixuan','acc-rbac','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限控制','agent-control-center','','','SafetyOutlined','','Menu',5,true,true),
+('kaixuan','acc-roles','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','角色管理','agent-control-center','acc-rbac','/management/roles','TeamOutlined','ResourceListView','Menu',1,true,true),
+('kaixuan','acc-permissions','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限管理','agent-control-center','acc-rbac','/management/permissions','KeyOutlined','ResourceListView','Menu',2,true,true),
+('kaixuan','acc-models','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','权限模型','agent-control-center','acc-rbac','/management/models','BlockOutlined','ResourceListView','Menu',3,true,true),
+('kaixuan','acc-org-structure','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','组织架构','agent-control-center','','','ApartmentOutlined','','Menu',6,true,true),
+('kaixuan','acc-departments','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','部门管理','agent-control-center','acc-org-structure','/management/departments','ClusterOutlined','ResourceListView','Menu',1,true,true),
+('kaixuan','acc-posts','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','岗位管理','agent-control-center','acc-org-structure','/management/posts','IdcardOutlined','ResourceListView','Menu',2,true,true),
+('kaixuan','acc-groups','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','分组管理','agent-control-center','acc-org-structure','/management/groups','GroupOutlined','ResourceListView','Menu',3,true,true),
+('kaixuan','acc-menus','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','菜单管理','agent-control-center','acc-org-structure','/management/menus','MenuOutlined','ResourceListView','Menu',4,true,true),
+('kaixuan','acc-system','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','系统管理','agent-control-center','','','SettingOutlined','','Menu',7,true,true),
+('kaixuan','acc-providers','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','提供商','agent-control-center','acc-system','/management/providers','CloudServerOutlined','ResourceListView','Menu',1,true,true),
+('kaixuan','acc-certs','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','证书管理','agent-control-center','acc-system','/management/certs','SafetyCertificateOutlined','ResourceListView','Menu',2,true,true),
+('kaixuan','acc-rules','2026-04-01T00:00:00Z','2026-04-01T00:00:00Z','安全规则','agent-control-center','acc-system','/management/permission-rules','FireOutlined','ResourceListView','Menu',3,true,true)
 ON CONFLICT (owner, name) DO NOTHING;
 
 -- ========== 部门 (3条) ==========

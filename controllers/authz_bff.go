@@ -256,22 +256,28 @@ func (c *ApiController) GetAppMenusForBff() {
 	}
 
 	// Filter menus by user permissions
-	subject := user.GetId()
-	filteredMenus := make([]*object.Menu, 0)
-	for _, menu := range menus {
-		if menu.Path == "" {
-			// Menus without path (e.g. parent containers) are always included
-			filteredMenus = append(filteredMenus, menu)
-			continue
-		}
+	// Admin users see all menus; non-admin users are filtered by permission
+	var filteredMenus []*object.Menu
+	if user.IsAdmin || user.IsGlobalAdmin() {
+		filteredMenus = menus
+	} else {
+		subject := user.GetId()
+		filteredMenus = make([]*object.Menu, 0)
+		for _, menu := range menus {
+			if menu.Path == "" {
+				// Menus without path (e.g. parent containers) are always included
+				filteredMenus = append(filteredMenus, menu)
+				continue
+			}
 
-		allowed, err := object.CheckApiPermission(subject, owner, menu.Path, "GET")
-		if err != nil {
-			// If permission check fails, skip this menu
-			continue
-		}
-		if allowed {
-			filteredMenus = append(filteredMenus, menu)
+			allowed, err := object.CheckApiPermission(subject, owner, menu.Path, "GET")
+			if err != nil {
+				// If permission check fails, skip this menu
+				continue
+			}
+			if allowed {
+				filteredMenus = append(filteredMenus, menu)
+			}
 		}
 	}
 
