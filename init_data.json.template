@@ -572,7 +572,7 @@
       "logo": "",
       "homepageUrl": "${PORTAL_URL:-http://localhost:8080}",
       "description": "Kaixuan Official Portal",
-      "organization": "built-in",
+      "organization": "kaixuan",
       "cert": "",
       "enablePassword": true,
       "enableSignUp": true,
