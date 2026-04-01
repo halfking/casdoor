@@ -1256,5 +1256,8 @@
       "trialDuration": 0,
       "application": ""
     }
-  ]
+  ],
+  "menus": [],
+  "departments": [],
+  "posts": []
 }

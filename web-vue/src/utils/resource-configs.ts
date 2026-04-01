@@ -13,6 +13,7 @@ import * as GroupApi from "@/api/modules/group";
 import * as MenuApi from "@/api/modules/menu";
 import * as DepartmentApi from "@/api/modules/department";
 import * as PostApi from "@/api/modules/post";
+import * as RuleApi from "@/api/modules/rule";
 import { extraResourceConfigs } from "@/utils/resource-configs-extra";
 import {
   RBAC_MODEL,
@@ -1088,37 +1089,52 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     listRoute: () => ({ name: "management-permission-rules" }),
     createRoute: () => ({ name: "management-permission-rules-new" }),
     editRoute: (record) => ({ name: "management-permission-rules-edit", params: { owner: String(record.owner), name: String(record.name) } }),
-    list: async (params, context) => ({ data: [], data2: 0 }),
-    get: async (params) => unwrap({ status: "ok", data: { owner: params.owner, name: params.name, displayName: "", ruleType: "SQL", expression: "", enabled: true }, msg: "" } as AnyResponse) as ApiResponse<Entity>,
-    create: async (entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    update: async (params, entity) => unwrap({ status: "ok", data: entity, msg: "" } as AnyResponse),
-    removeByKey: async (key, records) => unwrap({ status: "ok", data: null, msg: "" } as AnyResponse),
+    list: async (params, context) => unwrapList(await RuleApi.getRules({
+      owner: ownerFromContext(context),
+      page: Number(params.page || 1),
+      pageSize: Number(params.pageSize || 10),
+      field: String(params.searchedColumn || "name"),
+      value: String(params.searchText || ""),
+      sortField: String(params.sortField || ""),
+      sortOrder: String(params.sortOrder || ""),
+    }) as AnyResponse),
+    get: async (params) => unwrap(await RuleApi.getRule(decodeRouteValue(params.owner), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    create: async (entity) => unwrap(await RuleApi.addRule(entity as Parameters<typeof RuleApi.addRule>[0]) as AnyResponse),
+    update: async (params, entity) => unwrap(await RuleApi.updateRule(decodeRouteValue(params.owner), decodeRouteValue(params.name), entity as Parameters<typeof RuleApi.updateRule>[2]) as AnyResponse),
+    removeByKey: async (key, records) => {
+      const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.name}`);
+      return unwrap(await RuleApi.deleteRule(record as Parameters<typeof RuleApi.deleteRule>[0] || {}) as AnyResponse);
+    },
     createDefault: (context) => {
-      const organization = currentOrganization(context);
       const suffix = randomName();
+      const owner = currentOrganization(context);
       return {
-        owner: organization,
+        owner,
         name: `rule_${suffix}`,
-        displayName: `New Rule - ${suffix}`,
-        ruleType: "SQL",
-        expression: "SELECT * FROM table WHERE condition = true",
-        enabled: true,
+        type: "WAF",
+        expressions: [],
+        action: "Block",
+        statusCode: 403,
+        reason: "",
+        isVerbose: false,
       };
     },
     loadOptions: async () => ({ organizations: await loadOrganizationOptions() }),
     columns: [
       { key: "name", title: "general:Name", sorter: true, width: 180, render: (_value, record) => renderTextLink(`/management/permission-rules/${record.owner}/${encodeURIComponent(String(record.name))}`, String(record.name)) },
-      { key: "displayName", title: "general:Display name", sorter: true, width: 180 },
-      { key: "ruleType", title: "permission:Rule type", sorter: true, width: 100, render: (value) => tag(String(value)) },
-      { key: "enabled", title: "general:Enabled", sorter: true, width: 100, render: (value) => renderBoolean(value) },
+      { key: "type", title: "general:Type", sorter: true, width: 120, render: (value) => tag(String(value)) },
+      { key: "action", title: "rule:Action", sorter: true, width: 120, render: (value) => tag(String(value)) },
+      { key: "statusCode", title: "rule:Status code", sorter: true, width: 120 },
+      { key: "isVerbose", title: "rule:Verbose", sorter: true, width: 100, render: (value) => renderBoolean(value) },
     ],
     fields: [
       { key: "owner", label: "general:Organization", type: "select", required: true, optionSource: "organizations" },
       { key: "name", label: "general:Name", type: "text", required: true },
-      { key: "displayName", label: "general:Display name", type: "text" },
-      { key: "ruleType", label: "permission:Rule type", type: "select", required: true, options: toOptions(["SQL", "Expression"]) },
-      { key: "expression", label: "permission:Expression", type: "textarea", required: true },
-      { key: "enabled", label: "general:Enabled", type: "switch" },
+      { key: "type", label: "general:Type", type: "text", required: true },
+      { key: "action", label: "rule:Action", type: "select", required: true, options: toOptions(["Block", "Allow", "Drop"]) },
+      { key: "statusCode", label: "rule:Status code", type: "number" },
+      { key: "reason", label: "rule:Reason", type: "textarea" },
+      { key: "isVerbose", label: "rule:Verbose", type: "switch" },
     ],
   },
   ...extraResourceConfigs,
