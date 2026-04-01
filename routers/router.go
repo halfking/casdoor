@@ -81,6 +81,24 @@ func InitAPI() {
 	web.Router("/api/delete-group", &controllers.ApiController{}, "POST:DeleteGroup")
 	web.Router("/api/upload-groups", &controllers.ApiController{}, "POST:UploadGroups")
 
+	web.Router("/api/get-menus", &controllers.ApiController{}, "GET:GetMenus")
+	web.Router("/api/get-menu", &controllers.ApiController{}, "GET:GetMenu")
+	web.Router("/api/update-menu", &controllers.ApiController{}, "POST:UpdateMenu")
+	web.Router("/api/add-menu", &controllers.ApiController{}, "POST:AddMenu")
+	web.Router("/api/delete-menu", &controllers.ApiController{}, "POST:DeleteMenu")
+
+	web.Router("/api/get-departments", &controllers.ApiController{}, "GET:GetDepartments")
+	web.Router("/api/get-department", &controllers.ApiController{}, "GET:GetDepartment")
+	web.Router("/api/update-department", &controllers.ApiController{}, "POST:UpdateDepartment")
+	web.Router("/api/add-department", &controllers.ApiController{}, "POST:AddDepartment")
+	web.Router("/api/delete-department", &controllers.ApiController{}, "POST:DeleteDepartment")
+
+	web.Router("/api/get-posts", &controllers.ApiController{}, "GET:GetPosts")
+	web.Router("/api/get-post", &controllers.ApiController{}, "GET:GetPost")
+	web.Router("/api/update-post", &controllers.ApiController{}, "POST:UpdatePost")
+	web.Router("/api/add-post", &controllers.ApiController{}, "POST:AddPost")
+	web.Router("/api/delete-post", &controllers.ApiController{}, "POST:DeletePost")
+
 	web.Router("/api/get-global-users", &controllers.ApiController{}, "GET:GetGlobalUsers")
 	web.Router("/api/get-users", &controllers.ApiController{}, "GET:GetUsers")
 	web.Router("/api/get-sorted-users", &controllers.ApiController{}, "GET:GetSortedUsers")
@@ -168,6 +186,7 @@ func InitAPI() {
 	web.Router("/api/bff/resolve-permissions", &controllers.ApiController{}, "POST:ResolvePermissionsForBff")
 	web.Router("/api/bff/check-data-scope", &controllers.ApiController{}, "POST:CheckDataScopeForBff")
 	web.Router("/api/bff/tenant-tree", &controllers.ApiController{}, "GET:GetTenantTreeForBff")
+	web.Router("/api/bff/app-menus", &controllers.ApiController{}, "GET:GetAppMenusForBff")
 	web.Router("/api/upload-permissions", &controllers.ApiController{}, "POST:UploadPermissions")
 
 	web.Router("/api/get-models", &controllers.ApiController{}, "GET:GetModels")
