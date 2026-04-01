@@ -141,14 +141,31 @@ Menus → Departments → Posts
 - 配置项 `initDataNewOnly = true` 时仅创建不存在的记录（推荐生产环境）
 - 详见 [init-data-reference.md](init-data-reference.md)
 
-## 8. 相关文档
+## 8. 测试体系
+
+### 单元测试
+
+| 模块 | 测试文件 | 说明 |
+|------|----------|------|
+| BFF 控制器 | `controllers/authz_bff_test.go` | `normalizeActionToMethod`（19 用例）、`normalizeFeaturePath`（7 用例）、请求结构体验证 |
+| 菜单树构建 | `object/menu_test.go` | `BuildMenuTree` 6 场景：空列表、平铺、嵌套、孤儿节点、三层树、混合 |
+
+```bash
+go test -v ./controllers/ ./object/ -run 'TestNormalize|TestBff|TestBuildMenuTree'
+```
+
+### 冒烟测试
+
+`scripts/authz-bff-smoke.sh` 覆盖 4 个 BFF 端点（app-menus、resolve-permissions、check-data-scope、tenant-tree），输出逐条 PASS/FAIL 并以退出码汇总结果。
+
+## 9. 相关文档
 
 - [应用接入指南](app-onboarding.md) — 外部应用接入标准流程
 - [BFF API 参考](bff-api-reference.md) — BFF 端点完整参考
 - [部署指南](deployment.md) — Docker 部署与配置
 - [init_data.json 参考](init-data-reference.md) — 初始化数据格式说明
 
-## 9. 多租户优化路线图
+## 10. 多租户优化路线图
 
 详见 `plans/2026-04-01-casdoor-multi-tenant-optimization-plan.md`，主要规划：
 

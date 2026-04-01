@@ -215,7 +215,35 @@
 
 ---
 
-## 5. 冒烟测试脚本
+## 5. 测试
+
+### 5.1 单元测试
+
+BFF 层包含两组单元测试文件，使用 Go 标准 `testing` 包：
+
+| 测试文件 | 覆盖范围 | 用例数 |
+|----------|----------|--------|
+| `controllers/authz_bff_test.go` | `normalizeActionToMethod`（19 用例）、`normalizeFeaturePath`（7 用例）、请求结构体字段验证 | ~30 |
+| `object/menu_test.go` | `BuildMenuTree` 菜单树构建（空列表、平铺根节点、嵌套子节点、孤儿节点、三层树、混合场景） | 6 |
+
+**运行方式：**
+
+```bash
+# 运行所有 BFF 相关单元测试
+go test -v -run 'TestNormalizeActionToMethod|TestNormalizeFeaturePath|TestBff' ./controllers/
+go test -v -run 'TestBuildMenuTree' ./object/
+
+# 或一次性运行
+go test -v ./controllers/ ./object/ -run 'TestNormalize|TestBff|TestBuildMenuTree'
+```
+
+**关键测试说明：**
+
+- `TestNormalizeActionToMethod` — 验证 CRUD 动作到 HTTP 方法的映射（Read→GET、Write→POST、Delete→DELETE 等），涵盖大小写混合、空字符串、未知动作等边界情况
+- `TestNormalizeFeaturePath` — 验证特征路径标准化（添加前缀 `/`、`/api/` 前缀移除等）
+- `TestBuildMenuTree_*` — 验证菜单平铺列表到嵌套树的转换逻辑，确保 `parentId` 关联与 `sortOrder` 排序正确
+
+### 5.2 冒烟测试脚本
 
 参见 `scripts/authz-bff-smoke.sh`，覆盖全部 4 个端点的自动化冒烟验证。
 
@@ -230,6 +258,8 @@ ssh kaixuan-1 "bash /path/to/authz-bff-smoke.sh"
 3. `POST /api/bff/resolve-permissions` — 验证权限批量解析
 4. `POST /api/bff/check-data-scope` — 验证数据域检查
 5. `GET /api/bff/tenant-tree` — 验证租户列表
+
+脚本会输出每个端点的 PASS/FAIL 状态，并以非零退出码报告失败。
 
 ## 6. 客户端集成示例
 
