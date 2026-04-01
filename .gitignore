@@ -48,3 +48,4 @@ web-vue/node_modules/
 
 # Legacy build output directory (runtime-generated, do not track)
 web/
+conf/app.local.conf
