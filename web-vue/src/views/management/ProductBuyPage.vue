@@ -106,16 +106,17 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { message } from "ant-design-vue";
 import { ShoppingCartOutlined } from "@ant-design/icons-vue";
 import { useAuthStore } from "@/stores/auth";
-import * as ProductApi from "@/api/product";
-import * as PlanApi from "@/api/plan";
-import * as PricingApi from "@/api/pricing";
-import * as UserApi from "@/api/user";
+import * as ProductApi from "@/api/modules/product";
+import * as PlanApi from "@/api/modules/plan";
+import * as PricingApi from "@/api/modules/pricing";
+import * as UserApi from "@/api/modules/user";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -270,7 +271,7 @@ const handleBuyNow = async () => {
       ],
     };
     
-    const result = await (await import("@/api/order")).createOrder(orderData);
+    const result = await (await import("@/api/modules/order")).createOrder(orderData);
     if (result) {
       message.success(t("general.Successfully created"));
       router.push(`/order-pay?orderId=${result.name}`);

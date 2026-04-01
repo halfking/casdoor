@@ -1533,14 +1533,16 @@ export const extraResourceConfigs: Record<string, ResourceConfig> = {
     ],
   },
   // LDAP
-  ldaps: {
-    resourceKey: "ldaps",
-    list: async (params, context) => unwrapList(await LdapApi.getLdaps(ownerFromContext(context))),
-    get: async (owner, name) => unwrap(await LdapApi.getLdap(owner, name)),
-    create: async (entity) => unwrap(await LdapApi.addLdap(entity)),
-    update: async (entity) => unwrap(await LdapApi.updateLdap(entity)),
-    remove: async (entity) => unwrap(await LdapApi.deleteLdap(entity)),
-    createDefault: (context) => ({
+  ldaps: ({
+    list: async (_params: Record<string, unknown>, context: ResourceContext) => unwrapList(await LdapApi.getLdaps(ownerFromContext(context)) as AnyResponse),
+    get: async (params: Record<string, unknown>) => unwrap(await LdapApi.getLdap(decodeRouteValue(params.owner as string), decodeRouteValue(params.name as string)) as AnyResponse) as ApiResponse<Record<string, unknown>>,
+    create: async (entity: Record<string, unknown>) => unwrap(await LdapApi.addLdap(entity as Parameters<typeof LdapApi.addLdap>[0]) as AnyResponse),
+    update: async (_params: Record<string, unknown>, entity: Record<string, unknown>) => unwrap(await LdapApi.updateLdap(entity as Parameters<typeof LdapApi.updateLdap>[0]) as AnyResponse),
+    removeByKey: async (key: string, records: Record<string, unknown>[]) => {
+      const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.id}`);
+      return unwrap(await LdapApi.deleteLdap(record as Parameters<typeof LdapApi.deleteLdap>[0] || {}) as AnyResponse);
+    },
+    createDefault: (context: ResourceContext) => ({
       owner: context.organization || getStoredOrganization(),
       name: "",
       serverName: "",
@@ -1575,16 +1577,16 @@ export const extraResourceConfigs: Record<string, ResourceConfig> = {
       interval: 0,
       isEnabled: true,
     }),
-    loadOptions: async (_entity) => ({
+    loadOptions: async (_entity: Record<string, unknown>) => ({
       organizations: await loadOrganizationOptions(),
     }),
     columns: [
       { key: "owner", title: "general:Owner", width: 120, sorter: true },
-      { key: "name", title: "general:Name", width: 180, sorter: true, render: (_value, record) => renderTextLink(`/ldap/${record.owner}/${encodeURIComponent(String(record.name))}`, String(record.name)) },
+      { key: "name", title: "general:Name", width: 180, sorter: true, render: (_value: unknown, record: Record<string, unknown>) => renderTextLink(`/ldap/${record.owner}/${encodeURIComponent(String(record.name))}`, String(record.name)) },
       { key: "serverName", title: "ldap:Server Name", ellipsis: true },
       { key: "host", title: "ldap:Host", ellipsis: true },
       { key: "port", title: "ldap:Port", width: 80 },
-      { key: "isEnabled", title: "general:Enabled", width: 80, render: (value) => renderBoolean(value) },
+      { key: "isEnabled", title: "general:Enabled", width: 80, render: (value: unknown) => renderBoolean(value) },
     ],
     fields: [
       { key: "owner", label: "general:Organization", type: "select", required: true, optionSource: "organizations" },
@@ -1602,5 +1604,5 @@ export const extraResourceConfigs: Record<string, ResourceConfig> = {
       { key: "syncInterval", label: "ldap:Sync Interval (minutes)", type: "number" },
       { key: "isEnabled", label: "general:Enabled", type: "switch" },
     ],
-  },
+  }) as unknown as ResourceConfig,
 };

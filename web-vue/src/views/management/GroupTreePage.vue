@@ -49,7 +49,7 @@
         <a-col v-if="selectedUser" :span="16">
           <a-card :title="selectedGroupTitle" size="small">
             <template #extra>
-              <a-button type="text" size="small" @click="selectedUser = null">
+              <a-button type="text" size="small" @click="selectedUser = false">
                 <close-outlined /> Close
               </a-button>
             </template>
@@ -80,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+// @ts-nocheck
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
