@@ -1,6 +1,7 @@
 import { createI18n } from "vue-i18n";
 import * as Conf from "../Conf";
 import en from "../locales/en/data.json";
+import zh from "../locales/zh/data.json";
 
 // Flatten one level: { account: { k: v }, ... } → { "account:k": v, "account.k": v, ... }
 // Registers both ":" (i18next convention) and "." separators for compatibility.
@@ -45,6 +46,7 @@ const i18n = createI18n<false>({
   fallbackLocale: "en",
   messages: {
     en: flattenNamespaces(en as Record<string, Record<string, string>>),
+    zh: flattenNamespaces(zh as Record<string, Record<string, string>>),
   },
   missing: (_locale, key) => {
     // silent missing in production
@@ -57,8 +59,10 @@ const i18n = createI18n<false>({
   },
 });
 
+document.documentElement.setAttribute("lang", String(i18n.global.locale.value || Conf.DefaultLanguage));
+
 // Lazy-load locale on demand
-const loadedLocales = new Set<string>(["en"]);
+const loadedLocales = new Set<string>(["en", "zh"]);
 
 export async function loadLocale(lang: string) {
   if (loadedLocales.has(lang)) return;

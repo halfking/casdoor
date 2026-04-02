@@ -6,7 +6,7 @@ export const ShowGithubCorner = false
 export const IsDemoMode = false
 
 export const ForceLanguage = ''
-export const DefaultLanguage = 'en'
+export const DefaultLanguage = 'zh'
 
 export const InitThemeAlgorithm = true
 export const ThemeDefault = {

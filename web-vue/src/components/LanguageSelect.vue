@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { DefaultLanguage } from "@/Conf";
 import { setLanguage } from "@/i18n/index";
 
 const { t } = useI18n();
@@ -30,13 +31,13 @@ const languages = [
   { key: "ru", label: "Русский" },
 ];
 
-const selected = ref(localStorage.getItem("language") || "en");
+const selected = ref(localStorage.getItem("language") || DefaultLanguage);
 
 async function handleChange(val: string) {
   await setLanguage(val);
 }
 
 onMounted(() => {
-  selected.value = localStorage.getItem("language") || "en";
+  selected.value = localStorage.getItem("language") || DefaultLanguage;
 });
 </script>

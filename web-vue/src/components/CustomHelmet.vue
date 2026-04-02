@@ -15,11 +15,15 @@ const props = defineProps<{
 
 const title = computed(() => {
   const app = props.application;
-  if (!app) return "Casdoor";
-  return app.displayName || app.name || "Casdoor";
+  if (!app) return "开轩认证";
+  const displayName = app.displayName || app.name || "开轩认证";
+  if (displayName === "Casdoor" || displayName === "Built-in Organization") {
+    return "开轩认证";
+  }
+  return displayName;
 });
 
 const favicon = computed(() => {
-  return props.application?.favicon || "";
+  return props.application?.favicon || "/img/kx-favicon.svg";
 });
 </script>

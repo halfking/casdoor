@@ -140,7 +140,7 @@
             >
               <a-input
                 v-model:value="formState.username"
-                :placeholder="item.placeholder || t('login:username, email or phone')"
+                  :placeholder="item.placeholder || t('login:username, Email or phone')"
                 size="large"
                 :prefix="usernamePrefix"
                 @change="(e: any) => login.onUsernameChange(e.target?.value ?? e)"
@@ -162,7 +162,7 @@
               >
                 <a-input-password
                   v-model:value="formState.password"
-                  :placeholder="item.placeholder || t('login:Password')"
+                    :placeholder="item.placeholder || t('general:Password')"
                   size="large"
                 />
               </a-form-item>
