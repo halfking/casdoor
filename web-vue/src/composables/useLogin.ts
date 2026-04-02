@@ -409,10 +409,22 @@ export function useLogin(props: {
       return;
     }
 
-    // Default redirect
-    const link = res.data || res.data2;
+    // In OAuth code flow, the backend returns a raw authorization code.
+    // The frontend must construct the business callback URL explicitly.
+    const code = res.data as string | undefined;
+    if (code && oAuthParams?.redirectUri) {
+      const redirectUrl = new URL(oAuthParams.redirectUri);
+      redirectUrl.searchParams.set("code", code);
+      if (oAuthParams.state) {
+        redirectUrl.searchParams.set("state", oAuthParams.state);
+      }
+      Setting.goToLink(redirectUrl.toString());
+      return;
+    }
+
+    const link = (res.data2 || res.data) as string | undefined;
     if (link) {
-      Setting.goToLink(link as string);
+      Setting.goToLink(link);
     } else {
       Setting.goToLink("/");
     }
