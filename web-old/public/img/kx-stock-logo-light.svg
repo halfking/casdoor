@@ -1,14 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
-  <title id="title">开轩量化</title>
-  <desc id="desc">开轩量化 Quant 品牌标识</desc>
+  <title id="title">开轩启圭</title>
+  <desc id="desc">开轩启圭量智服务标识</desc>
   <defs>
     <linearGradient id="kxStockLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fa8c16"/>
-      <stop offset="100%" stop-color="#ffc53d"/>
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
     </linearGradient>
   </defs>
-  <rect x="0" y="0" width="88" height="88" rx="24" fill="url(#kxStockLightGrad)"/>
-  <text x="44" y="57" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#ffffff" letter-spacing="2">开轩</text>
-  <text x="110" y="38" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1">开轩量化</text>
-  <text x="110" y="62" font-family="'PingFang SC','Microsoft YaHei',Arial,sans-serif" font-size="13" fill="#6b7280" letter-spacing="0.12em">KX QUANT</text>
+  <circle cx="44" cy="44" r="36" fill="url(#kxStockLightGrad)"/>
+  <circle cx="44" cy="44" r="28" fill="none" stroke="#ffffff" stroke-opacity="0.24" stroke-width="1.5"/>
+  <circle cx="44" cy="44" r="16" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="2.2 2.2" opacity="0.5"/>
+  <circle cx="44" cy="44" r="9" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="2.2 2.2" opacity="0.7"/>
+  <circle cx="44" cy="44" r="3" fill="#ffffff"/>
+  <path d="M44 36 Q52 44 44 52" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.82"/>
+  <circle cx="50" cy="38" r="2" fill="#ffffff" opacity="0.9"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1.5">开轩启圭</text>
 </svg>

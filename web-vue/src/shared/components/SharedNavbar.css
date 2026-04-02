@@ -38,7 +38,7 @@
 .kx-shared-navbar__logo-icon {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 50%;
 }
 
 .kx-shared-navbar__logo-text strong {
