@@ -72,13 +72,24 @@ import { showMessage } from "@/utils/management";
 
 const { t } = useI18n();
 
+interface SystemInfo {
+  cpuUsage: number[];
+  memoryUsed: number;
+  memoryTotal: number;
+}
+
+interface VersionInfo {
+  version: string;
+  commitOffset: number;
+}
+
 const loading = ref(true);
-const systemInfo = ref({
+const systemInfo = ref<SystemInfo>({
   cpuUsage: [] as number[],
   memoryUsed: 0,
   memoryTotal: 0,
 });
-const versionInfo = ref({
+const versionInfo = ref<VersionInfo>({
   version: "",
   commitOffset: 0,
 });
@@ -107,10 +118,10 @@ async function fetchData() {
     ]);
 
     if (sysRes.status === "ok") {
-      systemInfo.value = sysRes.data;
+      systemInfo.value = sysRes.data as SystemInfo;
     }
     if (verRes.status === "ok") {
-      versionInfo.value = verRes.data;
+      versionInfo.value = verRes.data as VersionInfo;
     }
   } catch (error) {
     showMessage("error", t("general:Failed to get") + ": " + (error as Error).message);
@@ -132,7 +143,7 @@ onMounted(() => {
   timer = window.setInterval(() => {
     void SystemApi.getSystemInfo().then(res => {
       if (res.status === "ok") {
-        systemInfo.value = res.data;
+        systemInfo.value = res.data as SystemInfo;
       }
     });
   }, 3000);
