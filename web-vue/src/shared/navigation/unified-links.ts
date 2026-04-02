@@ -33,7 +33,7 @@ const PROD_SERVICE_URLS: Record<ServiceKey, string> = {
   acc: 'https://acc.itestu.cn',
   auth: 'https://auth.itestu.cn',
   finance: 'https://finance.itestu.cn',
-  docs: 'https://docs.itestu.cn',
+  docs: 'https://doc-tools.itestu.cn',
   trendaradar: 'https://trendaradar.itestu.cn',
   orchest: 'https://orchest.itestu.cn',
 };

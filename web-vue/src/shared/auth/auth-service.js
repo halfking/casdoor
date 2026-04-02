@@ -156,7 +156,7 @@ function getBaseUrl() {
     auth: isLocalEnv() ? buildLocalServiceUrl(8000) : 'https://auth.itestu.cn',
     stock: isLocalEnv() ? buildLocalServiceUrl(8090) : 'https://finance.itestu.cn',
     trendaradar: isLocalEnv() ? `${getRuntimeOrigin()}/trendaradar` : 'https://trendaradar.itestu.cn',
-    docs: isLocalEnv() ? buildLocalServiceUrl(8200) : 'https://docs.itestu.cn',
+    docs: isLocalEnv() ? buildLocalServiceUrl(8200) : 'https://doc-tools.itestu.cn',
   };
   return baseUrls;
 }

@@ -836,7 +836,7 @@
       "redirectUris": [
         "${DOCTOOLS_URL}/auth/callback",
         "http://localhost:8200/auth/callback",
-        "https://docs.itestu.cn/auth/callback"
+        "https://doc-tools.itestu.cn/auth/callback"
       ],
       "tokenFormat": "JWT",
       "tokenFields": [],
