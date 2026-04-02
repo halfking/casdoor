@@ -89,6 +89,7 @@ export function useLogin(props: {
   const prefilledUsername = ref("");
   const captchaValues = ref<{ captchaType?: string; captchaToken?: string; clientSecret?: string }>({});
   const getVerifyTotp = ref<undefined | (() => unknown)>(undefined);
+  const oauthParams = ref<Provider.OAuthGetParams | null>(null);
 
   const application = ref<Application | null>(null);
 
@@ -103,6 +104,7 @@ export function useLogin(props: {
   function resolveRouteParams() {
     const path = route.path;
     const query = route.query;
+    oauthParams.value = Provider.getOAuthGetParameters(new URLSearchParams(window.location.search));
 
     if (path.includes("/login/oauth/device/")) {
       type.value = "device";
@@ -151,7 +153,7 @@ export function useLogin(props: {
         res = await getDefaultApplication("admin", owner.value);
       } else {
         // OAuth login — extract from query
-        const oAuthParams = Provider.getOAuthGetParameters();
+        const oAuthParams = oauthParams.value;
         if (oAuthParams?.clientId) {
           res = await AuthApi.getApplicationLogin({
             type: type.value,
@@ -291,7 +293,7 @@ export function useLogin(props: {
     if (!app) return;
 
     populateOauthValues(values);
-    const oAuthParams = Provider.getOAuthGetParameters();
+    const oAuthParams = oauthParams.value;
     const responseType = values["type"] as string || type.value;
 
     try {
@@ -397,7 +399,7 @@ export function useLogin(props: {
     }
 
     // noRedirect mode for embedded
-    const oAuthParams = Provider.getOAuthGetParameters();
+    const oAuthParams = oauthParams.value;
     if (oAuthParams?.noRedirect === "true") {
       const targetOrigin = oAuthParams.redirectUri
         ? new URL(oAuthParams.redirectUri).origin
