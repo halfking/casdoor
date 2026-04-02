@@ -1,18 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
-  <title id="title">开轩启圭</title>
-  <desc id="desc">开轩启圭量智服务标识深色版</desc>
+  <title id="title">开轩量智</title>
+  <desc id="desc">开轩量智品牌标识</desc>
   <defs>
     <linearGradient id="kxStockDarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="100%" stop-color="#0ea5e9"/>
+      <stop offset="0%" stop-color="#f87171"/>
+      <stop offset="100%" stop-color="#dc2626"/>
     </linearGradient>
   </defs>
   <circle cx="44" cy="44" r="36" fill="url(#kxStockDarkGrad)"/>
   <circle cx="44" cy="44" r="28" fill="none" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5"/>
-  <circle cx="44" cy="44" r="16" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-dasharray="2.2 2.2" opacity="0.55"/>
-  <circle cx="44" cy="44" r="9" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-dasharray="2.2 2.2" opacity="0.78"/>
-  <circle cx="44" cy="44" r="3" fill="#ffffff"/>
-  <path d="M44 36 Q52 44 44 52" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.9"/>
-  <circle cx="50" cy="38" r="2" fill="#ffffff" opacity="0.95"/>
-  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1.5">开轩启圭</text>
+  <line x1="28" y1="58" x2="28" y2="30" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="28" y1="58" x2="60" y2="58" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M28 50 L38 40 L46 44 L58 30" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <circle cx="28" cy="50" r="2.4" fill="#ffffff"/>
+  <circle cx="38" cy="40" r="2.4" fill="#ffffff"/>
+  <circle cx="46" cy="44" r="2.4" fill="#ffffff"/>
+  <circle cx="58" cy="30" r="2.4" fill="#ffffff"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1.5">开轩量智</text>
 </svg>

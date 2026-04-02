@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
-  <title id="title">开轩启圭</title>
-  <desc id="desc">开轩启圭认证中心标识</desc>
+  <title id="title">开轩认证</title>
+  <desc id="desc">开轩认证 Auth 品牌标识</desc>
   <defs>
     <linearGradient id="kxAuthLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1677ff"/>
-      <stop offset="100%" stop-color="#0fb37a"/>
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
   </defs>
   <circle cx="44" cy="44" r="36" fill="url(#kxAuthLightGrad)"/>
-  <circle cx="44" cy="44" r="28" fill="none" stroke="#ffffff" stroke-opacity="0.24" stroke-width="1.5"/>
-  <text x="44" y="54" text-anchor="middle" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="25" font-weight="700" fill="#ffffff">开</text>
-  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1.5">开轩启圭</text>
+  <path d="M44 20 L58 27 V41 C58 50 52 57 44 61 C36 57 30 50 30 41 V27 Z" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round" opacity="0.85"/>
+  <path d="M36 41 L42 47 L53 36" fill="none" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1.5">开轩认证</text>
 </svg>

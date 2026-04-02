@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
+  <title id="title">开轩智客</title>
+  <desc id="desc">开轩智客品牌标识</desc>
+  <defs>
+    <linearGradient id="kxAicmsLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+  </defs>
+  <circle cx="44" cy="44" r="36" fill="url(#kxAicmsLightGrad)"/>
+  <path d="M24 24 C24 21.2 26.2 19 29 19 L55 19 C57.8 19 60 21.2 60 24 L60 42 C60 44.8 57.8 47 55 47 L40 47 L32 54 L32 47 L29 47 C26.2 47 24 44.8 24 42 Z" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.85"/>
+  <circle cx="36" cy="33" r="2" fill="#ffffff" opacity="0.85"/>
+  <circle cx="44" cy="33" r="2" fill="#ffffff" opacity="0.85"/>
+  <circle cx="52" cy="33" r="2" fill="#ffffff" opacity="0.85"/>
+  <path d="M58 14 L59.2 17.8 L63 19 L59.2 20.2 L58 24 L56.8 20.2 L53 19 L56.8 17.8 Z" fill="#ffffff" opacity="0.8"/>
+  <path d="M61 26 L61.5 27.6 L63.1 28.1 L61.5 28.6 L61 30.2 L60.5 28.6 L58.9 28.1 L60.5 27.6 Z" fill="#ffffff" opacity="0.5"/>
+  <rect x="42" y="56" width="20" height="8" rx="4" fill="#ffffff" fill-opacity="0.22"/>
+  <line x1="46" y1="60" x2="58" y2="60" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1.5">开轩智客</text>
+</svg>
