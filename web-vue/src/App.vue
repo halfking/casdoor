@@ -10,7 +10,7 @@
 import { computed, onMounted, onUnmounted, type Component } from "vue";
 import { useRoute } from "vue-router";
 import { useAppStore } from "@/stores/app";
-import { buildThemeConfig } from "@/styles/antd-theme";
+import { buildThemeConfigWithAlgorithms } from "@/styles/antd-theme";
 import ManagementLayout from "@/layouts/ManagementLayout.vue";
 import EntryLayout from "@/layouts/EntryLayout.vue";
 
@@ -49,7 +49,9 @@ const antdLocaleMap: Record<string, Locale> = {
 const appStore = useAppStore();
 const route = useRoute();
 
-const themeConfig = computed(() => buildThemeConfig(appStore.themeData));
+const themeConfig = computed(() => {
+  return buildThemeConfigWithAlgorithms(appStore.themeData, appStore.themeAlgorithm);
+});
 const antdLocale = computed(() => antdLocaleMap[appStore.language] ?? enUS);
 
 const layoutComponent = computed<Component>(() => {

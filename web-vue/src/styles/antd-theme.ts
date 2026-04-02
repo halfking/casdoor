@@ -53,3 +53,16 @@ export function buildThemeConfig(themeData: CasdoorThemeData): ThemeConfig {
     },
   };
 }
+
+export function buildThemeConfigWithAlgorithms(
+  themeData: CasdoorThemeData,
+  algorithmNames: string[]
+): ThemeConfig {
+  return {
+    algorithm: getAlgorithm(algorithmNames.length > 0 ? algorithmNames : getAlgorithmNames(themeData)),
+    token: {
+      colorPrimary: themeData.colorPrimary ?? Conf.ThemeDefault.colorPrimary,
+      borderRadius: themeData.borderRadius ?? Conf.ThemeDefault.borderRadius,
+    },
+  };
+}

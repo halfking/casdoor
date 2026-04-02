@@ -19,6 +19,11 @@ export const useAppStore = defineStore("app", () => {
 
   const isDark = computed(() => themeAlgorithm.value.includes("dark"));
 
+  function syncDocumentTheme(isDarkTheme: boolean) {
+    document.documentElement.setAttribute("data-theme", isDarkTheme ? "night" : "daylight");
+    document.documentElement.style.colorScheme = isDarkTheme ? "dark" : "light";
+  }
+
   function getStoredThemeAlgorithm(): string[] {
     try {
       const stored = localStorage.getItem("themeAlgorithm");
@@ -33,9 +38,8 @@ export const useAppStore = defineStore("app", () => {
     themeAlgorithm.value = algorithms;
     localStorage.setItem("themeAlgorithm", JSON.stringify(algorithms));
 
-    // Sync data-theme attribute
     const isDarkTheme = algorithms.includes("dark");
-    document.documentElement.setAttribute("data-theme", isDarkTheme ? "night" : "daylight");
+    syncDocumentTheme(isDarkTheme);
 
     // Cross-app sync
     localStorage.setItem("kx-ui-theme", isDarkTheme ? "night" : "daylight");
@@ -67,11 +71,7 @@ export const useAppStore = defineStore("app", () => {
     themeData.value = data;
   }
 
-  // Initialize data-theme attribute
-  document.documentElement.setAttribute(
-    "data-theme",
-    themeAlgorithm.value.includes("dark") ? "night" : "daylight"
-  );
+  syncDocumentTheme(themeAlgorithm.value.includes("dark"));
 
   return {
     serverUrl,
