@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="开轩智财">
+  <defs>
+    <linearGradient id="icAcctGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#3730a3"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="22" fill="url(#icAcctGrad)"/>
+  <!-- 凭证纸 -->
+  <rect x="14" y="12" width="20" height="26" rx="2" fill="#ffffff" opacity="0.92"/>
+  <!-- 横线（账目行） -->
+  <line x1="17" y1="18" x2="31" y2="18" stroke="#4f46e5" stroke-width="0.8" opacity="0.4"/>
+  <line x1="17" y1="22" x2="31" y2="22" stroke="#4f46e5" stroke-width="0.8" opacity="0.4"/>
+  <line x1="17" y1="26" x2="31" y2="26" stroke="#4f46e5" stroke-width="0.8" opacity="0.4"/>
+  <line x1="17" y1="30" x2="25" y2="30" stroke="#4f46e5" stroke-width="0.8" opacity="0.4"/>
+  <!-- ¥ 符号 -->
+  <text x="26" y="35" font-family="Arial,sans-serif" font-size="10" font-weight="700" fill="#4f46e5" opacity="0.85">¥</text>
+  <!-- 勾号（已审核） -->
+  <polyline points="28,16 30,18.5 34,13" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

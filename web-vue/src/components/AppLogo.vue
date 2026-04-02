@@ -15,7 +15,18 @@ const props = defineProps<{
 }>();
 
 const logoUrl = computed(() => {
-  return props.application?.logo || "";
+  const application = props.application;
+  if (!application) return "";
+
+  const name = String(application.name || "").toLowerCase();
+  if (name === "stock-trading") {
+    return "/img/kx-stock-logo-light.svg";
+  }
+  if (name === "trendaradar") {
+    return "/img/kx-trendaradar-logo-light.svg";
+  }
+
+  return application.logo || "";
 });
 
 const orgUrl = computed(() => {
