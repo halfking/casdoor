@@ -45,9 +45,11 @@ server
 # Build output directories
 web-vue/dist/
 web/dist/
+vue/dist/
 
 # Vue frontend dependencies
 web-vue/node_modules/
+vue/node_modules/
 .playwright-mcp/
 
 # Legacy build output directory (runtime-generated, do not track)
