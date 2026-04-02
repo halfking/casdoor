@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="pmsDarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景 -->
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="url(#pmsDarkGrad)"/>
+  <!-- 物管: 建筑 + 齿轮 -->
+  <g fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 主建筑体 -->
+    <rect x="12" y="18" width="14" height="22" rx="1.5" stroke-width="2" fill="white" fill-opacity="0.18"/>
+    <!-- 建筑窗户 - 左列 -->
+    <rect x="15" y="21" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+    <rect x="15" y="27" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+    <rect x="15" y="33" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.6" stroke="none"/>
+    <!-- 建筑窗户 - 右列 -->
+    <rect x="21" y="21" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+    <rect x="21" y="27" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+    <rect x="21" y="33" width="3" height="3" rx="0.5" fill="#ffffff" fill-opacity="0.6" stroke="none"/>
+    <!-- 屋顶三角 -->
+    <path d="M11 18 L19 10 L27 18" stroke-width="2" fill="white" fill-opacity="0.12"/>
+    <!-- 右侧齿轮 - 管理象征 -->
+    <circle cx="34" cy="30" r="6" stroke-width="1.8" fill="white" fill-opacity="0.12"/>
+    <circle cx="34" cy="30" r="2.5" fill="#ffffff" stroke="none"/>
+    <!-- 齿轮齿 -->
+    <line x1="34" y1="23" x2="34" y2="25.5" stroke-width="2"/>
+    <line x1="34" y1="34.5" x2="34" y2="37" stroke-width="2"/>
+    <line x1="27" y1="30" x2="29.5" y2="30" stroke-width="2"/>
+    <line x1="38.5" y1="30" x2="41" y2="30" stroke-width="2"/>
+    <line x1="29.1" y1="25.1" x2="30.8" y2="26.8" stroke-width="1.6"/>
+    <line x1="37.2" y1="33.2" x2="38.9" y2="34.9" stroke-width="1.6"/>
+    <line x1="38.9" y1="25.1" x2="37.2" y2="26.8" stroke-width="1.6"/>
+    <line x1="30.8" y1="33.2" x2="29.1" y2="34.9" stroke-width="1.6"/>
+  </g>
+</svg>
