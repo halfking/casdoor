@@ -62,6 +62,8 @@ export function getEmailAndPhone(organization: string, username: string) {
 export function getApplicationLogin(params: {
   type?: string;
   id?: string;
+  clientId?: string;
+  responseType?: string;
   redirectUri?: string;
   service?: string;
   scope?: string;

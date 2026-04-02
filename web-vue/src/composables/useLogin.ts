@@ -155,7 +155,8 @@ export function useLogin(props: {
         if (oAuthParams?.clientId) {
           res = await AuthApi.getApplicationLogin({
             type: type.value,
-            id: `admin/${oAuthParams.clientId}`,
+            clientId: oAuthParams.clientId,
+            responseType: oAuthParams.responseType || type.value,
             redirectUri: oAuthParams.redirectUri,
             scope: oAuthParams.scope,
             state: oAuthParams.state,
