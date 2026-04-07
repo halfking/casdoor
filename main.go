@@ -45,6 +45,9 @@ func main() {
 	}
 	web.BConfig.WebConfig.Session.SessionCookieLifeTime = 3600 * 24 * 30
 	web.BConfig.WebConfig.Session.SessionGCMaxLifetime = 3600 * 24 * 30
+	if cookieDomain := conf.GetConfigString("sessionCookieDomain"); cookieDomain != "" {
+		web.BConfig.WebConfig.Session.SessionDomain = cookieDomain
+	}
 	// web.BConfig.WebConfig.Session.SessionCookieSameSite = http.SameSiteNoneMode
 
 	routers.InitAPI()
