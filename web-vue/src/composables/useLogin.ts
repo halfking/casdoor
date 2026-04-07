@@ -352,7 +352,7 @@ export function useLogin(props: {
         return;
       }
       Setting.showMessage("success", t("login:Successfully logged in"));
-      Setting.goToLink("/");
+      Setting.goToLink(Setting.getFromLink());
     } else if (responseType === "code") {
       postCodeLoginAction(res);
     } else if (responseType === "token" || responseType === "id_token") {
@@ -374,7 +374,7 @@ export function useLogin(props: {
       }
     } else {
       Setting.showMessage("success", t("login:Successfully logged in"));
-      Setting.goToLink("/");
+      Setting.goToLink(Setting.getFromLink());
     }
   }
 
