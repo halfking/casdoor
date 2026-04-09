@@ -59,7 +59,12 @@ export function randomName(): string {
 
 export function deepClone<T>(value: T): T {
   if (typeof structuredClone === "function") {
-    return structuredClone(value);
+    try {
+      return structuredClone(value);
+    } catch {
+      // Vue reactive proxies cannot be cloned by structuredClone.
+      // Fall back to JSON cloning for plain data objects.
+    }
   }
 
   return JSON.parse(JSON.stringify(value)) as T;

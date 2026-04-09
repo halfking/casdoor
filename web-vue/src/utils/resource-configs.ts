@@ -165,7 +165,16 @@ async function loadProviderOptions(organization: string): Promise<SelectOption[]
 }
 
 function decodeRouteValue(value: unknown): string {
-  return decodeURIComponent(String(value || ""));
+  const raw = String(value || "");
+  if (!raw) {
+    return "";
+  }
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    // Vue Router params are usually already decoded; keep raw value on malformed sequences.
+    return raw;
+  }
 }
 
 const providerCategoryOptions = toOptions([
@@ -211,7 +220,50 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
         : await UserApi.getUsers({ owner: currentOrganization(context), page: Number(params.page || 1), pageSize: Number(params.pageSize || 10), field: String(params.searchedColumn || "name"), value: String(params.searchText || ""), sortField: String(params.sortField || ""), sortOrder: String(params.sortOrder || "") });
       return unwrapList(response as AnyResponse);
     },
-    get: async (params) => unwrap(await UserApi.getUser(decodeRouteValue(params.owner), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    get: async (params) => {
+      const owner = decodeRouteValue(params.owner);
+      const name = decodeRouteValue(params.name);
+      try {
+        const response = unwrap(await UserApi.getUser(owner, name) as AnyResponse) as ApiResponse<Entity>;
+        if (response.data) {
+          return response as ApiResponse<Entity>;
+        }
+      } catch {
+        // Fallback to list query when get-user returns non-ok for edge cases.
+      }
+
+      // Fallback: query list endpoint and match current user.
+      const listResponse = unwrap(await UserApi.getUsers({
+        owner,
+        page: 1,
+        pageSize: 100,
+        field: "name",
+        value: name,
+      }) as AnyResponse);
+      let matched = ((listResponse.data as Entity[]) || []).find(
+        (item) => String(item.name || "") === name && String(item.owner || "") === owner,
+      );
+      if (!matched) {
+        const globalResponse = unwrap(await UserApi.getGlobalUsers({
+          page: 1,
+          pageSize: 500,
+          field: "name",
+          value: name,
+        }) as AnyResponse);
+        matched = ((globalResponse.data as Entity[]) || []).find(
+          (item) => String(item.name || "") === name && String(item.owner || "") === owner,
+        );
+      }
+      return {
+        status: "ok",
+        msg: "",
+        sub: "",
+        name: "",
+        data: matched || { owner, name },
+        data2: matched ? 1 : 0,
+        data3: null,
+      } as ApiResponse<Entity>;
+    },
     create: async (entity) => unwrap(await UserApi.addUser(entity as Parameters<typeof UserApi.addUser>[0]) as AnyResponse),
     update: async (params, entity) => unwrap(await UserApi.updateUser(decodeRouteValue(params.owner), decodeRouteValue(params.name), entity as Parameters<typeof UserApi.updateUser>[2]) as AnyResponse),
     removeByKey: async (key, records) => {

@@ -97,6 +97,9 @@ lint: ## Run golangci-lint
 	@echo "---lint---"
 	golangci-lint run --modules-download-mode=vendor ./...
 
+verify-casdoor-config: ## Verify onboarding/init_data consistency (single source of truth)
+	bash ../../deploy/onboarding/verify-casdoor-config-consistency.sh
+
 ##@ Deployment
 
 .PHONY: deploy

@@ -58,6 +58,14 @@
 
       <!-- Login form area -->
       <div class="login-form">
+          <div class="brand-header">
+            <img class="brand-logo" src="/assets/logo-icon.svg" alt="开轩启圭" />
+            <div class="brand-text">
+              <div class="brand-title">开轩启圭</div>
+              <div class="brand-subtitle">统一认证 · {{ brandProductName }}</div>
+            </div>
+          </div>
+
         <!-- Background -->
         <div
           v-if="application?.formBackgroundUrl"
@@ -458,6 +466,10 @@ const shouldAutoRedirectToProvider = computed(() => {
   return visibleProviders.length === 1;
 });
 
+const brandProductName = computed(() => {
+  return application.value?.displayName || application.value?.name || "Auth";
+});
+
 const contentStyle = computed(() => {
   const offset = application.value?.formOffset;
   return { margin: login.parseOffset(offset) };
@@ -619,6 +631,35 @@ onMounted(async () => {
   max-width: 460px;
 }
 
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+}
+
 .login-background {
   position: absolute;
   top: 0;
@@ -705,6 +746,11 @@ onMounted(async () => {
     min-width: unset;
     max-width: unset;
     padding: 24px 16px;
+  }
+
+  .brand-header {
+    justify-content: center;
+    margin-bottom: 12px;
   }
 }
 </style>

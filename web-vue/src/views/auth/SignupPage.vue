@@ -21,6 +21,13 @@
 
         <div class="login-form">
           <CustomHelmet :application="application" />
+          <div class="brand-header">
+            <img class="brand-logo" src="/assets/logo-icon.svg" alt="开轩启圭" />
+            <div class="brand-text">
+              <div class="brand-title">开轩启圭</div>
+              <div class="brand-subtitle">统一认证 · {{ brandProductName }}</div>
+            </div>
+          </div>
           <AppLogo :application="application" />
 
           <LanguageSelect
@@ -61,6 +68,17 @@
             </a-form-item>
             <a-form-item name="organization" hidden>
               <a-input />
+            </a-form-item>
+            <a-form-item
+              name="signupOrganizationId"
+              label="组织 ID（可选）"
+              extra="留空默认注册到 personal（通过 personal-app）；填写后按当前应用注册到指定组织"
+              class="signup-organization-id"
+            >
+              <a-input
+                v-model:value="formState.signupOrganizationId"
+                placeholder="例如：kaixuan-dev / kaixuan-prd / personal"
+              />
             </a-form-item>
 
             <!-- Dynamic signup items -->
@@ -650,6 +668,7 @@ const isDark = computed(() => {
 const formState = reactive<Record<string, any>>({
   application: "",
   organization: "",
+  signupOrganizationId: "",
   username: "",
   name: "",
   firstName: "",
@@ -692,6 +711,9 @@ const visibleSignupItems = computed(() => {
 });
 
 const visibleProviders = computed(() => getVisibleProviders());
+const brandProductName = computed(() => {
+  return application.value?.displayName || application.value?.name || "Auth";
+});
 
 const signupHtmlSafe = computed(() => {
   if (!application.value?.signupHtml) return "";
@@ -910,7 +932,33 @@ function goToSignIn() {
 }
 
 function handleFinish(values: Record<string, any>) {
-  onFinish({ ...formState, ...values });
+  const requestedOrg = String(formState.signupOrganizationId || "").trim().replace(/\s+/g, "");
+  const currentApplication = String(application.value?.name || formState.application || "");
+  const currentOrg = String(application.value?.organization || formState.organization || "");
+
+  let resolvedOrganization: string;
+  let resolvedApplication: string;
+
+  if (requestedOrg !== "") {
+    // User explicitly specified an organization — use it with the current application
+    resolvedOrganization = requestedOrg;
+    resolvedApplication = currentApplication;
+  } else if (currentApplication === "personal-app") {
+    // On personal-app signup page with no org specified — default to "personal"
+    resolvedOrganization = "personal";
+    resolvedApplication = "personal-app";
+  } else {
+    // On a business app signup page with no org specified — register into the app's own organization
+    resolvedOrganization = currentOrg || "kaixuan";
+    resolvedApplication = currentApplication;
+  }
+
+  onFinish({
+    ...formState,
+    ...values,
+    application: resolvedApplication,
+    organization: resolvedOrganization,
+  });
 }
 
 function handleFinishFailed(errorInfo: any) {
@@ -990,6 +1038,35 @@ onMounted(() => {
   position: relative;
 }
 
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.brand-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+}
+
 .signup-button {
   width: 100%;
 }
@@ -1002,6 +1079,10 @@ onMounted(() => {
   }
   .side-image {
     display: none;
+  }
+
+  .brand-header {
+    justify-content: center;
   }
 }
 </style>

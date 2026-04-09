@@ -7,7 +7,7 @@
 **1. init_data.json中的配置（实际使用的）**:
 ```
 用户: admin
-密码: Veritrans&9527*#
+密码: Veritrans&9527
 
 ACC应用:
   client_id: a7e2fa70893f8552a602
@@ -31,7 +31,7 @@ CASDOOR_ACC_CLIENT_SECRET=a5a70e6c3da6f2d62b342842381ae598e0cad544
 - ✅ Casdoor数据库密码: `KxCASDB2026@19272ac109f0`
 
 ### Casdoor配置（实际值）
-- ✅ admin用户密码: `Veritrans&9527*#`
+- ✅ admin用户密码: `Veritrans&9527`
 - ✅ ACC client_id: `a7e2fa70893f8552a602`
 - ✅ ACC client_secret: `dfd7a5b184496fd6938a1db3a386b053358d4c9e`
 
@@ -108,7 +108,7 @@ vi init_data.json
 ```
 
 修改内容:
-1. 用户密码: `Veritrans&9527*#` → `Kaixuan2026@Admin`
+1. 用户密码: `Veritrans&9527` → `Kaixuan2026@Admin`
 2. 客户端ID和密钥: 改为与.env一致
 
 ### 步骤3: 重启服务
@@ -140,7 +140,7 @@ curl -X POST https://auth.itestu.cn/api/login \
 
 | 当前值 | 统一后 | 用途 |
 |--------|--------|------|
-| `Veritrans&9527*#` | `Kaixuan2026@Admin` | admin用户 |
+| `Veritrans&9527` | `Kaixuan2026@Admin` | admin用户 |
 | `KxDB2026@89dc29916136` | `Kaixuan2026@Pg` | PostgreSQL |
 | `KxCASDB2026@19272ac109f0` | `Kaixuan2026@Casdoor` | Casdoor DB |
 | `dfd7a5b184496fd6938a1db3a386b053358d4c9e` | `Kaixuan2026@ACC` | ACC密钥 |

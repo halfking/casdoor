@@ -18,8 +18,8 @@
         <template v-for="field in fields" :key="field.key">
           <a-col :span="12">
             <a-form-item
-              :label="field.label"
               :name="field.key"
+              :label="field.label"
               :rules="field.required ? [{ required: true, message: `${field.label} is required` }] : []"
             >
               <template v-if="field.type === 'text'">
@@ -97,7 +97,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { nextTick, ref, watch } from "vue";
+import type { FormInstance } from "ant-design-vue";
 import { deepClone } from "@/utils/management";
 import type { ResourceField } from "@/types/management";
 
@@ -118,7 +119,9 @@ const emit = defineEmits<{
   (e: "submit", entity: Entity): void;
 }>();
 
+const formRef = ref<FormInstance>();
 const localEntity = ref<Entity>({});
+const syncingFromProps = ref(false);
 
 function resolveDisabled(field: ResourceField): boolean {
   if (typeof field.disabled === "function") {
@@ -130,20 +133,26 @@ function resolveDisabled(field: ResourceField): boolean {
 watch(
   () => props.entity,
   (val) => {
+    syncingFromProps.value = true;
     if (val) {
       localEntity.value = deepClone(val);
     } else {
       localEntity.value = {};
     }
+    void nextTick(() => {
+      (formRef.value as unknown as { setFields?: (v: Array<{ name: string; value: unknown }>) => void } | undefined)
+        ?.setFields?.(
+          Object.entries(localEntity.value as Record<string, unknown>).map(([key, value]) => ({
+            name: key,
+            value,
+          })),
+        );
+      syncingFromProps.value = false;
+    });
   },
   { immediate: true, deep: true },
 );
 
-watch(
-  localEntity,
-  (val) => {
-    emit("change", val);
-  },
-  { deep: true },
-);
+// Keep this modal purely controlled by props.entity to avoid
+// accidentally overriding freshly loaded server data.
 </script>

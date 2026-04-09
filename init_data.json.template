@@ -428,6 +428,95 @@
           "modifyRule": "Admin"
         }
       ]
+    },
+    {
+      "owner": "admin",
+      "name": "personal",
+      "displayName": "个人空间",
+      "websiteUrl": "https://personal.itestu.cn",
+      "logo": "https://auth.itestu.cn/img/kaixuan-platform-logo-light.svg",
+      "logoDark": "https://auth.itestu.cn/img/kaixuan-platform-logo-dark.svg",
+      "favicon": "https://auth.itestu.cn/img/kx-favicon.svg",
+      "defaultLanguage": "zh",
+      "passwordType": "bcrypt",
+      "passwordSalt": "",
+      "passwordOptions": [
+        "AtLeast6"
+      ],
+      "countryCodes": [
+        "US",
+        "CN"
+      ],
+      "defaultAvatar": "",
+      "defaultApplication": "personal-app",
+      "tags": [],
+      "languages": [
+        "en",
+        "zh"
+      ],
+      "masterPassword": "",
+      "defaultPassword": "",
+      "initScore": 2000,
+      "enableSoftDeletion": false,
+      "isProfilePublic": true,
+      "disableSignin": false,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "accountItems": [
+        {
+          "name": "Organization",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "ID",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Avatar",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Phone",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        }
+      ]
     }
   ],
   "applications": [
@@ -452,7 +541,11 @@
       "clientId": "${CASDOOR_CLIENT_ID}",
       "clientSecret": "${CASDOOR_CLIENT_SECRET}",
       "redirectUris": [
+        "http://127.0.0.1:4100/app/oauth-callback",
+        "http://127.0.0.1:4100/auth/callback",
+        "http://localhost:4100/app/oauth-callback",
         "http://localhost:4100/auth/callback",
+        "https://acc.itestu.cn/app/oauth-callback",
         "https://acc.itestu.cn/auth/callback"
       ],
       "tokenFormat": "JWT",
@@ -587,14 +680,10 @@
       "clientId": "${PORTAL_CASDOOR_CLIENT_ID:-a7e2fa70893f8552a602}",
       "clientSecret": "${PORTAL_CASDOOR_CLIENT_SECRET:-dfd7a5b184496fd6938a1db3a386b053358d4c9e}",
       "redirectUris": [
-        "https://www.itestu.cn/auth/callback",
-        "https://itestu.cn/auth/callback",
-        "https://m.itestu.cn/auth/callback",
-        "http://localhost:8080/auth/callback",
-        "http://localhost:8081/auth/callback",
-        "http://localhost:3000/auth/callback",
         "http://127.0.0.1:8081/auth/callback",
-        "http://127.0.0.1:3000/auth/callback"
+        "http://localhost:8081/auth/callback",
+        "https://www.itestu.cn/auth/callback",
+        "https://itestu.cn/auth/callback"
       ],
       "grantTypes": [
         "authorization_code"
@@ -686,8 +775,11 @@
       "clientId": "${CASDOOR_KXMEMORY_CLIENT_ID}",
       "clientSecret": "${CASDOOR_KXMEMORY_CLIENT_SECRET}",
       "redirectUris": [
-        "${KXMEMORY_URL}/auth/callback",
+        "http://127.0.0.1:8001",
+        "http://127.0.0.1:8001/auth/callback",
+        "http://localhost:8001",
         "http://localhost:8001/auth/callback",
+        "https://memora.itestu.cn/auth/callback",
         "https://m.itestu.cn/auth/callback"
       ],
       "tokenFormat": "JWT",
@@ -750,7 +842,7 @@
       "organization": "kaixuan",
       "cert": "kaixuan-cert",
       "enablePassword": true,
-      "enableSignUp": false,
+      "enableSignUp": true,
       "disableSignin": false,
       "enableSigninSession": true,
       "enableAutoSignin": false,
@@ -759,8 +851,8 @@
       "clientId": "${CASDOOR_STOCK_CLIENT_ID}",
       "clientSecret": "${CASDOOR_STOCK_CLIENT_SECRET}",
       "redirectUris": [
-        "${STOCK_URL}/callback",
-        "${STOCK_URL}/auth/callback",
+        "http://127.0.0.1:8090/callback",
+        "http://127.0.0.1:8090/auth/callback",
         "http://localhost:8090/callback",
         "http://localhost:8090/auth/callback",
         "https://finance.itestu.cn/callback",
@@ -835,7 +927,7 @@
       "clientId": "${CASDOOR_DOCTOOLS_CLIENT_ID}",
       "clientSecret": "${CASDOOR_DOCTOOLS_CLIENT_SECRET}",
       "redirectUris": [
-        "${DOCTOOLS_URL}/auth/callback",
+        "http://127.0.0.1:8200/auth/callback",
         "http://localhost:8200/auth/callback",
         "https://doc-tools.itestu.cn/auth/callback"
       ],
@@ -908,9 +1000,157 @@
       "clientId": "${CASDOOR_TRENDARADAR_CLIENT_ID}",
       "clientSecret": "${CASDOOR_TRENDARADAR_CLIENT_SECRET}",
       "redirectUris": [
-        "${TRENDARADAR_URL}/auth/callback",
+        "http://127.0.0.1:8081/auth/callback",
+        "http://127.0.0.1:8081/trendaradar/auth/callback",
+        "http://localhost:8081/auth/callback",
         "http://localhost:8081/trendaradar/auth/callback",
         "https://trendaradar.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "personal",
+      "name": "personal-app",
+      "displayName": "Personal 助手",
+      "logo": "/assets/icon-assistant.svg",
+      "title": "Personal",
+      "favicon": "",
+      "homepageUrl": "${PERSONAL_WEB_URL}",
+      "description": "开轩个人助手应用",
+      "organization": "personal",
+      "cert": "",
+      "enablePassword": true,
+      "enableSignUp": true,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_PERSONAL_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_PERSONAL_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:9047/api/auth/callback",
+        "http://localhost:9047/api/auth/callback",
+        "https://api.personal.itestu.cn/api/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "kaixuan",
+      "name": "aicms",
+      "displayName": "AICMS",
+      "logo": "/assets/icon-aicms.svg",
+      "title": "AICMS",
+      "favicon": "",
+      "homepageUrl": "${AICMS_URL}",
+      "description": "开轩 AICMS 应用",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_AICMS_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_AICMS_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8082/auth/callback",
+        "http://localhost:8082/auth/callback",
+        "https://aicms.itestu.cn/auth/callback"
       ],
       "tokenFormat": "JWT",
       "tokenFields": [],

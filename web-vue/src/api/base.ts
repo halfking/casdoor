@@ -29,7 +29,7 @@ export function qs(
 
 /** Shortcut for id=owner/name query */
 export function idQuery(path: string, owner: string, name: string): string {
-  return `${path}?id=${encodeURIComponent(owner)}/${encodeURIComponent(name)}`;
+  return `${path}?id=${encodeURIComponent(`${owner}/${name}`)}`;
 }
 
 export { get, post, type ApiResponse, type PaginatedResponse };
