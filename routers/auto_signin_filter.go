@@ -55,29 +55,31 @@ func AutoSigninFilter(ctx *context.Context) {
 	if accessToken != "" {
 		token, err := object.GetTokenByAccessToken(accessToken)
 		if err != nil {
-			responseError(ctx, err.Error())
+			// Token lookup failed — don't block the request;
+			// fall through so that session-based auth (cookie) can still succeed.
 			return
 		}
 
 		if token == nil {
-			responseError(ctx, "Access token doesn't exist in database")
+			// Token not found in database — don't block the request;
+			// fall through so that session-based auth (cookie) can still succeed.
 			return
 		}
 
 		isExpired, expireTime := util.IsTokenExpired(token.CreatedTime, token.ExpiresIn)
 		if isExpired {
-			responseError(ctx, fmt.Sprintf("Access token has expired, expireTime = %s", expireTime))
+			// Token expired — don't block the request;
+			// fall through so that session-based auth (cookie) can still succeed.
+			_ = expireTime
 			return
 		}
 
 		userId := util.GetId(token.Organization, token.User)
 		application, err := object.GetApplicationByUserId(fmt.Sprintf("app/%s", token.Application))
 		if err != nil {
-			responseError(ctx, err.Error())
 			return
 		}
 		if application == nil {
-			responseError(ctx, fmt.Sprintf("No application is found for userId: app/%s", token.Application))
 			return
 		}
 
