@@ -670,7 +670,7 @@
       "organization": "kaixuan",
       "cert": "",
       "enablePassword": true,
-      "enableSignUp": true,
+      "enableSignUp": false,
       "disableSignin": false,
       "enableSigninSession": false,
       "enableAutoSignin": false,
