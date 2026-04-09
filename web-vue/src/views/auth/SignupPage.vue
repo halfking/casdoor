@@ -4,36 +4,50 @@
   </div>
 
   <!-- Custom signup HTML override -->
-  <div v-else-if="signupHtmlSafe" v-html="signupHtmlSafe" />
+  <div v-else-if="allowCustomSignupHtml && signupHtmlSafe" v-html="signupHtmlSafe" />
 
   <div v-else>
-    <div class="login-content" :style="{ margin: contentMargin }">
+    <div
+      :class="['login-content', 'auth-shell', isDark ? 'auth-shell-dark' : 'auth-shell-light']"
+      :style="{ margin: contentMargin }"
+    >
       <!-- Custom CSS -->
       <component v-if="customCssComponent" :is="customCssComponent" />
 
-      <div :class="isDark ? 'login-panel-dark' : 'login-panel'">
-        <!-- Side image -->
+      <div :class="[isDark ? 'login-panel-dark' : 'login-panel', 'login-panel-split']">
+        <aside
+          v-if="!(allowCustomSideHtml && application.formOffset === 4)"
+          class="login-hero"
+          aria-label="brand"
+        >
+          <div class="login-hero-inner">
+            <img class="login-hero-logo" src="/img/kx-brand-mark-on-dark.svg" alt="" />
+            <h1 class="login-hero-title">开轩启圭</h1>
+            <p class="login-hero-subtitle">统一认证 · {{ brandProductName }}</p>
+            <p class="login-hero-tagline">{{ t("account.Sign Up") }} {{ brandProductName }}</p>
+          </div>
+        </aside>
         <div
-          v-if="application.formOffset === 4"
+          v-else-if="allowCustomSideHtml && application.formOffset === 4"
           class="side-image"
           v-html="sideHtmlSafe"
         />
 
         <div class="login-form">
           <CustomHelmet :application="application" />
-          <div class="brand-header">
-            <img class="brand-logo" src="/assets/logo-icon.svg" alt="开轩启圭" />
+          <div class="brand-header brand-header--duplicate">
+            <img class="brand-logo" :src="brandLogoUrl" alt="开轩启圭" />
             <div class="brand-text">
               <div class="brand-title">开轩启圭</div>
               <div class="brand-subtitle">统一认证 · {{ brandProductName }}</div>
             </div>
           </div>
-          <AppLogo :application="application" />
+          <div class="brand-helper-text brand-helper-text--duplicate">{{ t("account.Sign Up") }} {{ brandProductName }}</div>
 
           <LanguageSelect
             v-if="application.organizationObj?.languages"
             :languages="application.organizationObj.languages"
-            style="top: 55px; right: 5px; position: absolute"
+            class="signup-language-select"
           />
 
           <!-- Sign up disabled -->
@@ -54,10 +68,10 @@
             ref="formRef"
             :model="formState"
             name="signup"
-            :label-col="isMobile ? undefined : { span: 8 }"
-            :wrapper-col="isMobile ? undefined : { span: 16 }"
-            :layout="isMobile ? 'vertical' : 'horizontal'"
-            :style="{ width: isMobile ? '300px' : '400px' }"
+            :label-col="enforceBrandStyle || isMobile ? undefined : { span: 8 }"
+            :wrapper-col="enforceBrandStyle || isMobile ? undefined : { span: 16 }"
+            :layout="enforceBrandStyle ? 'vertical' : (isMobile ? 'vertical' : 'horizontal')"
+            :style="{ width: 'min(460px, 100%)' }"
             size="large"
             @finish="handleFinish"
             @finishFailed="handleFinishFailed"
@@ -410,7 +424,6 @@ import { useSignup } from "../../composables/useSignup";
 import * as Setting from "../../utils/Setting";
 import * as PasswordChecker from "../../utils/PasswordChecker";
 import CustomHelmet from "../../components/CustomHelmet.vue";
-import AppLogo from "../../components/AppLogo.vue";
 import LanguageSelect from "../../components/LanguageSelect.vue";
 import ProviderButton from "../../components/ProviderButton.vue";
 import RegionSelect from "../../components/RegionSelect.vue";
@@ -660,10 +673,7 @@ const {
 
 const formRef = ref();
 const isMobile = computed(() => Setting.isMobile());
-const isDark = computed(() => {
-  // TODO: get from theme store
-  return false;
-});
+const isDark = computed(() => Setting.isDarkTheme());
 
 const formState = reactive<Record<string, any>>({
   application: "",
@@ -689,7 +699,25 @@ const formState = reactive<Record<string, any>>({
 
 /* ───────── Computed ───────── */
 const visibleSignupItems = computed(() => {
-  const items = application.value?.signupItems?.filter((i: any) => i.visible) ?? [];
+  const source = application.value?.signupItems?.filter((i: any) => i.visible) ?? [];
+  const deduped = source.filter((item: any, index: number, arr: any[]) => arr.findIndex((i: any) => i.name === item.name) === index);
+  const items = !enforceBrandStyle.value
+    ? deduped
+    : deduped.filter((item: any) => {
+      const keep = new Set([
+        "Username",
+        "Display name",
+        "Email",
+        "Phone",
+        "Email or Phone",
+        "Phone or Email",
+        "Password",
+        "Confirm password",
+        "Agreement",
+        "Signup button",
+      ]);
+      return keep.has(item.name);
+    });
   // Ensure Signup button exists
   const hasButton = items.some((i: any) => i.name === "Signup button");
   if (!hasButton) {
@@ -714,6 +742,12 @@ const visibleProviders = computed(() => getVisibleProviders());
 const brandProductName = computed(() => {
   return application.value?.displayName || application.value?.name || "Auth";
 });
+const brandLogoUrl = computed(() =>
+  isDark.value ? "/img/kx-brand-mark-on-dark.svg" : "/img/kx-brand-mark.svg",
+);
+const enforceBrandStyle = computed(() => true);
+const allowCustomSignupHtml = computed(() => !enforceBrandStyle.value);
+const allowCustomSideHtml = computed(() => !enforceBrandStyle.value);
 
 const signupHtmlSafe = computed(() => {
   if (!application.value?.signupHtml) return "";
@@ -726,10 +760,12 @@ const sideHtmlSafe = computed(() => {
 });
 
 const contentMargin = computed(() => {
+  if (enforceBrandStyle.value) return "0px";
   return parseOffset(application.value?.formOffset);
 });
 
 const customCssComponent = computed(() => {
+  if (enforceBrandStyle.value) return null;
   if (!application.value) return null;
   const parts: string[] = [];
   if (!Setting.inIframe() && !Setting.isMobile() && application.value.formCss) {
@@ -802,6 +838,7 @@ function sanitizeCss(css: string): string {
 }
 
 function getItemCssComponent(signupItem: any, idx: number) {
+  if (enforceBrandStyle.value) return null;
   if (!signupItem?.customCss) return null;
   const safe = sanitizeCss(signupItem.customCss);
   if (!safe) return null;
@@ -1007,48 +1044,236 @@ onMounted(() => {
 <style scoped>
 .login-content {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 70vh;
+  justify-content: stretch;
+  align-items: stretch;
+  width: 100%;
+  margin: 0 !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 0;
 }
 
-.login-panel,
-.login-panel-dark {
+.login-panel:not(.login-panel-split),
+.login-panel-dark:not(.login-panel-split) {
   display: flex;
-  background: var(--kx-bg-card, #fff);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 40px;
-  max-width: 900px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 254, 255, 0.98) 100%);
+  border-radius: 18px;
+  border: 1px solid #d9e6ff;
+  box-shadow: 0 14px 36px rgba(68, 102, 165, 0.18);
+  backdrop-filter: blur(8px);
+  padding: 34px;
+  max-width: 960px;
 }
 
-.login-panel-dark {
-  background: var(--kx-bg-card, #1f1f1f);
+.login-panel-dark:not(.login-panel-split) {
+  background: linear-gradient(180deg, rgba(19, 26, 44, 0.94) 0%, rgba(13, 20, 36, 0.94) 100%);
+  border-color: rgba(109, 146, 226, 0.36);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.login-panel-split {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100vw;
+  max-width: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  border-radius: 0;
+  border: none;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: none;
+  padding: 0;
+}
+
+.login-panel-dark.login-panel-split {
+  background: #111827;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5);
+}
+
+.login-hero {
+  flex: 0 0 46%;
+  min-width: 300px;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 36px;
+  position: relative;
+  color: #f8fafc;
+  background: linear-gradient(165deg, #050f1f 0%, #0c2242 45%, #155a8c 100%);
+}
+
+.login-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(ellipse 90% 70% at 15% 15%, rgba(59, 130, 246, 0.4), transparent 52%),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px, 26px 26px;
+}
+
+.login-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  max-width: 300px;
+}
+
+.login-hero-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+.login-hero-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+
+.login-hero-subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: rgba(248, 250, 252, 0.9);
+}
+
+.login-hero-tagline {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(248, 250, 252, 0.68);
+}
+
+.login-panel-dark .login-hero {
+  background: linear-gradient(165deg, #020617 0%, #0b1220 48%, #132f52 100%);
 }
 
 .side-image {
   width: 300px;
-  padding-right: 40px;
+  padding-right: 30px;
   display: flex;
   align-items: center;
+  background: radial-gradient(circle at top left, rgba(22, 119, 255, 0.2), transparent 58%);
 }
 
 .login-form {
-  flex: 1;
+  flex: 0 0 54%;
   position: relative;
+  min-width: 0;
+  min-height: 100%;
+  padding: 40px 36px 36px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-panel-dark .login-form {
+  background: #111827;
+}
+
+.brand-header--duplicate,
+.brand-helper-text--duplicate {
+  display: none !important;
+}
+
+.login-form :deep(.ant-form-item) {
+  margin-bottom: 14px;
+}
+
+.login-form :deep(.ant-form) {
+  width: min(460px, 100%);
+  margin: 0 auto;
+}
+
+.login-form :deep(.ant-input),
+.login-form :deep(.ant-input-password),
+.login-form :deep(.ant-input-affix-wrapper),
+.login-form :deep(.ant-input-group-addon),
+.login-form :deep(.ant-select-selector) {
+  background: #152238 !important;
+  border-color: #2d3f66 !important;
+  color: #e8eef7 !important;
+  border-radius: 10px !important;
+}
+
+.login-form :deep(.ant-input-affix-wrapper .ant-input) {
+  background: transparent !important;
+}
+
+.login-form :deep(.ant-input::placeholder) {
+  color: #94a3b8 !important;
+}
+
+.login-panel-dark .login-form :deep(.ant-input),
+.login-panel-dark .login-form :deep(.ant-input-password),
+.login-panel-dark .login-form :deep(.ant-input-affix-wrapper),
+.login-panel-dark .login-form :deep(.ant-input-group-addon),
+.login-panel-dark .login-form :deep(.ant-select-selector) {
+  background: #0c1424 !important;
+  border-color: #334155 !important;
+  color: #e5e7eb !important;
+}
+
+.login-form :deep(.ant-btn-primary),
+.signup-button {
+  width: 100%;
+  height: 48px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8) !important;
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.38);
+}
+
+.login-form :deep(.ant-btn-primary:hover),
+.signup-button:hover {
+  background: linear-gradient(90deg, #60a5fa, #1e40af) !important;
+}
+
+.login-form :deep(a),
+.login-form :deep(.ant-btn-link) {
+  color: #2563eb !important;
+}
+
+.signup-language-select {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+@media (min-width: 769px) {
+  .signup-language-select {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    z-index: 2;
+    margin: 0 !important;
+  }
 }
 
 .brand-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .brand-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(22, 119, 255, 0.22);
 }
 
 .brand-text {
@@ -1058,31 +1283,132 @@ onMounted(() => {
 }
 
 .brand-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #24314f;
 }
 
 .brand-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: #5d6f96;
 }
 
-.signup-button {
+.brand-helper-text {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: #6a7ca5;
+}
+
+.auth-shell {
+  position: relative;
+  overflow: hidden;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.auth-shell-light {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(59, 130, 246, 0.18), transparent 40%),
+    radial-gradient(circle at 84% 88%, rgba(29, 78, 216, 0.16), transparent 44%),
+    linear-gradient(180deg, #071425 0%, #0b1f3c 52%, #0e2748 100%);
+}
+
+.auth-shell-dark {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(59, 130, 246, 0.14), transparent 38%),
+    radial-gradient(circle at 84% 88%, rgba(30, 64, 175, 0.12), transparent 42%),
+    linear-gradient(180deg, #0b0f18 0%, #0b1220 45%, #0a1322 100%);
+}
+
+.auth-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(168, 190, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 190, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.auth-shell-dark::before {
+  background-image: linear-gradient(rgba(168, 190, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 190, 255, 0.06) 1px, transparent 1px);
+}
+
+.login-panel-dark .brand-subtitle,
+.login-panel-dark .brand-helper-text {
+  color: #9aa7c7;
 }
 
 @media (max-width: 768px) {
-  .login-panel,
-  .login-panel-dark {
-    flex-direction: column;
-    padding: 24px;
+  .login-content {
+    align-items: stretch;
+    padding: 0;
   }
+
+  .login-panel:not(.login-panel-split),
+  .login-panel-dark:not(.login-panel-split) {
+    flex-direction: column;
+    padding: 18px 12px;
+    border-radius: 12px;
+    width: 100%;
+  }
+
+  .login-panel-split {
+    flex-direction: column;
+    border-radius: 0;
+    width: 100vw;
+    max-width: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-shadow: none;
+  }
+
+  .login-hero {
+    flex: none;
+    min-width: unset;
+    min-height: unset;
+    padding: 32px 24px 40px;
+    border-radius: 0 0 26px 26px;
+  }
+
+  .login-hero-inner {
+    text-align: center;
+    max-width: none;
+  }
+
+  .login-hero-logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .login-form {
+    margin-top: -20px;
+    border-radius: 22px 22px 0 0;
+    padding: 28px 18px 40px;
+    box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.06);
+    display: block;
+  }
+
+  .login-panel-dark .login-form {
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  }
+
   .side-image {
     display: none;
   }
 
-  .brand-header {
-    justify-content: center;
+  .signup-language-select {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    justify-content: flex-end;
+  }
+
+  :deep(.ant-form) {
+    width: 100% !important;
   }
 }
 </style>

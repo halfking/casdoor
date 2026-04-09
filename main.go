@@ -35,7 +35,9 @@ import (
 
 func main() {
 	web.BConfig.WebConfig.Session.SessionOn = true
-	web.BConfig.WebConfig.Session.SessionName = "casdoor_session_id"
+	// Use a dedicated cookie name to avoid conflicts with stale/duplicate
+	// casdoor_session_id cookies from historical deployments.
+	web.BConfig.WebConfig.Session.SessionName = "kx_casdoor_session_id"
 	if conf.GetConfigString("redisEndpoint") == "" {
 		web.BConfig.WebConfig.Session.SessionProvider = "file"
 		web.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"

@@ -212,7 +212,7 @@ onBeforeUnmount(() => {
   <header class="kx-shared-navbar">
     <nav class="kx-shared-navbar__container">
       <a class="kx-shared-navbar__logo" :href="resolveServiceUrl('portal')">
-        <img src="/assets/logo-icon.svg" alt="开轩启圭" class="kx-shared-navbar__logo-icon" />
+        <img src="/img/kx-brand-mark.svg" alt="开轩启圭" class="kx-shared-navbar__logo-icon" />
         <div class="kx-shared-navbar__logo-text">
           <span class="kx-brand-main">开轩启圭</span>
           <span v-if="appName" class="kx-brand-separator">·</span>

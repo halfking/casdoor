@@ -92,20 +92,38 @@ docker exec -i postgres psql -U casdoor -d casdoor < scripts/init_menu_dept_post
 
 ## 6. 构建与部署
 
-### 6.1 标准部署流程
+### 6.0 前端发布结构（重新规划）
+
+统一采用「**双模式**」结构，避免混用导致“页面未更新”：
+
+- **模式 A：镜像内静态资源（生产默认）**  
+  - 入口：根目录 `docker-compose.yml` 的 `casdoor` 服务。  
+  - 行为：不挂载宿主机 `web/build`；`Dockerfile` 的 `FRONT` 阶段编译 `services/casdoor/web-vue`，并复制到镜像 `/web/build`。  
+  - 数据库主机通过 `CASDOOR_DB_HOST` 注入（默认 `pms-postgres`），避免写死 `postgres` 导致跨网络解析失败。  
+  - 发布命令：`./scripts/deploy-kx-casdoor.sh`（或 `--no-cache`）。  
+  - 强校验：脚本会注入 `CASDOOR_WEB_RELEASE`，并校验运行态 `/release.json` 是否为本次 release。
+
+- **模式 B：宿主机覆盖静态资源（仅调试/本地联调）**  
+  - 入口：`docker-compose.yml + docker-compose.casdoor-bind-web.yml`。  
+  - 行为：挂载 `./services/casdoor/web/build:/web/build:ro` 覆盖镜像。  
+  - 前置：必须先执行 `bash services/casdoor/scripts/build-web-vue-release.sh` 生成宿主机 `web/build`。  
+  - 风险：若漏构建会出现空白或旧页面；**禁止生产使用**。
+
+> 约束：`services/casdoor/web/` 已在 `.gitignore`，不作为发布真相源。生产只认镜像内构建产物。
+
+### 6.1 标准部署流程（模式 A）
 
 ```bash
-# 在部署机器上
-cd /path/to/casdoor
+# 在 deployment-platform（或 official-deploy）仓库根目录，而非仅 services/casdoor 子目录
+cd /path/to/deployment-platform
 
 # 1. 拉取最新代码
 git pull origin master
 
-# 2. 构建镜像
-docker compose build casdoor
-
-# 3. 启动/重启服务
-docker compose up -d casdoor
+# 2-3. 构建并重建（推荐一键脚本，含 release 校验）
+./scripts/deploy-kx-casdoor.sh
+# 若怀疑缓存:
+# ./scripts/deploy-kx-casdoor.sh --no-cache
 
 # 4. 查看日志
 docker compose logs -f casdoor --tail=50
@@ -117,11 +135,27 @@ docker compose logs -f casdoor --tail=50
 # 健康检查
 curl -sk https://auth.itestu.cn/api/health
 
+# 版本校验（应返回本次 release 标识）
+curl -sS http://127.0.0.1:${CASDOOR_PORT:-9035}/release.json
+
 # 检查版本
 curl -sk https://auth.itestu.cn/api/get-release
 
 # 检查进程
 docker compose ps casdoor
+```
+
+### 6.3 调试模式（模式 B）示例
+
+```bash
+# 1) 先在宿主机编译 web-vue 并同步到 services/casdoor/web/build
+bash services/casdoor/scripts/build-web-vue-release.sh
+
+# 2) 启动 casdoor（叠加 bind-web 覆盖文件）
+docker compose -f docker-compose.yml -f docker-compose.casdoor-bind-web.yml up -d casdoor
+
+# 3) 验证静态目录已挂载
+docker compose exec casdoor ls /web/build
 ```
 
 ## 7. 运维常用命令

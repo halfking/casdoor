@@ -2,10 +2,13 @@ version: '3.1'
 services:
   casdoor:
     restart: always
+    # 构建上下文必须为 services/casdoor（含 web-vue/），否则 Dockerfile 中 COPY ./web-vue 会失败
     build:
-      context: ../
-      dockerfile: casdoor/Dockerfile
+      context: .
+      dockerfile: Dockerfile
       target: STANDARD
+      args:
+        CASDOOR_WEB_RELEASE: "${CASDOOR_WEB_RELEASE:-dev}"
     entrypoint: /bin/sh -c './server --createDatabase=true'
     ports:
       - "8000:8000"
@@ -19,7 +22,8 @@ services:
     volumes:
       - ./conf:/conf/
       - ./init_data.json:/init_data.json
-      - ./web/build:/web/build
+      # 不要挂载 ./web/build：会覆盖镜像内 Dockerfile FRONT 阶段生成的静态资源；
+      # 若需宿主机覆盖，请先执行 scripts/build-web-vue-release.sh 生成 web/build
     networks:
       - casdoor_casdoor-network
       - local_pms-network

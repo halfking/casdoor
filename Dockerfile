@@ -1,11 +1,14 @@
 FROM --platform=$BUILDPLATFORM node:20.20.1 AS FRONT
+ARG CASDOOR_WEB_RELEASE=dev
 WORKDIR /web-vue
 
 # Build Vue frontend and publish artifact to /web/build for Go static server compatibility.
 COPY ./web-vue/package.json ./web-vue/package-lock.json ./
 RUN npm config set registry https://registry.npmmirror.com && npm ci --no-audit --no-fund
 COPY ./web-vue .
-RUN npm run build
+RUN RELEASE="${CASDOOR_WEB_RELEASE:-dev}" \
+    && printf '{"release":"%s"}\n' "$RELEASE" > /web-vue/public/release.json \
+    && npm run build
 
 FROM --platform=$BUILDPLATFORM golang:1.24.13 AS BACK
 WORKDIR /go/src/casdoor

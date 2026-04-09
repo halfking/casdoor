@@ -37,7 +37,7 @@
 
   <!-- Custom signinHtml override -->
   <div
-    v-else-if="application?.signinHtml"
+    v-else-if="allowCustomSigninHtml && application?.signinHtml"
     v-html="sanitizeHtml(application.signinHtml)"
   />
 
@@ -47,24 +47,41 @@
   </template>
 
   <!-- Main login layout -->
-  <div v-else class="login-content" :style="contentStyle">
-    <div :class="['login-panel', isDark ? 'login-panel-dark' : '']">
-      <!-- Side image / HTML -->
+  <div
+    v-else
+    :class="['login-content', 'auth-shell', isDark ? 'auth-shell-dark' : 'auth-shell-light']"
+    :style="contentStyle"
+  >
+    <div :class="['login-panel', 'login-panel-split', isDark ? 'login-panel-dark' : '']">
+      <!-- PC: 左品牌区 / 手机: 顶区 — 与参考稿一致；有自定义侧栏 HTML 时用侧栏替代 -->
+      <aside
+        v-if="!(allowCustomSideHtml && application?.formSideHtml && !isMobile)"
+        class="login-hero"
+        aria-label="brand"
+      >
+        <div class="login-hero-inner">
+          <img class="login-hero-logo" src="/img/kx-brand-mark-on-dark.svg" alt="" />
+          <h1 class="login-hero-title">开轩启圭</h1>
+          <p class="login-hero-subtitle">统一认证 · {{ brandProductName }}</p>
+          <p class="login-hero-tagline">{{ t("login:Sign In") }} {{ brandProductName }}</p>
+        </div>
+      </aside>
       <div
-        v-if="application?.formSideHtml && !isMobile"
+        v-else-if="allowCustomSideHtml && application?.formSideHtml && !isMobile"
         class="side-image"
         v-html="sanitizeHtml(application.formSideHtml)"
       />
 
       <!-- Login form area -->
       <div class="login-form">
-          <div class="brand-header">
-            <img class="brand-logo" src="/assets/logo-icon.svg" alt="开轩启圭" />
+          <div class="brand-header brand-header--duplicate">
+            <img class="brand-logo" :src="brandLogoUrl" alt="开轩启圭" />
             <div class="brand-text">
               <div class="brand-title">开轩启圭</div>
               <div class="brand-subtitle">统一认证 · {{ brandProductName }}</div>
             </div>
           </div>
+          <div class="brand-helper-text brand-helper-text--duplicate">{{ t("login:Sign In") }} {{ brandProductName }}</div>
 
         <!-- Background -->
         <div
@@ -100,6 +117,11 @@
           layout="vertical"
           @finish="onFormFinish"
         >
+          <div class="login-form-title-block">
+            <h2 class="login-form-title">开轩启圭</h2>
+            <p class="login-form-subtitle">统一认证 · {{ brandProductName }}</p>
+          </div>
+
           <!-- Custom CSS injection -->
           <component v-if="customCssComponent" :is="customCssComponent" />
 
@@ -107,7 +129,7 @@
           <template v-for="item in visibleSigninItems" :key="item.name">
             <!-- Logo -->
             <div v-if="item.name === 'Logo'" class="login-logo-box" :style="getItemCss(item)">
-              <AppLogo :application="application!" />
+              <img class="brand-auth-logo" :src="brandLogoUrl" alt="开轩启圭认证" />
             </div>
 
             <!-- Back button -->
@@ -307,6 +329,15 @@
             />
           </template>
         </a-form>
+        <div
+          v-if="application?.enableSignUp && !hasSignupItem"
+          class="login-signup-box login-signup-box-fallback"
+        >
+          {{ t("login:No account?") }}&nbsp;
+          <router-link :to="signupUrl" @click="login.storeSigninUrl">
+            {{ t("login:sign up now") }}
+          </router-link>
+        </div>
 
         <!-- Captcha modal (non-inline) -->
         <CaptchaModal
@@ -345,7 +376,6 @@ import type { Application, SigninItem } from "@/api/types";
 
 // Components
 import RedirectForm from "@/components/RedirectForm.vue";
-import AppLogo from "@/components/AppLogo.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";
 import CountryCodeSelect from "@/components/CountryCodeSelect.vue";
 import SendCodeInput from "@/components/SendCodeInput.vue";
@@ -397,7 +427,26 @@ const methodItems = computed(() => {
 
 const visibleSigninItems = computed<SigninItem[]>(() => {
   if (!application.value?.signinItems) return [];
-  return application.value.signinItems.filter((item) => item.visible);
+  const source = application.value.signinItems.filter((item) => item.visible);
+  const deduped = source.filter((item, index, arr) => arr.findIndex((i) => i.name === item.name) === index);
+  if (!enforceBrandStyle.value) return deduped;
+
+  const keepOrder = [
+    "Languages",
+    "Signin methods",
+    "Username",
+    "Password",
+    "Verification code",
+    "Forgot password?",
+    "Agreement",
+    "Login button",
+    "Providers",
+    "Signup link",
+  ];
+  const weight = new Map(keepOrder.map((name, idx) => [name, idx]));
+  return deduped
+    .filter((item) => weight.has(item.name))
+    .sort((a, b) => (weight.get(a.name) ?? 99) - (weight.get(b.name) ?? 99));
 });
 
 const oauthProviderItems = computed(() => {
@@ -469,13 +518,22 @@ const shouldAutoRedirectToProvider = computed(() => {
 const brandProductName = computed(() => {
   return application.value?.displayName || application.value?.name || "Auth";
 });
+const brandLogoUrl = computed(() =>
+  isDark.value ? "/img/kx-brand-mark-on-dark.svg" : "/img/kx-brand-mark.svg",
+);
+const hasSignupItem = computed(() => visibleSigninItems.value.some((item) => item.name === "Signup link"));
+const enforceBrandStyle = computed(() => true);
+const allowCustomSigninHtml = computed(() => !enforceBrandStyle.value);
+const allowCustomSideHtml = computed(() => !enforceBrandStyle.value);
 
 const contentStyle = computed(() => {
+  if (enforceBrandStyle.value) return {};
   const offset = application.value?.formOffset;
   return { margin: login.parseOffset(offset) };
 });
 
 const customCssComponent = computed<VNode | null>(() => {
+  if (enforceBrandStyle.value) return null;
   if (!application.value?.formCss) return null;
   const css = isMobile.value
     ? application.value.formCssMobile || application.value.formCss
@@ -507,6 +565,7 @@ function sanitizeCss(css: string): string {
 }
 
 function getItemCss(item: SigninItem): Record<string, string> {
+  if (enforceBrandStyle.value) return {};
   if (!item.customCss) return {};
   try {
     return JSON.parse(item.customCss);
@@ -597,51 +656,261 @@ onMounted(async () => {
 <style scoped>
 .login-content {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: stretch;
+  align-items: stretch;
+  width: 100%;
+  margin: 0 !important;
   min-height: 100vh;
-  padding: 40px 20px;
+  min-height: 100dvh;
+  padding: 0;
 }
 
-.login-panel {
+/* 单卡兜底（无 split 类时） */
+.login-panel:not(.login-panel-split) {
   display: flex;
-  background: var(--kx-bg-card, #fff);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 254, 255, 0.98) 100%);
+  border-radius: 18px;
+  border: 1px solid #d9e6ff;
+  box-shadow: 0 14px 36px rgba(68, 102, 165, 0.18);
   overflow: hidden;
-  max-width: 900px;
+  max-width: 960px;
   width: 100%;
 }
 
-.login-panel-dark {
-  background: #1f1f1f;
+.login-panel-split {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100vw;
+  max-width: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  border-radius: 0;
+  border: none;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.login-panel-dark.login-panel-split {
+  background: #111827;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5);
+}
+
+.login-hero {
+  flex: 0 0 46%;
+  min-width: 300px;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 36px;
+  position: relative;
+  color: #f8fafc;
+  background: linear-gradient(165deg, #050f1f 0%, #0c2242 45%, #155a8c 100%);
+}
+
+.login-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background-image:
+    radial-gradient(ellipse 90% 70% at 15% 15%, rgba(59, 130, 246, 0.4), transparent 52%),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 26px 26px, 26px 26px;
+}
+
+.login-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  max-width: 300px;
+}
+
+.login-hero-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+.login-hero-title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+
+.login-hero-subtitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: rgba(248, 250, 252, 0.9);
+}
+
+.login-hero-tagline {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(248, 250, 252, 0.68);
+}
+
+.login-panel-dark .login-hero {
+  background: linear-gradient(165deg, #020617 0%, #0b1220 48%, #132f52 100%);
 }
 
 .side-image {
-  flex: 0 0 360px;
+  flex: 0 0 340px;
   min-height: 400px;
   overflow: hidden;
+  background: radial-gradient(circle at top left, rgba(22, 119, 255, 0.2), transparent 58%);
 }
 
 .login-form {
-  flex: 1;
-  padding: 40px;
+  flex: 0 0 54%;
+  padding: 40px 36px 36px;
   position: relative;
-  min-width: 360px;
-  max-width: 460px;
+  min-width: 0;
+  min-height: 100%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-panel-dark .login-form {
+  background: #111827;
+}
+
+/* 品牌区已展示，表单内重复标题隐藏 */
+.brand-header--duplicate,
+.brand-helper-text--duplicate {
+  display: none !important;
+}
+
+.login-form :deep(.ant-form-item) {
+  margin-bottom: 14px;
+}
+
+.login-form :deep(.ant-form) {
+  width: min(380px, 100%);
+  margin: 0 auto;
+}
+
+.login-form-title-block {
+  margin-bottom: 14px;
+}
+
+.login-form-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f2747;
+}
+
+.login-form-subtitle {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #56719a;
+}
+
+.login-panel-dark .login-form-title {
+  color: #dbeafe;
+}
+
+.login-panel-dark .login-form-subtitle {
+  color: #9fb2d4;
+}
+
+/* 白底上的深蓝输入区，对齐参考稿 */
+.login-form :deep(.ant-input),
+.login-form :deep(.ant-input-password),
+.login-form :deep(.ant-input-affix-wrapper),
+.login-form :deep(.ant-input-group-addon) {
+  background: #152238 !important;
+  border-color: #2d3f66 !important;
+  color: #e8eef7 !important;
+  border-radius: 10px !important;
+}
+
+.login-form :deep(.ant-input-affix-wrapper .ant-input) {
+  background: transparent !important;
+}
+
+.login-form :deep(.ant-input::placeholder) {
+  color: #94a3b8 !important;
+}
+
+.login-panel-dark .login-form :deep(.ant-input),
+.login-panel-dark .login-form :deep(.ant-input-password),
+.login-panel-dark .login-form :deep(.ant-input-affix-wrapper),
+.login-panel-dark .login-form :deep(.ant-input-group-addon) {
+  background: #0c1424 !important;
+  border-color: #334155 !important;
+  color: #e5e7eb !important;
+}
+
+/* 登录方式 Tab：统一深蓝，去掉 Ant Design 默认紫 */
+.login-form :deep(.ant-tabs-nav::before) {
+  border-color: rgba(148, 163, 184, 0.35) !important;
+}
+
+.login-form :deep(.ant-tabs-tab) {
+  color: #64748b !important;
+}
+
+.login-form :deep(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn) {
+  color: #1d4ed8 !important;
+}
+
+.login-form :deep(.ant-tabs-ink-bar) {
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8) !important;
+}
+
+.login-form :deep(.ant-btn-primary) {
+  height: 48px !important;
+  font-weight: 600 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8) !important;
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.38);
+}
+
+.login-form :deep(.ant-btn-primary:hover) {
+  background: linear-gradient(90deg, #60a5fa, #1e40af) !important;
+}
+
+.login-form :deep(a),
+.login-form :deep(.ant-btn-link) {
+  color: #2563eb !important;
+}
+
+@media (min-width: 769px) {
+  .login-form :deep(.login-languages-box) {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    z-index: 2;
+    margin: 0 !important;
+  }
 }
 
 .brand-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .brand-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(22, 119, 255, 0.22);
 }
 
 .brand-text {
@@ -651,13 +920,21 @@ onMounted(async () => {
 }
 
 .brand-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #24314f;
 }
 
 .brand-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: #5d6f96;
+}
+
+.brand-helper-text {
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #6a7ca5;
 }
 
 .login-background {
@@ -674,6 +951,12 @@ onMounted(async () => {
 .login-logo-box {
   text-align: center;
   margin-bottom: 24px;
+}
+
+.brand-auth-logo {
+  width: 210px;
+  max-width: 80%;
+  height: auto;
 }
 
 .login-back-box {
@@ -719,6 +1002,10 @@ onMounted(async () => {
   margin-top: 16px;
 }
 
+.login-signup-box-fallback {
+  margin-top: 8px;
+}
+
 .login-captcha-box {
   margin-bottom: 16px;
 }
@@ -731,26 +1018,116 @@ onMounted(async () => {
   margin-bottom: 24px;
 }
 
+.auth-shell {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.auth-shell-light {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(59, 130, 246, 0.18), transparent 40%),
+    radial-gradient(circle at 84% 88%, rgba(29, 78, 216, 0.16), transparent 44%),
+    linear-gradient(180deg, #071425 0%, #0b1f3c 52%, #0e2748 100%);
+}
+
+.auth-shell-dark {
+  background:
+    radial-gradient(circle at 18% 10%, rgba(59, 130, 246, 0.14), transparent 38%),
+    radial-gradient(circle at 84% 88%, rgba(30, 64, 175, 0.12), transparent 42%),
+    linear-gradient(180deg, #0b0f18 0%, #0b1220 45%, #0a1322 100%);
+}
+
+.auth-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(168, 190, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 190, 255, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.auth-shell-dark::before {
+  background-image: linear-gradient(rgba(168, 190, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 190, 255, 0.06) 1px, transparent 1px);
+}
+
+.login-panel-dark .brand-subtitle,
+.login-panel-dark .brand-helper-text {
+  color: #9aa7c7;
+}
+
 .hidden {
   display: none;
 }
 
 @media (max-width: 768px) {
-  .login-panel {
-    flex-direction: column;
+  .login-content {
+    align-items: stretch;
+    padding: 0;
   }
+
+  .login-panel:not(.login-panel-split) {
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  .login-panel-split {
+    flex-direction: column;
+    border-radius: 0;
+    width: 100vw;
+    max-width: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    box-shadow: none;
+  }
+
+  .login-hero {
+    flex: none;
+    min-width: unset;
+    min-height: unset;
+    padding: 32px 24px 40px;
+    border-radius: 0 0 26px 26px;
+  }
+
+  .login-hero-inner {
+    text-align: center;
+    max-width: none;
+  }
+
+  .login-hero-logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .login-form {
+    margin-top: -20px;
+    border-radius: 22px 22px 0 0;
+    padding: 28px 18px 40px;
+    min-width: unset;
+    max-width: unset;
+    flex: 1;
+    box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.06);
+    display: block;
+  }
+
+  .login-panel-dark .login-form {
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  }
+
   .side-image {
     display: none;
   }
-  .login-form {
-    min-width: unset;
-    max-width: unset;
-    padding: 24px 16px;
-  }
 
-  .brand-header {
-    justify-content: center;
-    margin-bottom: 12px;
+  .login-form :deep(.login-languages-box) {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    margin: 0 !important;
   }
 }
 </style>
