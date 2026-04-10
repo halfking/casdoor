@@ -45,6 +45,12 @@ const request: AxiosInstance = axios.create({
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     config.headers.set("Accept-Language", getAcceptLanguage());
+    if ((config.method || "").toLowerCase() === "get") {
+      // Aggressively prevent intermediary proxies from serving stale cached auth state.
+      config.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0");
+      config.headers.set("Pragma", "no-cache");
+      config.headers.set("Expires", "0");
+    }
 
     // Attach Bearer token if available (used by cross-app token auth)
     try {

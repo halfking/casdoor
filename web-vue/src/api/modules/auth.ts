@@ -44,7 +44,10 @@ function casLoginParamsToQuery(params?: CasLoginParams): string {
 /* ───────── account ───────── */
 
 export function getAccount(query = "") {
-  return get(`/api/get-account${query}`);
+  const hasQueryPrefix = query.startsWith("?");
+  const baseQuery = query === "" ? "" : (hasQueryPrefix ? query : `?${query}`);
+  const separator = baseQuery.includes("?") ? "&" : "?";
+  return get(`/api/get-account${baseQuery}${separator}_ts=${Date.now()}`);
 }
 
 export function signup(values: Record<string, unknown>, oAuthParams?: OAuthParams) {

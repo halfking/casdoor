@@ -9,6 +9,7 @@ export interface ThemeData {
   borderRadius: number;
   isCompact: boolean;
   isEnabled?: boolean;
+  logoDark?: string;
 }
 
 // ---------- User ----------
@@ -378,6 +379,7 @@ export interface Application {
   type: string;
   scopes: ScopeItem[];
   logo: string;
+  logoDark?: string;
   title: string;
   favicon: string;
   order: number;

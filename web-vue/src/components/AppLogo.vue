@@ -1,13 +1,14 @@
 <template>
-  <div v-if="logoUrl" class="app-logo">
+  <div v-if="resolvedLogoUrl" class="app-logo">
     <a :href="orgUrl" target="_blank" rel="noreferrer">
-      <img :src="logoUrl" :alt="application?.displayName || application?.name" class="app-logo-img" />
+      <img :src="resolvedLogoUrl" :alt="application?.displayName || application?.name" class="app-logo-img" @error="onLogoError" />
     </a>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watchEffect } from "vue";
+import * as Setting from "@/utils/Setting";
 import type { Application } from "@/api/types";
 
 const props = defineProps<{
@@ -18,16 +19,24 @@ const logoUrl = computed(() => {
   const application = props.application;
   if (!application) return "";
 
-  const name = String(application.name || "").toLowerCase();
-  if (name === "stock-trading") {
-    return "/img/kx-stock-logo-light.svg";
+  // Prefer per-application dark/light logo when provided by application config.
+  const appAny = application as Application & { logoDark?: string };
+  if (Setting.isDarkTheme() && appAny.logoDark) {
+    return appAny.logoDark;
   }
-  if (name === "trendaradar") {
-    return "/img/kx-trendaradar-logo-light.svg";
-  }
-
   return application.logo || "";
 });
+
+const resolvedLogoUrl = ref("");
+watchEffect(() => {
+  resolvedLogoUrl.value = logoUrl.value;
+});
+
+function onLogoError() {
+  resolvedLogoUrl.value = Setting.isDarkTheme()
+    ? "/img/kaixuan-platform-logo-dark.svg"
+    : "/img/kaixuan-platform-logo-light.svg";
+}
 
 const orgUrl = computed(() => {
   if (!props.application?.homepageUrl) return "/";

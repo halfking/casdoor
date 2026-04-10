@@ -7,27 +7,43 @@
   <div v-else-if="signupHtmlSafe" v-html="signupHtmlSafe" />
 
   <div v-else>
-    <div class="login-content" :style="{ margin: contentMargin }">
+    <div
+      :class="['login-content', isMobile ? 'login-content-mobile' : 'login-content-desktop']"
+      :style="{ margin: contentMargin }"
+    >
       <!-- Custom CSS -->
       <component v-if="customCssComponent" :is="customCssComponent" />
 
-      <div :class="isDark ? 'login-panel-dark' : 'login-panel'">
+      <div :class="['login-panel', isDark ? 'login-panel-dark' : '']">
         <!-- Side image -->
         <div
-          v-if="application.formOffset === 4"
+          v-if="application.formSideHtml && !isMobile"
           class="side-image"
           v-html="sideHtmlSafe"
         />
+        <div v-else-if="!isMobile" class="side-image side-image-default">
+          <div class="side-brand-row">
+            <img class="side-brand-icon" src="/img/kx-favicon.svg" alt="开轩启圭" />
+            <div class="side-brand-texts">
+              <div class="side-brand-title">开轩启圭</div>
+              <div class="side-brand-subtitle">统一认证中心</div>
+            </div>
+          </div>
+        </div>
 
         <div class="login-form">
           <CustomHelmet :application="application" />
-          <AppLogo :application="application" />
 
           <LanguageSelect
             v-if="application.organizationObj?.languages"
             :languages="application.organizationObj.languages"
             style="top: 55px; right: 5px; position: absolute"
           />
+
+          <div class="source-app-brand">
+            <img :src="sourceAppLogo" :alt="sourceAppName" class="source-app-brand-logo" />
+            <div class="source-app-brand-name">{{ sourceAppName }}</div>
+          </div>
 
           <!-- Sign up disabled -->
           <a-result
@@ -392,7 +408,6 @@ import { useSignup } from "../../composables/useSignup";
 import * as Setting from "../../utils/Setting";
 import * as PasswordChecker from "../../utils/PasswordChecker";
 import CustomHelmet from "../../components/CustomHelmet.vue";
-import AppLogo from "../../components/AppLogo.vue";
 import LanguageSelect from "../../components/LanguageSelect.vue";
 import ProviderButton from "../../components/ProviderButton.vue";
 import RegionSelect from "../../components/RegionSelect.vue";
@@ -642,10 +657,7 @@ const {
 
 const formRef = ref();
 const isMobile = computed(() => Setting.isMobile());
-const isDark = computed(() => {
-  // TODO: get from theme store
-  return false;
-});
+const isDark = computed(() => Setting.isDarkTheme());
 
 const formState = reactive<Record<string, any>>({
   application: "",
@@ -704,7 +716,31 @@ const sideHtmlSafe = computed(() => {
 });
 
 const contentMargin = computed(() => {
+  if (!isMobile.value && (application.value?.formOffset === 1 || application.value?.formOffset === 2)) {
+    return "0 auto";
+  }
   return parseOffset(application.value?.formOffset);
+});
+
+const sourceAppName = computed(() => {
+  const app = application.value;
+  if (!app) return "来源应用";
+  return app.displayName || app.name || "来源应用";
+});
+
+const sourceAppLogo = computed(() => {
+  const app = application.value as Application & { logoDark?: string; themeData?: Record<string, unknown> };
+  if (!app) {
+    return isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
+  }
+  const lightLogo = app.logo || "/img/kaixuan-platform-logo-light.svg";
+  const darkFromThemeData = typeof app.themeData?.logoDark === "string" ? String(app.themeData.logoDark) : "";
+  const darkFromField = app.logoDark || "";
+  const inferredDark = lightLogo.includes("-light.") ? lightLogo.replace("-light.", "-dark.") : "";
+  if (isDark.value) {
+    return darkFromField || darkFromThemeData || inferredDark || "/img/kaixuan-platform-logo-dark.svg";
+  }
+  return lightLogo;
 });
 
 const customCssComponent = computed(() => {
@@ -910,6 +946,11 @@ function goToSignIn() {
 }
 
 function handleFinish(values: Record<string, any>) {
+  const hasAgreementItem = visibleSignupItems.value.some((i: any) => i.name === "Agreement" && i.visible);
+  if (hasAgreementItem && !formState.agreement) {
+    Setting.showMessage("warning", t("signup.Please accept the agreement!"));
+    return;
+  }
   onFinish({ ...formState, ...values });
 }
 
@@ -960,18 +1001,19 @@ onMounted(() => {
 .login-content {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 70vh;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
 }
 
-.login-panel,
-.login-panel-dark {
+.login-panel {
   display: flex;
   background: var(--kx-bg-card, #fff);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 40px;
+  overflow: hidden;
   max-width: 900px;
+  width: 100%;
 }
 
 .login-panel-dark {
@@ -979,15 +1021,128 @@ onMounted(() => {
 }
 
 .side-image {
-  width: 300px;
-  padding-right: 40px;
+  flex: 0 0 360px;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.side-image-default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  border-right: 1px solid #e3ebff;
+}
+
+.side-brand-row {
   display: flex;
   align-items: center;
+  gap: 14px;
+  max-width: 80%;
+}
+
+.side-brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.side-brand-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-brand-title {
+  color: #1f2a44;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.side-brand-subtitle {
+  margin-top: 6px;
+  color: #5c6b8a;
+  font-size: 15px;
 }
 
 .login-form {
   flex: 1;
   position: relative;
+  min-width: 360px;
+  max-width: 460px;
+  padding: 40px;
+}
+
+.source-app-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.source-app-brand-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.source-app-brand-name {
+  color: var(--kx-text-primary, #1f2a44);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.login-form {
+  --field-bg: #f7f9fc;
+  --field-border: #d8dee9;
+  --field-hover: #cbd5e1;
+  --field-focus: #9db3d9;
+  --field-text: #1f2a44;
+  --field-placeholder: #98a2b3;
+}
+
+.login-panel-dark .login-form {
+  --field-bg: #1f2b40;
+  --field-border: #33435f;
+  --field-hover: #405273;
+  --field-focus: #5b7db1;
+  --field-text: #e6edf7;
+  --field-placeholder: #9fb0c8;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper),
+.login-content .login-panel .login-form :deep(.ant-input-password),
+.login-content .login-panel .login-form :deep(.ant-select-selector),
+.login-content .login-panel .login-form :deep(.ant-input-group-addon) {
+  background: var(--field-bg) !important;
+  border-color: var(--field-border) !important;
+  color: var(--field-text) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input::placeholder),
+.login-content .login-panel .login-form :deep(.ant-input-password input::placeholder) {
+  color: var(--field-placeholder) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input:hover),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper:hover),
+.login-content .login-panel .login-form :deep(.ant-input-password:hover),
+.login-content .login-panel .login-form :deep(.ant-select-selector:hover) {
+  border-color: var(--field-hover) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input:focus),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper-focused),
+.login-content .login-panel .login-form :deep(.ant-input-password-focused),
+.login-content .login-panel .login-form :deep(.ant-select-focused .ant-select-selector) {
+  border-color: var(--field-focus) !important;
+  box-shadow: 0 0 0 2px rgba(100, 132, 189, 0.12) !important;
 }
 
 .signup-button {
@@ -995,13 +1150,19 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .login-panel,
-  .login-panel-dark {
+  .login-panel {
     flex-direction: column;
-    padding: 24px;
   }
   .side-image {
     display: none;
+  }
+  .login-form {
+    min-width: unset;
+    max-width: unset;
+    padding: 24px 16px;
+  }
+  .source-app-brand-name {
+    font-size: 30px;
   }
 }
 </style>

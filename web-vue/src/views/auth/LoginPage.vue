@@ -55,6 +55,15 @@
         class="side-image"
         v-html="sanitizeHtml(application.formSideHtml)"
       />
+      <div v-else-if="!isMobile" class="side-image side-image-default">
+        <div class="side-brand-row">
+          <img class="side-brand-icon" src="/img/kx-favicon.svg" alt="开轩启圭" />
+          <div class="side-brand-texts">
+            <div class="side-brand-title">开轩启圭</div>
+            <div class="side-brand-subtitle">统一认证中心</div>
+          </div>
+        </div>
+      </div>
 
       <!-- Login form area -->
       <div class="login-form">
@@ -85,6 +94,11 @@
           </div>
         </template>
 
+        <div class="source-app-brand">
+          <img :src="sourceAppIcon" :alt="sourceAppName" class="source-app-brand-logo" />
+          <div class="source-app-brand-name">{{ sourceAppName }}</div>
+        </div>
+
         <!-- Login form -->
         <a-form
           ref="formRef"
@@ -97,13 +111,12 @@
 
           <!-- Render all signinItems as form items -->
           <template v-for="item in visibleSigninItems" :key="item.name">
-            <!-- Logo -->
-            <div v-if="item.name === 'Logo'" class="login-logo-box" :style="getItemCss(item)">
-              <AppLogo :application="application!" />
-            </div>
-
             <!-- Back button -->
-            <div v-else-if="item.name === 'Back button'" class="login-back-box" :style="getItemCss(item)">
+            <div
+              v-if="item.name === 'Back button' && showBackButton"
+              class="login-back-box"
+              :style="getItemCss(item)"
+            >
               <a-button type="link" @click="goBack">
                 <template #icon><ArrowLeftOutlined /></template>
                 {{ t("login:Back") }}
@@ -337,7 +350,6 @@ import type { Application, SigninItem } from "@/api/types";
 
 // Components
 import RedirectForm from "@/components/RedirectForm.vue";
-import AppLogo from "@/components/AppLogo.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";
 import CountryCodeSelect from "@/components/CountryCodeSelect.vue";
 import SendCodeInput from "@/components/SendCodeInput.vue";
@@ -389,7 +401,7 @@ const methodItems = computed(() => {
 
 const visibleSigninItems = computed<SigninItem[]>(() => {
   if (!application.value?.signinItems) return [];
-  return application.value.signinItems.filter((item) => item.visible);
+  return application.value.signinItems.filter((item) => item.visible && item.name !== "Logo");
 });
 
 const oauthProviderItems = computed(() => {
@@ -444,6 +456,40 @@ const signupUrl = computed(() => {
   return login.getSignupUrl(application.value);
 });
 
+const showBackButton = computed(() => {
+  const path = route.path;
+  if (path.includes("/login/oauth/authorize")) return true;
+  if (path.includes("/login/oauth/device/")) return true;
+  if (path.includes("/login/saml/authorize/")) return true;
+  if (path.includes("/cas/") && path.endsWith("/login")) return true;
+  return false;
+});
+
+const sourceAppName = computed(() => {
+  const app = application.value;
+  if (!app) return "来源应用";
+  return app.displayName || app.name || "来源应用";
+});
+
+const sourceAppIcon = computed(() => {
+  const app = application.value as Application & { logoDark?: string; themeData?: Record<string, unknown> };
+  if (!app) {
+    return isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
+  }
+  const appFavicon = app.favicon || "";
+  if (appFavicon) {
+    return appFavicon;
+  }
+  const lightLogo = app.logo || "/img/kaixuan-platform-logo-light.svg";
+  const darkFromThemeData = typeof app.themeData?.logoDark === "string" ? String(app.themeData.logoDark) : "";
+  const darkFromField = app.logoDark || "";
+  const inferredDark = lightLogo.includes("-light.") ? lightLogo.replace("-light.", "-dark.") : "";
+  if (isDark.value) {
+    return darkFromField || darkFromThemeData || inferredDark || "/img/kaixuan-platform-logo-dark.svg";
+  }
+  return lightLogo;
+});
+
 const shouldAutoRedirectToProvider = computed(() => {
   if (!application.value) return false;
   const app = application.value;
@@ -460,6 +506,9 @@ const shouldAutoRedirectToProvider = computed(() => {
 
 const contentStyle = computed(() => {
   const offset = application.value?.formOffset;
+  if (!isMobile.value && (offset === 1 || offset === 2)) {
+    return { margin: "0px auto" };
+  }
   return { margin: login.parseOffset(offset) };
 });
 
@@ -523,6 +572,11 @@ function onContinueSignIn() {
 }
 
 function onFormFinish(values: Record<string, unknown>) {
+  if (!termsAccepted.value) {
+    Setting.showMessage("warning", t("login:I have read and agree to the") + " " + t("login:Terms of Use"));
+    return;
+  }
+
   const merged = {
     ...values,
     username: formState.value.username,
@@ -611,6 +665,47 @@ onMounted(async () => {
   overflow: hidden;
 }
 
+.side-image-default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
+  border-right: 1px solid #e3ebff;
+}
+
+.side-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 80%;
+}
+
+.side-brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.side-brand-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-brand-title {
+  color: #1f2a44;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.side-brand-subtitle {
+  margin-top: 6px;
+  color: #5c6b8a;
+  font-size: 15px;
+}
+
 .login-form {
   flex: 1;
   padding: 40px;
@@ -630,13 +725,33 @@ onMounted(async () => {
   opacity: 0.1;
 }
 
-.login-logo-box {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
 .login-back-box {
   margin-bottom: 16px;
+}
+
+.source-app-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.source-app-brand-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #e5ecfb;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(31, 42, 68, 0.12);
+}
+
+.source-app-brand-name {
+  color: var(--kx-text-primary, #1f2a44);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
 .login-languages-box {
@@ -690,6 +805,54 @@ onMounted(async () => {
   margin-bottom: 24px;
 }
 
+.login-form {
+  --field-bg: #f7f9fc;
+  --field-border: #d8dee9;
+  --field-hover: #cbd5e1;
+  --field-focus: #9db3d9;
+  --field-text: #1f2a44;
+  --field-placeholder: #98a2b3;
+}
+
+.login-panel-dark .login-form {
+  --field-bg: #1f2b40;
+  --field-border: #33435f;
+  --field-hover: #405273;
+  --field-focus: #5b7db1;
+  --field-text: #e6edf7;
+  --field-placeholder: #9fb0c8;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper),
+.login-content .login-panel .login-form :deep(.ant-input-password),
+.login-content .login-panel .login-form :deep(.ant-select-selector),
+.login-content .login-panel .login-form :deep(.ant-input-group-addon) {
+  background: var(--field-bg) !important;
+  border-color: var(--field-border) !important;
+  color: var(--field-text) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input::placeholder),
+.login-content .login-panel .login-form :deep(.ant-input-password input::placeholder) {
+  color: var(--field-placeholder) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input:hover),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper:hover),
+.login-content .login-panel .login-form :deep(.ant-input-password:hover),
+.login-content .login-panel .login-form :deep(.ant-select-selector:hover) {
+  border-color: var(--field-hover) !important;
+}
+
+.login-content .login-panel .login-form :deep(.ant-input:focus),
+.login-content .login-panel .login-form :deep(.ant-input-affix-wrapper-focused),
+.login-content .login-panel .login-form :deep(.ant-input-password-focused),
+.login-content .login-panel .login-form :deep(.ant-select-focused .ant-select-selector) {
+  border-color: var(--field-focus) !important;
+  box-shadow: 0 0 0 2px rgba(100, 132, 189, 0.12) !important;
+}
+
 .hidden {
   display: none;
 }
@@ -705,6 +868,9 @@ onMounted(async () => {
     min-width: unset;
     max-width: unset;
     padding: 24px 16px;
+  }
+  .source-app-brand-name {
+    font-size: 30px;
   }
 }
 </style>
