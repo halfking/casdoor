@@ -15,6 +15,9 @@
 package object
 
 import (
+	"fmt"
+
+	"github.com/casdoor/casdoor/util"
 	"github.com/xorm-io/core"
 )
 
@@ -30,6 +33,7 @@ type Position struct {
 	SystemPrompt   string `xorm:"column(system_prompt) text" json:"systemPrompt"`
 	Department     string `xorm:"column(department) varchar(100)" json:"department"`
 	ReportsTo      string `xorm:"column(reports_to) varchar(100)" json:"reportsTo"`
+	ImpliedRole    string `xorm:"column(implied_role) varchar(100)" json:"impliedRole"` // 引用的 Casdoor Role (owner/name)
 	Metadata       string `xorm:"-" json:"metadata"`         // jsonb，跳过
 	CreatedAt      string `xorm:"-" json:"createdAt"`
 	UpdatedAt      string `xorm:"-" json:"updatedAt"`
@@ -111,4 +115,75 @@ func DeletePosition(id int) (bool, error) {
 		return false, err
 	}
 	return affected != 0, nil
+}
+
+// AssignPosition 将岗位的 impliedRole 分配给用户（添加 Role 到 User）
+// action = "add" 或 "delete"
+func AssignPosition(positionId int, userName string, action string) (bool, error) {
+	// 1. 获取岗位信息
+	pos, err := GetPosition(positionId)
+	if err != nil {
+		return false, err
+	}
+	if pos == nil {
+		return false, fmt.Errorf("position not found")
+	}
+	if pos.ImpliedRole == "" {
+		return false, fmt.Errorf("position has no implied role")
+	}
+
+	// 2. 获取用户
+	userId := util.GetId("kaixuan", userName)
+	user, err := GetUser(userId)
+	if err != nil {
+		return false, err
+	}
+	if user == nil {
+		return false, fmt.Errorf("user not found")
+	}
+
+	// 3. 解析 role 的 owner/name
+	roleId := pos.ImpliedRole // 格式可能是 "kaixuan/dept-tech-cto"
+
+	if action == "add" {
+		// 4. 添加 Role 到 User: 在 Role.Users 中添加 userId
+		role, err := GetRole(roleId)
+		if err != nil {
+			return false, err
+		}
+		if role == nil {
+			return false, fmt.Errorf("role %s not found", roleId)
+		}
+
+		// 检查是否已经分配（幂等）
+		if !util.InSlice(role.Users, userId) {
+			role.Users = append(role.Users, userId)
+			_, err = ormer.Engine.ID(core.PK{role.Owner, role.Name}).Cols("users").Update(role)
+			if err != nil {
+				return false, err
+			}
+		}
+		return true, nil
+	} else if action == "delete" {
+		// 4. 从 User 删除 Role: 从 Role.Users 中移除 userId
+		role, err := GetRole(roleId)
+		if err != nil {
+			return false, err
+		}
+		if role == nil {
+			return false, fmt.Errorf("role %s not found", roleId)
+		}
+
+		// 检查是否存在
+		if util.InSlice(role.Users, userId) {
+			role.Users = util.DeleteVal(role.Users, userId)
+			_, err = ormer.Engine.ID(core.PK{role.Owner, role.Name}).Cols("users").Update(role)
+			if err != nil {
+				return false, err
+			}
+		}
+		return true, nil
+	} else {
+		return false, fmt.Errorf("invalid action: %s", action)
+	}
 }
