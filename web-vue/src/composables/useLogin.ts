@@ -318,6 +318,11 @@ export function useLogin(props: {
         res = await AuthApi.login(values, authOauthParams);
       }
 
+      // 代理偶发返回 HTML/空串时 axios 可能给出非对象，按「无有效 JSON」走会话探测分支
+      if (!res || typeof res !== "object" || !("status" in res)) {
+        res = { status: "" };
+      }
+
       if (res?.status === "ok") {
         handleLoginResponse(res, responseType, oAuthParams);
       } else if (res?.status === "error") {
@@ -327,9 +332,37 @@ export function useLogin(props: {
         } else {
           Setting.showMessage("error", res.msg);
         }
+      } else {
+        // Some proxy layers may return 200 with an empty/invalid body.
+        // Retry account probing to avoid false negatives caused by delayed cookie persistence.
+        const maxRetries = 8;
+        const retryDelayMs = 350;
+        for (let i = 0; i < maxRetries; i++) {
+          try {
+            const accountRes: any = await AuthApi.getAccount("");
+            if (accountRes?.status === "ok" && accountRes?.data?.name) {
+              Setting.showMessage("success", t("login:Successfully logged in"));
+              Setting.goToLink("/");
+              return;
+            }
+          } catch {
+            // ignore transient errors and continue retrying
+          }
+
+          if (i < maxRetries - 1) {
+            await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+          }
+        }
+
+        Setting.showMessage("error", "Login response is empty and session was not established. Please retry without local proxy.");
       }
-    } catch {
-      Setting.showMessage("error", t("general:Failed to connect to server"));
+    } catch (err: any) {
+      const msg = typeof err?.message === "string" ? err.message : "";
+      if (msg) {
+        Setting.showMessage("error", msg);
+      } else {
+        Setting.showMessage("error", t("general:Failed to connect to server"));
+      }
     } finally {
       loginLoading.value = false;
     }

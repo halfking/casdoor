@@ -1,18 +1,14 @@
 <template>
   <div v-if="resolvedLogoUrl" class="app-logo">
     <a :href="orgUrl" target="_blank" rel="noreferrer">
-      <img
-        :src="resolvedLogoUrl"
-        :alt="application?.displayName || application?.name"
-        class="app-logo-img"
-        @error="onImgError"
-      />
+      <img :src="resolvedLogoUrl" :alt="application?.displayName || application?.name" class="app-logo-img" @error="onLogoError" />
     </a>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watchEffect } from "vue";
+import * as Setting from "@/utils/Setting";
 import type { Application } from "@/api/types";
 
 const props = defineProps<{
@@ -23,38 +19,23 @@ const logoUrl = computed(() => {
   const application = props.application;
   if (!application) return "";
 
-  const name = String(application.name || "").toLowerCase();
-  if (name.includes("casdoor") || name === "acc" || name === "personal-app") {
-    return "/img/kx-brand-mark.svg";
+  // Prefer per-application dark/light logo when provided by application config.
+  const appAny = application as Application & { logoDark?: string };
+  if (Setting.isDarkTheme() && appAny.logoDark) {
+    return appAny.logoDark;
   }
-  if (name === "stock-trading") {
-    return "/img/kx-stock-logo-light.svg";
-  }
-  if (name === "trendaradar") {
-    return "/img/kx-trendaradar-logo-light.svg";
-  }
-
-  if (application.logo) {
-    return application.logo;
-  }
-  return "/img/kx-brand-mark.svg";
+  return application.logo || "";
 });
 
 const resolvedLogoUrl = ref("");
+watchEffect(() => {
+  resolvedLogoUrl.value = logoUrl.value;
+});
 
-watch(
-  logoUrl,
-  (val) => {
-    resolvedLogoUrl.value = val || "/img/kx-brand-mark.svg";
-  },
-  { immediate: true },
-);
-
-function onImgError() {
-  // Keep login/signup header stable even when app-specific logo URL is invalid.
-  if (resolvedLogoUrl.value !== "/img/kx-brand-mark.svg") {
-    resolvedLogoUrl.value = "/img/kx-brand-mark.svg";
-  }
+function onLogoError() {
+  resolvedLogoUrl.value = Setting.isDarkTheme()
+    ? "/img/kaixuan-platform-logo-dark.svg"
+    : "/img/kaixuan-platform-logo-light.svg";
 }
 
 const orgUrl = computed(() => {

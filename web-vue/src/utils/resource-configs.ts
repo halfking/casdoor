@@ -64,6 +64,14 @@ function renderTextLink(to: string, text: string) {
   return h(RouterLink, { to }, () => text);
 }
 
+function inferDarkLogo(lightLogo: string): string {
+  if (!lightLogo) return "";
+  if (lightLogo.includes("-light.")) {
+    return lightLogo.replace("-light.", "-dark.");
+  }
+  return "";
+}
+
 async function loadOrganizationOptions(): Promise<SelectOption[]> {
   const response = unwrap(await OrganizationApi.getOrganizations({ owner: "admin", pageSize: 100 }) as AnyResponse);
   return ((response.data as Entity[]) || []).map((item) => ({
@@ -460,6 +468,7 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
         category: "Default",
         type: "All",
         logo: "/img/kaixuan-platform-logo-light.svg",
+        logoDark: "/img/kaixuan-platform-logo-dark.svg",
         homepageUrl: "",
         redirectUris: ["http://localhost:9000/callback"],
         grantTypes: ["authorization_code", "password", "refresh_token"],
@@ -476,6 +485,7 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     }),
     transformLoaded: (entity) => ({
       ...entity,
+      logoDark: String(entity.logoDark || (entity.themeData as Entity | undefined)?.logoDark || inferDarkLogo(String(entity.logo || ""))),
       providers: Array.isArray(entity.providers)
         ? entity.providers.map((item) => (typeof item === "string" ? item : String((item as Entity).name || ""))).filter(Boolean)
         : [],
@@ -484,6 +494,10 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
     }),
     normalize: (entity) => ({
       ...entity,
+      themeData: {
+        ...(entity.themeData as Entity || {}),
+        logoDark: String(entity.logoDark || ""),
+      },
       providers: Array.isArray(entity.providers)
         ? entity.providers.map((name) => ({
             name,
@@ -520,6 +534,7 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
       { key: "category", label: "general:Category", type: "select", options: toOptions(["Default", "Agent"]) },
       { key: "type", label: "general:Type", type: "select", options: toOptions(["All", "Web", "SPA", "Native"]) },
       { key: "logo", label: "general:Logo", type: "text" },
+      { key: "logoDark", label: "application:Logo dark", type: "text" },
       { key: "homepageUrl", label: "application:Homepage URL", type: "text" },
       { key: "redirectUris", label: "application:Redirect URIs", type: "tags" },
       { key: "grantTypes", label: "application:Grant types", type: "multiselect", options: toOptions(["authorization_code", "password", "client_credentials", "refresh_token", "token", "id_token"]) },
