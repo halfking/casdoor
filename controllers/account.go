@@ -612,6 +612,12 @@ func (c *ApiController) GetAccount() {
 	}
 	u.AccessToken = accessToken
 
+	// Inject systemPrompt from user's positions
+	systemPrompt, err := object.GetUserSystemPrompts(u.Name, u.Owner)
+	if err == nil {
+		u.SystemPrompt = systemPrompt
+	}
+
 	resp := Response{
 		Status: "ok",
 		Sub:    user.Id,

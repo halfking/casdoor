@@ -244,6 +244,8 @@ type User struct {
 	NeedUpdatePassword  bool             `json:"needUpdatePassword"`
 	IpWhitelist         string           `xorm:"varchar(200)" json:"ipWhitelist"`
 	ApplicationScopes   []ConsentRecord  `xorm:"mediumtext" json:"applicationScopes"`
+
+	SystemPrompt        string           `xorm:"-" json:"systemPrompt"`
 }
 
 type Userinfo struct {
