@@ -267,14 +267,14 @@ async function handleModalOk() {
         displayName: formData.value.displayName,
         orgType: formData.value.orgType,
         orgName: formData.value.orgName,
-        parentId: formData.value.parentId,
+        parentId: formData.value.parentId ?? undefined,
       });
     } else {
       res = await OrgTreeApi.addOrgTree({
         displayName: formData.value.displayName,
         orgType: formData.value.orgType,
         orgName: formData.value.orgName,
-        parentId: formData.value.parentId,
+        parentId: formData.value.parentId ?? undefined,
       });
     }
     if (res.status === "ok") {

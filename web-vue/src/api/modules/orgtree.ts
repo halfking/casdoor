@@ -1,4 +1,4 @@
-import { get, post, put } from "@/api/base";
+import { get, post } from "@/api/request";
 
 export interface OrgTreeNode {
   id: number;
@@ -17,7 +17,7 @@ export async function addOrgTree(data: Partial<OrgTreeNode>) {
 }
 
 export async function updateOrgTree(data: Partial<OrgTreeNode>) {
-  return put("/api/update-org-tree", data);
+  return post("/api/update-org-tree", data);
 }
 
 export async function deleteOrgTree(id: number) {
