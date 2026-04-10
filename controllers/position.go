@@ -119,3 +119,31 @@ func (c *ApiController) DeletePosition() {
 	}
 	c.ResponseOk(affected)
 }
+
+// AssignPosition 分配岗位给用户
+// @Title AssignPosition
+// @Tag Position API
+// @Description assign a position's implied role to a user
+// @Param   id     path    int  true        "The position id"
+// @Success 200 {bool} success
+// @router /api/position/{id}/assign [put]
+func (c *ApiController) AssignPosition() {
+	positionIdStr := c.Ctx.Input.Param(":id")
+	positionId := util.ParseInt(positionIdStr)
+
+	var req struct {
+		UserName string `json:"userName"`
+		Action  string `json:"action"` // "add" 或 "delete"
+	}
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &req); err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+
+	affected, err := object.AssignPosition(positionId, req.UserName, req.Action)
+	if err != nil {
+		c.ResponseError(err.Error())
+		return
+	}
+	c.ResponseOk(affected)
+}

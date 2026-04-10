@@ -403,6 +403,7 @@ func InitAPI() {
 	web.Router("/api/add-position", &controllers.ApiController{}, "POST:PostPosition")
 	web.Router("/api/update-position", &controllers.ApiController{}, "PUT:PutPosition")
 	web.Router("/api/delete-position", &controllers.ApiController{}, "POST:DeletePosition")
+	web.Router("/api/position/:id/assign", &controllers.ApiController{}, "PUT:AssignPosition")
 
 	// Workflow API
 	web.Router("/api/get-workflows", &controllers.ApiController{}, "GET:GetWorkflows")
