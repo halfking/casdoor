@@ -158,6 +158,18 @@ const managementRoutes: RouteRecordRaw[] = [
   { path: "/management/groups/new", name: "management-groups-new", component: () => import("@/views/management/GroupEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/management/groups/:owner/:name", name: "management-groups-edit", component: () => import("@/views/management/GroupEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
 
+  { path: "/management/org-tree", name: "management-org-tree", component: () => import("@/views/management/OrgTreePage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/positions", name: "management-positions", component: () => import("@/views/management/PositionListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/positions/new", name: "management-positions-new", component: () => import("@/views/management/PositionEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/positions/:id", name: "management-positions-edit", component: () => import("@/views/management/PositionEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/workflows", name: "management-workflows", component: () => import("@/views/management/WorkflowListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/workflows/new", name: "management-workflows-new", component: () => import("@/views/management/WorkflowEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+  { path: "/management/workflows/:id", name: "management-workflows-edit", component: () => import("@/views/management/WorkflowEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
+  { path: "/management/workflow-executions", name: "management-workflow-executions", component: () => import("@/views/management/WorkflowExecutionListPage.vue"), meta: { layout: "management", requiresAuth: true } },
+
   { path: "/management/departments", name: "management-departments", component: () => import("@/views/management/DepartmentListPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/management/departments/new", name: "management-departments-new", component: () => import("@/views/management/DepartmentEditPage.vue"), meta: { layout: "management", requiresAuth: true } },
   { path: "/management/departments/:owner/:name", name: "management-departments-edit", component: () => import("@/views/management/DepartmentEditPage.vue"), meta: { layout: "management", requiresAuth: true } },

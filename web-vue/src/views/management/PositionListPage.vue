@@ -1,0 +1,213 @@
+<template>
+  <div class="position-list-container">
+    <PageHeader title="岗位管理">
+      <a-space wrap>
+        <a-button @click="handleRefresh">
+          {{ $t("general.Refresh") }}
+        </a-button>
+        <a-select
+          v-model:value="filterDepartment"
+          :placeholder="$t('position.Department')"
+          :options="departmentOptions"
+          allow-clear
+          style="min-width: 180px"
+          @change="handleFilterChange"
+        />
+        <a-button type="primary" @click="handleCreate">
+          {{ $t("general.Add") }}
+        </a-button>
+      </a-space>
+    </PageHeader>
+
+    <a-table
+      :columns="columns"
+      :data-source="positions"
+      :loading="loading"
+      :pagination="pagination"
+      :row-key="(record: any) => record.id"
+      @change="handleTableChange"
+    >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'id'">
+          {{ record.id }}
+        </template>
+        <template v-else-if="column.key === 'role_name'">
+          {{ record.role_name }}
+        </template>
+        <template v-else-if="column.key === 'full_description'">
+          {{ truncateText(record.full_description, 50) }}
+        </template>
+        <template v-else-if="column.key === 'department'">
+          {{ record.department }}
+        </template>
+        <template v-else-if="column.key === 'implied_role'">
+          {{ record.implied_role || '-' }}
+        </template>
+        <template v-else-if="column.key === 'actions'">
+          <a-space>
+            <a-button type="link" size="small" @click="handleEdit(record)">
+              {{ $t("general.Edit") }}
+            </a-button>
+            <a-popconfirm
+              :title="$t('general.Delete confirm')"
+              :ok-text="$t('general.Confirm')"
+              :cancel-text="$t('general.Cancel')"
+              @confirm="handleDelete(record)"
+            >
+              <a-button type="link" size="small" danger>
+                {{ $t("general.Delete") }}
+              </a-button>
+            </a-popconfirm>
+          </a-space>
+        </template>
+      </template>
+    </a-table>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { message } from "ant-design-vue";
+import PageHeader from "@/components/common/PageHeader.vue";
+import * as PositionApi from "@/api/modules/position";
+
+const { t } = useI18n();
+const router = useRouter();
+
+const loading = ref(false);
+const positions = ref<any[]>([]);
+const filterDepartment = ref<string | undefined>(undefined);
+
+const pagination = ref({
+  current: 1,
+  pageSize: 20,
+  total: 0,
+  showSizeChanger: true,
+  showTotal: (total: number) => `共 ${total} 条`,
+});
+
+const departmentOptions = [
+  { label: "技术研发部", value: "技术研发部" },
+  { label: "业务运营部", value: "业务运营部" },
+  { label: "平台治理部", value: "平台治理部" },
+];
+
+const columns = [
+  {
+    title: "ID",
+    key: "id",
+    dataIndex: "id",
+    width: 80,
+  },
+  {
+    title: "岗位名称",
+    key: "role_name",
+    dataIndex: "role_name",
+    width: 150,
+  },
+  {
+    title: "所属部门",
+    key: "department",
+    dataIndex: "department",
+    width: 120,
+  },
+  {
+    title: "引用Role",
+    key: "implied_role",
+    dataIndex: "implied_role",
+    width: 150,
+  },
+  {
+    title: "描述",
+    key: "full_description",
+    dataIndex: "full_description",
+    ellipsis: true,
+  },
+  {
+    title: "操作",
+    key: "actions",
+    width: 150,
+    fixed: "right" as const,
+  },
+];
+
+const truncateText = (text: string | undefined, maxLength: number) => {
+  if (!text) return "-";
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+};
+
+const fetchPositions = async () => {
+  loading.value = true;
+  try {
+    const params: any = {
+      page: pagination.value.current,
+      pageSize: pagination.value.pageSize,
+    };
+    if (filterDepartment.value) {
+      params.department = filterDepartment.value;
+    }
+    const res = await PositionApi.getPositions(params);
+    if (res) {
+      positions.value = res.data || res;
+      if (res.data2 !== undefined) {
+        pagination.value.total = res.data2;
+      } else if (res.total !== undefined) {
+        pagination.value.total = res.total;
+      } else {
+        pagination.value.total = positions.value.length;
+      }
+    }
+  } catch (error) {
+    message.error(t("general.Failed to load positions"));
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleRefresh = () => {
+  void fetchPositions();
+};
+
+const handleFilterChange = () => {
+  pagination.value.current = 1;
+  void fetchPositions();
+};
+
+const handleTableChange = (pag: any) => {
+  pagination.value.current = pag.current;
+  pagination.value.pageSize = pag.pageSize;
+  void fetchPositions();
+};
+
+const handleCreate = () => {
+  void router.push("/management/position");
+};
+
+const handleEdit = (record: any) => {
+  void router.push(`/management/position?id=${record.id}`);
+};
+
+const handleDelete = async (record: any) => {
+  try {
+    await PositionApi.deletePosition(record.id);
+    message.success(t("general.Success"));
+    void fetchPositions();
+  } catch (error) {
+    message.error(t("general.Failed to delete"));
+  }
+};
+
+onMounted(() => {
+  void fetchPositions();
+});
+</script>
+
+<style scoped lang="less">
+.position-list-container {
+  padding: 24px;
+  background: var(--kx-bg-card, #fff);
+  border-radius: 8px;
+}
+</style>
