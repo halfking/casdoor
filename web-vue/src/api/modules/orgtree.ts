@@ -6,6 +6,11 @@ export interface OrgTreeNode {
   displayName: string;
   orgType: string;
   orgName: string;
+  casdoorOrgName?: string;
+  level?: number;
+  sortOrder?: number;
+  code?: string;   // 编码，用于与 Department.code 匹配
+  leader?: string; // 负责人
 }
 
 export async function getOrgTrees() {

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import * as Conf from "../Conf";
 import type { CasdoorThemeData } from "../styles/antd-theme";
+import { clearStoredAuthToken } from "../shared/auth/auth-service.js";
 
 export interface Account {
   owner: string;
@@ -41,6 +42,7 @@ export const useAuthStore = defineStore("auth", () => {
   function logout() {
     account.value = null;
     accessToken.value = null;
+    clearStoredAuthToken();
   }
 
   return {

@@ -61,6 +61,15 @@
               <a-descriptions-item :label="t('general.Org name')">
                 {{ selectedNode.orgName || '-' }}
               </a-descriptions-item>
+              <a-descriptions-item :label="t('organization:Code')">
+                {{ selectedNode.code || '-' }}
+              </a-descriptions-item>
+              <a-descriptions-item :label="t('organization:Level')">
+                {{ selectedNode.level || '-' }}
+              </a-descriptions-item>
+              <a-descriptions-item :label="t('organization:Leader')">
+                {{ selectedNode.leader || '-' }}
+              </a-descriptions-item>
               <a-descriptions-item :label="t('general.ID')">
                 {{ selectedNode.id || '-' }}
               </a-descriptions-item>
@@ -93,6 +102,15 @@
         </a-form-item>
         <a-form-item :label="t('general.Org name')" name="orgName" required>
           <a-input v-model:value="formData.orgName" />
+        </a-form-item>
+        <a-form-item :label="t('organization:Code')" name="code">
+          <a-input v-model:value="formData.code" placeholder="编码，用于与 Department.code 匹配" />
+        </a-form-item>
+        <a-form-item :label="t('organization:Level')" name="level">
+          <a-input-number v-model:value="formData.level" :min="0" style="width: 100%" />
+        </a-form-item>
+        <a-form-item :label="t('organization:Leader')" name="leader">
+          <a-input v-model:value="formData.leader" placeholder="负责人" />
         </a-form-item>
         <a-form-item v-if="formData.parentId !== null" :label="t('general.Parent')" name="parentId">
           <a-input v-model:value="formData.parentId" disabled />
@@ -157,12 +175,18 @@ const formData = ref<{
   displayName: string;
   orgType: string;
   orgName: string;
+  code: string;
+  level: number;
+  leader: string;
   parentId: number | null;
   id?: number;
 }>({
   displayName: "",
   orgType: "dept",
   orgName: "",
+  code: "",
+  level: 1,
+  leader: "",
   parentId: null,
 });
 
@@ -171,12 +195,9 @@ function buildTree(nodes: OrgTreeNode[], parentId: number = 0): TreeNode[] {
   return nodes
     .filter((n) => n.parentId === parentId)
     .map((n) => ({
+      ...n,
       key: String(n.id),
       title: n.displayName,
-      orgType: n.orgType,
-      orgName: n.orgName,
-      parentId: n.parentId,
-      id: n.id,
       children: buildTree(nodes, n.id),
     }));
 }
@@ -229,6 +250,9 @@ function openAddModal(node: any) {
     displayName: "",
     orgType: "dept",
     orgName: "",
+    code: "",
+    level: 1,
+    leader: "",
     parentId: node ? node.id : 0,
   };
   currentEditNode.value = null;
@@ -241,6 +265,9 @@ function openEditModal(node: any) {
     displayName: node.displayName || "",
     orgType: node.orgType || "dept",
     orgName: node.orgName || "",
+    code: node.code || "",
+    level: node.level || 1,
+    leader: node.leader || "",
     parentId: node.parentId,
     id: node.id,
   };
@@ -267,6 +294,9 @@ async function handleModalOk() {
         displayName: formData.value.displayName,
         orgType: formData.value.orgType,
         orgName: formData.value.orgName,
+        code: formData.value.code,
+        level: formData.value.level,
+        leader: formData.value.leader,
         parentId: formData.value.parentId ?? undefined,
       });
     } else {
@@ -274,6 +304,9 @@ async function handleModalOk() {
         displayName: formData.value.displayName,
         orgType: formData.value.orgType,
         orgName: formData.value.orgName,
+        code: formData.value.code,
+        level: formData.value.level,
+        leader: formData.value.leader,
         parentId: formData.value.parentId ?? undefined,
       });
     }

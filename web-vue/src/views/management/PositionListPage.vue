@@ -31,17 +31,17 @@
         <template v-if="column.key === 'id'">
           {{ record.id }}
         </template>
-        <template v-else-if="column.key === 'role_name'">
-          {{ record.role_name }}
+        <template v-else-if="column.key === 'roleName'">
+          {{ record.roleName }}
         </template>
-        <template v-else-if="column.key === 'full_description'">
-          {{ truncateText(record.full_description, 50) }}
+        <template v-else-if="column.key === 'fullDescription'">
+          {{ truncateText(record.fullDescription, 50) }}
         </template>
         <template v-else-if="column.key === 'department'">
           {{ record.department }}
         </template>
-        <template v-else-if="column.key === 'implied_role'">
-          {{ record.implied_role || '-' }}
+        <template v-else-if="column.key === 'impliedRole'">
+          {{ record.impliedRole || '-' }}
         </template>
         <template v-else-if="column.key === 'actions'">
           <a-space>
@@ -72,12 +72,13 @@ import { useI18n } from "vue-i18n";
 import { message } from "ant-design-vue";
 import PageHeader from "@/components/common/PageHeader.vue";
 import * as PositionApi from "@/api/modules/position";
+import type { PositionRecord } from "@/api/modules/position";
 
 const { t } = useI18n();
 const router = useRouter();
 
 const loading = ref(false);
-const positions = ref<any[]>([]);
+const positions = ref<PositionRecord[]>([]);
 const filterDepartment = ref<string | undefined>(undefined);
 
 const pagination = ref({
@@ -102,9 +103,15 @@ const columns = [
     width: 80,
   },
   {
+    title: "岗位编码",
+    key: "code",
+    dataIndex: "code",
+    width: 120,
+  },
+  {
     title: "岗位名称",
-    key: "role_name",
-    dataIndex: "role_name",
+    key: "roleName",
+    dataIndex: "roleName",
     width: 150,
   },
   {
@@ -115,14 +122,14 @@ const columns = [
   },
   {
     title: "引用Role",
-    key: "implied_role",
-    dataIndex: "implied_role",
+    key: "impliedRole",
+    dataIndex: "impliedRole",
     width: 150,
   },
   {
     title: "描述",
-    key: "full_description",
-    dataIndex: "full_description",
+    key: "fullDescription",
+    dataIndex: "fullDescription",
     ellipsis: true,
   },
   {
@@ -141,7 +148,7 @@ const truncateText = (text: string | undefined, maxLength: number) => {
 const fetchPositions = async () => {
   loading.value = true;
   try {
-    const params: any = {
+    const params: PositionApi.PositionListParams = {
       page: pagination.value.current,
       pageSize: pagination.value.pageSize,
     };
@@ -149,12 +156,10 @@ const fetchPositions = async () => {
       params.department = filterDepartment.value;
     }
     const res = await PositionApi.getPositions(params);
-    if (res) {
-      positions.value = res.data || res;
+    if (res.status === "ok") {
+      positions.value = res.data || [];
       if (res.data2 !== undefined) {
-        pagination.value.total = res.data2;
-      } else if (res.total !== undefined) {
-        pagination.value.total = res.total;
+        pagination.value.total = Number(res.data2) || 0;
       } else {
         pagination.value.total = positions.value.length;
       }
@@ -182,14 +187,14 @@ const handleTableChange = (pag: any) => {
 };
 
 const handleCreate = () => {
-  void router.push("/management/position");
+  void router.push("/management/positions/new");
 };
 
-const handleEdit = (record: any) => {
-  void router.push(`/management/position?id=${record.id}`);
+const handleEdit = (record: PositionRecord) => {
+  void router.push(`/management/positions/${record.id}`);
 };
 
-const handleDelete = async (record: any) => {
+const handleDelete = async (record: PositionRecord) => {
   try {
     await PositionApi.deletePosition(record.id);
     message.success(t("general.Success"));

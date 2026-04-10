@@ -129,6 +129,7 @@ import {
   DollarOutlined,
   SettingOutlined,
   FolderOutlined,
+  TeamOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@/shared/components/SharedNavbar.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";
@@ -254,6 +255,18 @@ function resolveMenuRoute(key: string): string {
 }
 
 function isNavItemAllowed(navItems: string[], key: string): boolean {
+  // Kaixuan custom routes - always allowed
+  if ([
+    "/management/org-tree",
+    "/management/positions",
+    "/management/menus",
+    "/management/permission-rules",
+    "/management/workflows",
+    "/management/workflow-executions",
+  ].includes(key)) {
+    return true;
+  }
+
   if (navItems.includes(key)) {
     return true;
   }
@@ -330,22 +343,10 @@ const menuItems = computed(() => {
     label: t("general.Authorization"),
     icon: () => h(SafetyCertificateOutlined, { style: { color } }),
     children: authChildren,
-    });
-
-    // Organization
-    res.push({
-      key: "/organization",
-      label: t("general:Organization"),
-      icon: () => h(FolderOutlined, { style: { color } }),
-      children: [
-        { key: resolveMenuRoute("/departments"), label: t("organization:Departments") },
-        { key: resolveMenuRoute("/posts"), label: t("organization:Posts") },
-        { key: resolveMenuRoute("/menus"), label: t("organization:Menus") },
-        { key: resolveMenuRoute("/permission-rules"), label: t("permission:Permission Rules") },
-      ],
   });
 
-  // Organization Extension (Kaixuan custom)
+  // Organization (Kaixuan custom - integrated with OrgTree)
+  // Note: Department and Post APIs are kept but not shown in menu (legacy tables, use OrgTree/Position instead)
   res.push({
     key: "/org-ext",
     label: "组织架构",
@@ -353,6 +354,8 @@ const menuItems = computed(() => {
     children: [
       { key: "/management/org-tree", label: "组织树" },
       { key: "/management/positions", label: "岗位管理" },
+      { key: "/management/menus", label: t("organization:Menus") },
+      { key: "/management/permission-rules", label: t("permission:Permission Rules") },
       { key: "/management/workflows", label: "工作流" },
       { key: "/management/workflow-executions", label: "工作流执行" },
     ],

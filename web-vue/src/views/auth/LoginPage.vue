@@ -80,15 +80,6 @@
 
       <!-- Login form area -->
       <div class="login-form">
-          <div class="brand-header brand-header--duplicate">
-            <img class="brand-logo" :src="brandLogoUrl" alt="开轩启圭" />
-            <div class="brand-text">
-              <div class="brand-title">开轩启圭</div>
-              <div class="brand-subtitle">统一认证 · {{ brandProductName }}</div>
-            </div>
-          </div>
-          <div class="brand-helper-text brand-helper-text--duplicate">{{ t("login:Sign In") }} {{ brandProductName }}</div>
-
         <!-- Background -->
         <div
           v-if="application?.formBackgroundUrl"
@@ -116,11 +107,6 @@
           </div>
         </template>
 
-        <div class="source-app-brand">
-          <img :src="sourceAppIcon" :alt="sourceAppName" class="source-app-brand-logo" />
-          <div class="source-app-brand-name">{{ sourceAppName }}</div>
-        </div>
-
         <!-- Login form -->
         <a-form
           ref="formRef"
@@ -128,7 +114,7 @@
           layout="vertical"
           @finish="onFormFinish"
         >
-          <div class="login-form-title-block">
+          <div v-if="showFormTitleBlock" class="login-form-title-block">
             <h2 class="login-form-title">开轩启圭</h2>
             <p class="login-form-subtitle">统一认证 · {{ brandProductName }}</p>
           </div>
@@ -501,32 +487,10 @@ const showBackButton = computed(() => {
   return false;
 });
 
-const sourceAppName = computed(() => {
-  const app = application.value;
-  if (!app) return "来源应用";
-  return app.displayName || app.name || "来源应用";
-});
-
 /** 左侧栏：平台主品牌（与 favicon「单字开」区分，使用完整 SVG 字标） */
 const platformBrandMarkSrc = computed(() =>
   isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg"
 );
-
-/** 表单顶栏：优先应用主 logo（横版），勿优先 favicon 以免小图被裁成无意义圆块 */
-const sourceAppIcon = computed(() => {
-  const app = application.value as Application & { logoDark?: string; themeData?: Record<string, unknown> };
-  if (!app) {
-    return isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
-  }
-  const lightLogo = app.logo || "/img/kaixuan-platform-logo-light.svg";
-  const darkFromThemeData = typeof app.themeData?.logoDark === "string" ? String(app.themeData.logoDark) : "";
-  const darkFromField = app.logoDark || "";
-  const inferredDark = lightLogo.includes("-light.") ? lightLogo.replace("-light.", "-dark.") : "";
-  if (isDark.value) {
-    return darkFromField || darkFromThemeData || inferredDark || "/img/kaixuan-platform-logo-dark.svg";
-  }
-  return lightLogo;
-});
 
 const shouldAutoRedirectToProvider = computed(() => {
   if (!application.value) return false;
@@ -545,9 +509,7 @@ const shouldAutoRedirectToProvider = computed(() => {
 const brandProductName = computed(() => {
   return application.value?.displayName || application.value?.name || "Auth";
 });
-const brandLogoUrl = computed(() =>
-  isDark.value ? "/img/kx-brand-mark-on-dark.svg" : "/img/kx-brand-mark.svg",
-);
+const showFormTitleBlock = computed(() => !enforceBrandStyle.value);
 const hasSignupItem = computed(() => visibleSigninItems.value.some((item) => item.name === "Signup link"));
 const enforceBrandStyle = computed(() => true);
 const allowCustomSigninHtml = computed(() => !enforceBrandStyle.value);
@@ -909,9 +871,9 @@ onMounted(async () => {
 .login-form :deep(.ant-input-password),
 .login-form :deep(.ant-input-affix-wrapper),
 .login-form :deep(.ant-input-group-addon) {
-  background: #152238 !important;
-  border-color: #2d3f66 !important;
-  color: #e8eef7 !important;
+  background: #f6f9ff !important;
+  border-color: #d7e2f0 !important;
+  color: #1f2a44 !important;
   border-radius: 10px !important;
 }
 
@@ -920,7 +882,7 @@ onMounted(async () => {
 }
 
 .login-form :deep(.ant-input::placeholder) {
-  color: #94a3b8 !important;
+  color: #98a2b3 !important;
 }
 
 .login-panel-dark .login-form :deep(.ant-input),
@@ -1028,35 +990,6 @@ onMounted(async () => {
 
 .login-back-box {
   margin-bottom: 16px;
-}
-
-.source-app-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.source-app-brand-logo {
-  flex-shrink: 0;
-  max-height: 52px;
-  max-width: 200px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 10px;
-  border: 1px solid #e5ecfb;
-  background: #ffffff;
-  padding: 4px 8px;
-  box-shadow: 0 1px 4px rgba(31, 42, 68, 0.08);
-}
-
-.source-app-brand-name {
-  color: var(--kx-text-primary, #1f2a44);
-  font-size: 28px;
-  font-weight: 600;
-  line-height: 1.2;
 }
 
 .login-languages-box {
@@ -1230,9 +1163,6 @@ onMounted(async () => {
     right: 14px;
     z-index: 2;
     margin: 0 !important;
-  }
-  .source-app-brand-name {
-    font-size: 30px;
   }
 }
 </style>

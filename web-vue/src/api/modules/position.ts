@@ -1,21 +1,53 @@
-import { get, post } from "@/api/request";
+import { get, post, type ListParams } from "@/api/base";
 
-export async function getPositions(params) {
-  return get("/api/get-positions", { params });
+export interface PositionRecord {
+  id: number;
+  roleOwner: string;
+  roleName: string;
+  code?: string; // 编码，用于与 Post.code 匹配
+  fullDescription: string;
+  department?: string;
+  systemPrompt: string;
+  requirements: string;
+  skills: string;
+  reportsTo: string;
+  impliedRole?: string;
 }
 
-export async function getPosition(id) {
-  return get("/api/get-position", { params: { id } });
+export type PositionPayload = Omit<PositionRecord, "id" | "impliedRole"> & { id?: number | string };
+export type PositionListParams = ListParams & { department?: string };
+
+function normalizeParams(params?: PositionListParams): Record<string, string | number | boolean> | undefined {
+  if (!params) {
+    return undefined;
+  }
+
+  const normalized: Record<string, string | number | boolean> = {};
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalized[key] = value;
+    }
+  });
+
+  return normalized;
 }
 
-export async function addPosition(data) {
-  return post("/api/add-position", data);
+export function getPositions(params?: PositionListParams) {
+  return get<PositionRecord[]>("/api/get-positions", normalizeParams(params));
 }
 
-export async function updatePosition(data) {
-  return post("/api/update-position", data);
+export function getPosition(id: number | string) {
+  return get<PositionRecord>("/api/get-position", { id: Number(id) });
 }
 
-export async function deletePosition(id) {
-  return post(`/api/delete-position?id=${id}`, null);
+export function addPosition(data: PositionPayload) {
+  return post<boolean>("/api/add-position", data);
+}
+
+export function updatePosition(data: PositionPayload) {
+  return post<boolean>("/api/update-position", data);
+}
+
+export function deletePosition(id: number | string) {
+  return post<boolean>(`/api/delete-position?id=${id}`, null);
 }

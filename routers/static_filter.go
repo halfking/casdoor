@@ -38,6 +38,20 @@ var (
 	frontendBaseDir  = conf.GetConfigString("frontendBaseDir")
 )
 
+func clearLegacyWideSessionCookies(ctx *context.Context) {
+	host := removePort(ctx.Request.Host)
+	if host != "auth.itestu.cn" {
+		return
+	}
+
+	expiredAt := "Thu, 01 Jan 1970 00:00:00 GMT"
+	for _, name := range []string{"kx_casdoor_session_id", "casdoor_session_id"} {
+		for _, domain := range []string{"itestu.cn", ".itestu.cn"} {
+			ctx.ResponseWriter.Header().Add("Set-Cookie", fmt.Sprintf("%s=; Path=/; Domain=%s; Expires=%s; Max-Age=0; HttpOnly; SameSite=Lax; Secure", name, domain, expiredAt))
+		}
+	}
+}
+
 func getWebBuildFolder() string {
 	path := "web/build"
 	if util.FileExist(filepath.Join(path, "index.html")) || frontendBaseDir == "" {
@@ -124,6 +138,7 @@ func fastAutoSignin(ctx *context.Context) (string, error) {
 
 func StaticFilter(ctx *context.Context) {
 	urlPath := ctx.Request.URL.Path
+	clearLegacyWideSessionCookies(ctx)
 
 	if urlPath == "/.well-known/acme-challenge/filename" {
 		http.ServeContent(ctx.ResponseWriter, ctx.Request, "acme-challenge", time.Now(), strings.NewReader("content"))

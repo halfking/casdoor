@@ -30,7 +30,9 @@ type OrgTree struct {
 	Level          int     `xorm:"int" json:"level"`
 	SortOrder      int     `xorm:"int" json:"sortOrder"`
 	CasdoorOrgName string  `xorm:"varchar(100)" json:"casdoorOrgName"`
-	Metadata       string  `xorm:"-" json:"metadata"` // jsonb, handled separately if needed
+	Code           string  `xorm:"varchar(50)" json:"code"`            // 编码，用于与 Department.code 匹配
+	Leader         string  `xorm:"varchar(100)" json:"leader"`          // 负责人
+	Metadata       string  `xorm:"-" json:"metadata"`                   // jsonb, handled separately if needed
 	CreatedAt      string  `xorm:"-" json:"createdAt"`
 	UpdatedAt      string  `xorm:"-" json:"updatedAt"`
 }

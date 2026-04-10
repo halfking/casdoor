@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import * as Conf from "../Conf";
 import { message, Modal } from "ant-design-vue";
 import i18n from "../i18n";
+import { clearStoredAuthToken, getStoredAuthToken, isTokenValid } from "../shared/auth/auth-service.js";
 
 // ---------- Standard API response shape from Go backend ----------
 export interface ApiResponse<T = unknown> {
@@ -34,6 +35,23 @@ function isResponseDenied(data: ApiResponse): boolean {
   return data.msg === "Unauthorized operation" || data.msg === "未授权的操作";
 }
 
+function shouldAttachAuthorizationHeader(url?: string): boolean {
+  if (!url) return false;
+
+  // Casdoor Web relies on the server-side session cookie for same-origin APIs.
+  // Do not leak shared SSO bearer tokens from other itestu.cn apps into auth.itestu.cn.
+  if (url.startsWith("/")) {
+    return false;
+  }
+
+  try {
+    const resolvedUrl = new URL(url, window.location.origin);
+    return resolvedUrl.origin !== window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
 // ---------- Create axios instance ----------
 const request: AxiosInstance = axios.create({
   baseURL: "",
@@ -52,14 +70,20 @@ request.interceptors.request.use(
       config.headers.set("Expires", "0");
     }
 
-    // Attach Bearer token if available (used by cross-app token auth)
-    try {
-      const token = localStorage.getItem("kx-auth-token");
-      if (token) {
-        config.headers.set("Authorization", `Bearer ${token}`);
+    // Attach Bearer token only when the stored SSO token is still valid.
+    if (shouldAttachAuthorizationHeader(config.url)) {
+      try {
+        if (isTokenValid()) {
+          const authRecord = getStoredAuthToken();
+          if (authRecord?.token) {
+            config.headers.set("Authorization", `Bearer ${authRecord.token}`);
+          }
+        } else {
+          clearStoredAuthToken();
+        }
+      } catch {
+        clearStoredAuthToken();
       }
-    } catch {
-      // storage unavailable
     }
 
     return config;
@@ -97,6 +121,7 @@ request.interceptors.response.use(
       if (status === 401) {
         const auth = useAuthStore();
         auth.logout();
+        clearStoredAuthToken();
         // Redirect to login if not already there
         if (!window.location.pathname.startsWith("/login")) {
           window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.href)}`;

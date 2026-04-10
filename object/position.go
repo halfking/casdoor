@@ -24,19 +24,20 @@ import (
 // Position 对应数据库表 position_detail
 // 注意：DB列名与API JSON字段名不同，xorm tag写实际列名
 type Position struct {
-	Id             int    `xorm:"int pk autoincr" json:"id"`
-	RoleOwner      string `xorm:"column(role_owner) varchar(100)" json:"roleOwner"`
-	RoleName       string `xorm:"column(role_name) varchar(100)" json:"roleName"`
+	Id              int    `xorm:"int pk autoincr" json:"id"`
+	RoleOwner       string `xorm:"column(role_owner) varchar(100)" json:"roleOwner"`
+	RoleName        string `xorm:"column(role_name) varchar(100)" json:"roleName"`
+	Code            string `xorm:"column(code) varchar(50)" json:"code"` // 编码，用于与 Post.code 匹配
 	FullDescription string `xorm:"column(full_description) text" json:"fullDescription"`
-	Skills         string `xorm:"-" json:"skills"`           // text[]，序列化存储
-	Requirements   string `xorm:"column(requirements) text" json:"requirements"`
-	SystemPrompt   string `xorm:"column(system_prompt) text" json:"systemPrompt"`
-	Department     string `xorm:"column(department) varchar(100)" json:"department"`
-	ReportsTo      string `xorm:"column(reports_to) varchar(100)" json:"reportsTo"`
-	ImpliedRole    string `xorm:"column(implied_role) varchar(100)" json:"impliedRole"` // 引用的 Casdoor Role (owner/name)
-	Metadata       string `xorm:"-" json:"metadata"`         // jsonb，跳过
-	CreatedAt      string `xorm:"-" json:"createdAt"`
-	UpdatedAt      string `xorm:"-" json:"updatedAt"`
+	Skills          string `xorm:"-" json:"skills"`                     // text[]，序列化存储
+	Requirements    string `xorm:"column(requirements) text" json:"requirements"`
+	SystemPrompt    string `xorm:"column(system_prompt) text" json:"systemPrompt"`
+	Department      string `xorm:"column(department) varchar(100)" json:"department"`
+	ReportsTo       string `xorm:"column(reports_to) varchar(100)" json:"reportsTo"`
+	ImpliedRole     string `xorm:"column(implied_role) varchar(100)" json:"impliedRole"` // 引用的 Casdoor Role (owner/name)
+	Metadata        string `xorm:"-" json:"metadata"`                                   // jsonb，跳过
+	CreatedAt       string `xorm:"-" json:"createdAt"`
+	UpdatedAt       string `xorm:"-" json:"updatedAt"`
 }
 
 // TableName 返回实际的表名
