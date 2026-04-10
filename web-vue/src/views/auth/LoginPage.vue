@@ -56,12 +56,9 @@
         v-html="sanitizeHtml(application.formSideHtml)"
       />
       <div v-else-if="!isMobile" class="side-image side-image-default">
-        <div class="side-brand-row">
-          <img class="side-brand-icon" src="/img/kx-favicon.svg" alt="开轩启圭" />
-          <div class="side-brand-texts">
-            <div class="side-brand-title">开轩启圭</div>
-            <div class="side-brand-subtitle">统一认证中心</div>
-          </div>
+        <div class="side-brand-stack">
+          <img class="side-brand-hero" :src="platformBrandMarkSrc" alt="开轩启圭" />
+          <div class="side-brand-subtitle">统一认证中心</div>
         </div>
       </div>
 
@@ -471,14 +468,16 @@ const sourceAppName = computed(() => {
   return app.displayName || app.name || "来源应用";
 });
 
+/** 左侧栏：平台主品牌（与 favicon「单字开」区分，使用完整 SVG 字标） */
+const platformBrandMarkSrc = computed(() =>
+  isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg"
+);
+
+/** 表单顶栏：优先应用主 logo（横版），勿优先 favicon 以免小图被裁成无意义圆块 */
 const sourceAppIcon = computed(() => {
   const app = application.value as Application & { logoDark?: string; themeData?: Record<string, unknown> };
   if (!app) {
     return isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg";
-  }
-  const appFavicon = app.favicon || "";
-  if (appFavicon) {
-    return appFavicon;
   }
   const lightLogo = app.logo || "/img/kaixuan-platform-logo-light.svg";
   const darkFromThemeData = typeof app.themeData?.logoDark === "string" ? String(app.themeData.logoDark) : "";
@@ -659,6 +658,15 @@ onMounted(async () => {
   background: #1f1f1f;
 }
 
+.login-panel-dark .side-image-default {
+  background: linear-gradient(145deg, #1a2338 0%, #141c2e 100%);
+  border-right-color: #2f3d55;
+}
+
+.login-panel-dark .side-brand-subtitle {
+  color: #9fb0c8;
+}
+
 .side-image {
   flex: 0 0 360px;
   min-height: 400px;
@@ -669,41 +677,34 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 40px 20px 32px;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
   border-right: 1px solid #e3ebff;
 }
 
-.side-brand-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  max-width: 80%;
-}
-
-.side-brand-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.side-brand-texts {
+.side-brand-stack {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 300px;
 }
 
-.side-brand-title {
-  color: #1f2a44;
-  font-size: 34px;
-  font-weight: 600;
-  line-height: 1.1;
+.side-brand-hero {
+  width: 100%;
+  height: auto;
+  max-height: 96px;
+  object-fit: contain;
 }
 
 .side-brand-subtitle {
-  margin-top: 6px;
+  margin-top: 0;
   color: #5c6b8a;
   font-size: 15px;
+  letter-spacing: 0.02em;
 }
 
 .login-form {
@@ -738,20 +739,24 @@ onMounted(async () => {
 }
 
 .source-app-brand-logo {
-  width: 54px;
-  height: 54px;
-  object-fit: cover;
-  border-radius: 50%;
+  flex-shrink: 0;
+  max-height: 52px;
+  max-width: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 10px;
   border: 1px solid #e5ecfb;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(31, 42, 68, 0.12);
+  padding: 4px 8px;
+  box-shadow: 0 1px 4px rgba(31, 42, 68, 0.08);
 }
 
 .source-app-brand-name {
   color: var(--kx-text-primary, #1f2a44);
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .login-languages-box {

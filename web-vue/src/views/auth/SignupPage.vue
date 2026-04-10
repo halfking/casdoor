@@ -22,12 +22,9 @@
           v-html="sideHtmlSafe"
         />
         <div v-else-if="!isMobile" class="side-image side-image-default">
-          <div class="side-brand-row">
-            <img class="side-brand-icon" src="/img/kx-favicon.svg" alt="开轩启圭" />
-            <div class="side-brand-texts">
-              <div class="side-brand-title">开轩启圭</div>
-              <div class="side-brand-subtitle">统一认证中心</div>
-            </div>
+          <div class="side-brand-stack">
+            <img class="side-brand-hero" :src="platformBrandMarkSrc" alt="开轩启圭" />
+            <div class="side-brand-subtitle">统一认证中心</div>
           </div>
         </div>
 
@@ -659,6 +656,10 @@ const formRef = ref();
 const isMobile = computed(() => Setting.isMobile());
 const isDark = computed(() => Setting.isDarkTheme());
 
+const platformBrandMarkSrc = computed(() =>
+  isDark.value ? "/img/kaixuan-platform-logo-dark.svg" : "/img/kaixuan-platform-logo-light.svg"
+);
+
 const formState = reactive<Record<string, any>>({
   application: "",
   organization: "",
@@ -1020,6 +1021,15 @@ onMounted(() => {
   background: var(--kx-bg-card, #1f1f1f);
 }
 
+.login-panel-dark .side-image-default {
+  background: linear-gradient(145deg, #1a2338 0%, #141c2e 100%);
+  border-right-color: #2f3d55;
+}
+
+.login-panel-dark .side-brand-subtitle {
+  color: #9fb0c8;
+}
+
 .side-image {
   flex: 0 0 360px;
   min-height: 400px;
@@ -1029,42 +1039,35 @@ onMounted(() => {
 .side-image-default {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: flex-start;
+  padding: 40px 20px 32px;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #f8fbff 0%, #eef4ff 100%);
   border-right: 1px solid #e3ebff;
 }
 
-.side-brand-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  max-width: 80%;
-}
-
-.side-brand-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.side-brand-texts {
+.side-brand-stack {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 300px;
 }
 
-.side-brand-title {
-  color: #1f2a44;
-  font-size: 34px;
-  font-weight: 600;
-  line-height: 1.1;
+.side-brand-hero {
+  width: 100%;
+  height: auto;
+  max-height: 96px;
+  object-fit: contain;
 }
 
 .side-brand-subtitle {
-  margin-top: 6px;
+  margin-top: 0;
   color: #5c6b8a;
   font-size: 15px;
+  letter-spacing: 0.02em;
 }
 
 .login-form {
@@ -1084,17 +1087,24 @@ onMounted(() => {
 }
 
 .source-app-brand-logo {
-  width: 56px;
-  height: 56px;
+  flex-shrink: 0;
+  max-height: 52px;
+  max-width: 200px;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 10px;
+  border: 1px solid #e5ecfb;
+  background: #ffffff;
+  padding: 4px 8px;
+  box-shadow: 0 1px 4px rgba(31, 42, 68, 0.08);
 }
 
 .source-app-brand-name {
   color: var(--kx-text-primary, #1f2a44);
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .login-form {

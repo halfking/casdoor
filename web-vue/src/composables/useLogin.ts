@@ -318,6 +318,11 @@ export function useLogin(props: {
         res = await AuthApi.login(values, authOauthParams);
       }
 
+      // 代理偶发返回 HTML/空串时 axios 可能给出非对象，按「无有效 JSON」走会话探测分支
+      if (!res || typeof res !== "object" || !("status" in res)) {
+        res = { status: "" };
+      }
+
       if (res?.status === "ok") {
         handleLoginResponse(res, responseType, oAuthParams);
       } else if (res?.status === "error") {
