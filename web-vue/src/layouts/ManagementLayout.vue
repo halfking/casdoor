@@ -345,6 +345,19 @@ const menuItems = computed(() => {
       ],
   });
 
+  // Organization Extension (Kaixuan custom)
+  res.push({
+    key: "/org-ext",
+    label: "组织架构",
+    icon: () => h(TeamOutlined, { style: { color } }),
+    children: [
+      { key: "/management/org-tree", label: "组织树" },
+      { key: "/management/positions", label: "岗位管理" },
+      { key: "/management/workflows", label: "工作流" },
+      { key: "/management/workflow-executions", label: "工作流执行" },
+    ],
+  });
+
   // Gateway
   res.push({
     key: "/gateway",
