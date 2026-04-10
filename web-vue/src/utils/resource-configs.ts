@@ -451,9 +451,9 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
         : await ApplicationApi.getApplicationsByOrganization("admin", currentOrganization(context), { page: Number(params.page || 1), pageSize: Number(params.pageSize || 10), field, value, sortField: String(params.sortField || ""), sortOrder: String(params.sortOrder || "") });
       return unwrapList(response as AnyResponse);
     },
-    get: async (params) => unwrap(await ApplicationApi.getApplication(decodeRouteValue(params.organization), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    get: async (params) => unwrap(await ApplicationApi.getApplication("admin", decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
     create: async (entity) => unwrap(await ApplicationApi.addApplication(entity as Parameters<typeof ApplicationApi.addApplication>[0]) as AnyResponse),
-    update: async (params, entity) => unwrap(await ApplicationApi.updateApplication(decodeRouteValue(params.organization), decodeRouteValue(params.name), entity as Parameters<typeof ApplicationApi.updateApplication>[2]) as AnyResponse),
+    update: async (params, entity) => unwrap(await ApplicationApi.updateApplication(String(entity.owner || "admin"), decodeRouteValue(params.name), entity as Parameters<typeof ApplicationApi.updateApplication>[2]) as AnyResponse),
     removeByKey: async (key, records) => {
       const record = findRecordByKey(key, records, (item) => `${item.owner}/${item.name}`);
       return unwrap(await ApplicationApi.deleteApplication(record as Parameters<typeof ApplicationApi.deleteApplication>[0] || {}) as AnyResponse);
@@ -483,17 +483,23 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
       organizations: await loadOrganizationOptions(),
       providers: await loadProviderOptions(String(entity.organization || entity.owner || "")),
     }),
-    transformLoaded: (entity) => ({
-      ...entity,
-      logoDark: String(entity.logoDark || (entity.themeData as Entity | undefined)?.logoDark || inferDarkLogo(String(entity.logo || ""))),
-      providers: Array.isArray(entity.providers)
-        ? entity.providers.map((item) => (typeof item === "string" ? item : String((item as Entity).name || ""))).filter(Boolean)
-        : [],
-      redirectUris: Array.isArray(entity.redirectUris) ? entity.redirectUris : [],
-      grantTypes: Array.isArray(entity.grantTypes) ? entity.grantTypes : [],
-    }),
+    transformLoaded: (entity) => {
+      if (!entity) {
+        throw new Error("Application data is null or not found");
+      }
+      return {
+        ...entity,
+        logoDark: String(entity.logoDark || (entity.themeData as Entity | undefined)?.logoDark || inferDarkLogo(String(entity.logo || ""))),
+        providers: Array.isArray(entity.providers)
+          ? entity.providers.map((item) => (typeof item === "string" ? item : String((item as Entity).name || ""))).filter(Boolean)
+          : [],
+        redirectUris: Array.isArray(entity.redirectUris) ? entity.redirectUris : [],
+        grantTypes: Array.isArray(entity.grantTypes) ? entity.grantTypes : [],
+      };
+    },
     normalize: (entity) => ({
       ...entity,
+      owner: entity.owner || entity.organization || "admin",
       themeData: {
         ...(entity.themeData as Entity || {}),
         logoDark: String(entity.logoDark || ""),
@@ -543,6 +549,8 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
       { key: "enablePassword", label: "application:Enable password", type: "switch" },
       { key: "enableSignUp", label: "application:Enable sign up", type: "switch" },
       { key: "disableSignin", label: "application:Disable signin", type: "switch" },
+      { key: "clientId", label: "application:Client ID", type: "text", disabled: true },
+      { key: "clientSecret", label: "application:Client secret", type: "text", disabled: true },
     ],
     canDelete: (record) => String(record.name) !== "app-built-in",
   },
