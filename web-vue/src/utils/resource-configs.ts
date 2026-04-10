@@ -451,7 +451,7 @@ export const resourceConfigs: Record<string, ResourceConfig> = {
         : await ApplicationApi.getApplicationsByOrganization("admin", currentOrganization(context), { page: Number(params.page || 1), pageSize: Number(params.pageSize || 10), field, value, sortField: String(params.sortField || ""), sortOrder: String(params.sortOrder || "") });
       return unwrapList(response as AnyResponse);
     },
-    get: async (params) => unwrap(await ApplicationApi.getApplication("admin", decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
+    get: async (params) => unwrap(await ApplicationApi.getApplication(decodeRouteValue(params.organization), decodeRouteValue(params.name)) as AnyResponse) as ApiResponse<Entity>,
     create: async (entity) => unwrap(await ApplicationApi.addApplication(entity as Parameters<typeof ApplicationApi.addApplication>[0]) as AnyResponse),
     update: async (params, entity) => unwrap(await ApplicationApi.updateApplication(decodeRouteValue(params.organization), decodeRouteValue(params.name), entity as Parameters<typeof ApplicationApi.updateApplication>[2]) as AnyResponse),
     removeByKey: async (key, records) => {
