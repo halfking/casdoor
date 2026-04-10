@@ -389,4 +389,31 @@ func InitAPI() {
 	web.Router("/api/mcp", &mcp.McpController{}, "POST:HandleMcp")
 
 	web.Router("/api/faceid-signin-begin", &controllers.ApiController{}, "GET:FaceIDSigninBegin")
+
+	// Organization Tree API
+	web.Router("/api/get-org-trees", &controllers.ApiController{}, "GET:GetOrgTreeNodes")
+	web.Router("/api/get-org-tree", &controllers.ApiController{}, "GET:GetOrgTreeNode")
+	web.Router("/api/add-org-tree", &controllers.ApiController{}, "POST:PostOrgTreeNode")
+	web.Router("/api/update-org-tree", &controllers.ApiController{}, "PUT:PutOrgTreeNode")
+	web.Router("/api/delete-org-tree", &controllers.ApiController{}, "POST:DeleteOrgTreeNode")
+
+	// Position API
+	web.Router("/api/get-positions", &controllers.ApiController{}, "GET:GetPositions")
+	web.Router("/api/get-position", &controllers.ApiController{}, "GET:GetPosition")
+	web.Router("/api/add-position", &controllers.ApiController{}, "POST:PostPosition")
+	web.Router("/api/update-position", &controllers.ApiController{}, "PUT:PutPosition")
+	web.Router("/api/delete-position", &controllers.ApiController{}, "POST:DeletePosition")
+
+	// Workflow API
+	web.Router("/api/get-workflows", &controllers.ApiController{}, "GET:GetWorkflows")
+	web.Router("/api/get-workflow", &controllers.ApiController{}, "GET:GetWorkflow")
+	web.Router("/api/add-workflow", &controllers.ApiController{}, "POST:PostWorkflow")
+	web.Router("/api/update-workflow", &controllers.ApiController{}, "PUT:PutWorkflow")
+	web.Router("/api/delete-workflow", &controllers.ApiController{}, "POST:DeleteWorkflow")
+
+	// Workflow Execution API
+	web.Router("/api/get-workflow-executions", &controllers.ApiController{}, "GET:GetWorkflowExecutions")
+	web.Router("/api/get-workflow-execution", &controllers.ApiController{}, "GET:GetWorkflowExecution")
+	web.Router("/api/add-workflow-execution", &controllers.ApiController{}, "POST:PostWorkflowExecution")
+	web.Router("/api/update-workflow-execution", &controllers.ApiController{}, "PUT:PutWorkflowExecution")
 }
