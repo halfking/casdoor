@@ -129,6 +129,7 @@ import {
   DollarOutlined,
   SettingOutlined,
   FolderOutlined,
+  TeamOutlined,
 } from "@ant-design/icons-vue";
 import SharedNavbar from "@/shared/components/SharedNavbar.vue";
 import LanguageSelect from "@/components/LanguageSelect.vue";

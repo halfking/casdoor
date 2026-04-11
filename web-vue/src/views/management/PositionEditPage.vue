@@ -18,12 +18,12 @@
       layout="horizontal"
       class="position-form"
     >
-      <a-form-item :label="$t('position.Role Owner')" name="role_owner">
-        <a-input v-model:value="form.role_owner" placeholder="kaixuan" />
+      <a-form-item :label="$t('position.Role Owner')" name="roleOwner">
+        <a-input v-model:value="form.roleOwner" placeholder="kaixuan" />
       </a-form-item>
 
-      <a-form-item :label="$t('position.Role Name')" name="role_name">
-        <a-input v-model:value="form.role_name" placeholder="英文标识，唯一" :disabled="isEdit" />
+      <a-form-item :label="$t('position.Role Name')" name="roleName">
+        <a-input v-model:value="form.roleName" placeholder="英文标识，唯一" :disabled="isEdit" />
       </a-form-item>
 
       <a-form-item :label="$t('position.Department')" name="department">
@@ -34,17 +34,17 @@
         />
       </a-form-item>
 
-      <a-form-item :label="$t('position.Full Description')" name="full_description">
+      <a-form-item :label="$t('position.Full Description')" name="fullDescription">
         <a-textarea
-          v-model:value="form.full_description"
+          v-model:value="form.fullDescription"
           placeholder="完整描述"
           :rows="3"
         />
       </a-form-item>
 
-      <a-form-item :label="$t('position.System Prompt')" name="system_prompt">
+      <a-form-item :label="$t('position.System Prompt')" name="systemPrompt">
         <a-textarea
-          v-model:value="form.system_prompt"
+          v-model:value="form.systemPrompt"
           placeholder="系统提示词"
           :rows="6"
         />
@@ -66,8 +66,8 @@
         />
       </a-form-item>
 
-      <a-form-item :label="$t('position.Reports To')" name="reports_to">
-        <a-input v-model:value="form.reports_to" placeholder="汇报对象（可选）" />
+      <a-form-item :label="$t('position.Reports To')" name="reportsTo">
+        <a-input v-model:value="form.reportsTo" placeholder="汇报对象（可选）" />
       </a-form-item>
 
       <a-form-item :wrapper-col="{ offset: 4, span: 18 }">
@@ -92,6 +92,7 @@ import { message } from "ant-design-vue";
 import type { FormInstance, Rule } from "ant-design-vue/es/form";
 import PageHeader from "@/components/common/PageHeader.vue";
 import * as PositionApi from "@/api/modules/position";
+import type { Position } from "@/api/modules/position";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -104,14 +105,14 @@ const submitting = ref(false);
 const isEdit = computed(() => !!route.query.id);
 
 const form = reactive({
-  role_owner: "kaixuan",
-  role_name: "",
-  full_description: "",
+  roleOwner: "kaixuan",
+  roleName: "",
+  fullDescription: "",
   department: undefined as string | undefined,
-  system_prompt: "",
+  systemPrompt: "",
   requirements: "",
   skills: "",
-  reports_to: "",
+  reportsTo: "",
 });
 
 const departmentOptions = [
@@ -121,7 +122,7 @@ const departmentOptions = [
 ];
 
 const rules: Record<string, Rule[]> = {
-  role_name: [
+  roleName: [
     { required: true, message: "请输入角色名称", trigger: "blur" },
   ],
   department: [
@@ -132,20 +133,21 @@ const rules: Record<string, Rule[]> = {
 const fetchPosition = async (id: string) => {
   loading.value = true;
   try {
-    const data = await PositionApi.getPosition(id);
+    const res = await PositionApi.getPosition(parseInt(id));
+    const data: Position | undefined = (res as any).data;
     if (data) {
       Object.assign(form, {
-        role_owner: data.role_owner || "kaixuan",
-        role_name: data.role_name || "",
-        full_description: data.full_description || "",
+        roleOwner: data.roleOwner || "kaixuan",
+        roleName: data.roleName || "",
+        fullDescription: data.fullDescription || "",
         department: data.department,
-        system_prompt: data.system_prompt || "",
+        systemPrompt: data.systemPrompt || "",
         requirements: data.requirements || "",
         skills: data.skills || "",
-        reports_to: data.reports_to || "",
+        reportsTo: data.reportsTo || "",
       });
     }
-  } catch (error) {
+  } catch {
     message.error(t("general.Failed to load position"));
   } finally {
     loading.value = false;
@@ -162,14 +164,14 @@ const handleSubmit = async () => {
   submitting.value = true;
   try {
     if (isEdit.value) {
-      await PositionApi.updatePosition({ ...form, id: route.query.id });
+      await PositionApi.updatePosition({ ...form, id: parseInt(route.query.id as string) });
     } else {
       await PositionApi.addPosition(form);
     }
     message.success(t("general.Success"));
     void router.push("/management/positions");
-  } catch (error) {
-    message.error(isEdit.value ? t("general.Failed to update") : t("general.Failed to add"));
+  } catch {
+    message.error(t("general.Failed"));
   } finally {
     submitting.value = false;
   }
@@ -185,16 +187,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style scoped lang="less">
-.position-edit-container {
-  padding: 24px;
-  background: var(--kx-bg-card, #fff);
-  border-radius: 8px;
-}
-
-.position-form {
-  max-width: 800px;
-  margin-top: 24px;
-}
-</style>

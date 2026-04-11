@@ -94,7 +94,7 @@
         <a-form-item :label="t('general.Org name')" name="orgName" required>
           <a-input v-model:value="formData.orgName" />
         </a-form-item>
-        <a-form-item v-if="formData.parentId !== null" :label="t('general.Parent')" name="parentId">
+        <a-form-item v-if="formData.parentId !== undefined" :label="t('general.Parent')" name="parentId">
           <a-input v-model:value="formData.parentId" disabled />
         </a-form-item>
       </a-form>
@@ -157,13 +157,13 @@ const formData = ref<{
   displayName: string;
   orgType: string;
   orgName: string;
-  parentId: number | null;
+  parentId: number | undefined;
   id?: number;
 }>({
   displayName: "",
   orgType: "dept",
   orgName: "",
-  parentId: null,
+  parentId: undefined,
 });
 
 // Convert flat list to Ant Design Tree format

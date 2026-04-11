@@ -1,11 +1,16 @@
-import { get, post, put } from "@/api/base";
+import { get, post } from "../base";
 
 export interface OrgTreeNode {
   id: number;
-  parentId: number;
+  parentId?: number;
   displayName: string;
-  orgType: string;
-  orgName: string;
+  orgType?: string;
+  orgName?: string;
+  name?: string;
+  description?: string;
+  sortOrder?: number;
+  createdTime?: string;
+  updatedTime?: string;
 }
 
 export async function getOrgTrees() {
@@ -17,7 +22,7 @@ export async function addOrgTree(data: Partial<OrgTreeNode>) {
 }
 
 export async function updateOrgTree(data: Partial<OrgTreeNode>) {
-  return put("/api/update-org-tree", data);
+  return post("/api/update-org-tree", data);
 }
 
 export async function deleteOrgTree(id: number) {
