@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="aiChatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <rect x="2" y="2" width="44" height="44" rx="10" fill="url(#aiChatGrad)"/>
+  
+  <!-- AI聊天图标 -->
+  <g fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 对话气泡 -->
+    <path d="M10 16 L38 16 L38 28 L28 28 L24 34 L20 28 L10 28 Z" fill="white" fill-opacity="0.2"/>
+    
+    <!-- 左侧气泡 -->
+    <path d="M10 16 L24 16 L20 20 L10 20 Z" fill="white" fill-opacity="0.3"/>
+    
+    <!-- AI点 -->
+    <circle cx="17" cy="22" r="2" fill="white"/>
+    <circle cx="24" cy="22" r="2" fill="white"/>
+    <circle cx="31" cy="22" r="2" fill="white"/>
+    
+    <!-- 光芒效果 -->
+    <line x1="24" y1="12" x2="24" y2="14" stroke-width="2" opacity="0.5"/>
+    <line x1="18" y1="13" x2="19" y2="15" stroke-width="2" opacity="0.3"/>
+    <line x1="30" y1="13" x2="29" y2="15" stroke-width="2" opacity="0.3"/>
+  </g>
+</svg>

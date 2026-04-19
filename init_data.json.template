@@ -1,0 +1,1907 @@
+{
+  "organizations": [
+    {
+      "owner": "admin",
+      "name": "kaixuan",
+      "displayName": "开轩",
+      "websiteUrl": "https://itestu.cn",
+      "logo": "https://auth.itestu.cn/img/kaixuan-platform-logo-light.svg",
+      "logoDark": "https://auth.itestu.cn/img/kaixuan-platform-logo-dark.svg",
+      "favicon": "https://auth.itestu.cn/img/kx-favicon.svg",
+      "defaultLanguage": "zh",
+      "passwordType": "bcrypt",
+      "passwordSalt": "",
+      "passwordOptions": [
+        "AtLeast6"
+      ],
+      "countryCodes": [
+        "US",
+        "GB",
+        "ES",
+        "FR",
+        "DE",
+        "CN",
+        "JP",
+        "KR",
+        "VN",
+        "ID",
+        "SG",
+        "IN",
+        "IT",
+        "MY",
+        "TR",
+        "DZ",
+        "IL",
+        "PH",
+        "NL",
+        "PL",
+        "FI",
+        "SE",
+        "UA",
+        "KZ",
+        "CZ",
+        "SK",
+        "AZ"
+      ],
+      "defaultAvatar": "",
+      "defaultApplication": "",
+      "tags": [],
+      "languages": [
+        "en",
+        "es",
+        "fr",
+        "de",
+        "ja",
+        "zh",
+        "vi",
+        "pt",
+        "tr",
+        "pl",
+        "uk"
+      ],
+      "masterPassword": "",
+      "defaultPassword": "",
+      "initScore": 2000,
+      "enableSoftDeletion": false,
+      "isProfilePublic": true,
+      "disableSignin": false,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "accountItems": [
+        {
+          "name": "Organization",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "ID",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "First name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Last name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Avatar",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "User type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Phone",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Country code",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Country/Region",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Location",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Address",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Addresses",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Affiliation",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Title",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID card info",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Real name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "ID verification",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Homepage",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Bio",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Tag",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Language",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Gender",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Birthday",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Education",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance credit",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Balance currency",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Cart",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Transactions",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Score",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Karma",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Ranking",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Signup application",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Register type",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Register source",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "API key",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Roles",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Permissions",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Groups",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "3rd-party logins",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Properties",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is admin",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is forbidden",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Is deleted",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Multi-factor authentication",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "MFA items",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "WebAuthn credentials",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Last change password time",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Managed accounts",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Face ID",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "MFA accounts",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Need update password",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "IP whitelist",
+          "visible": true,
+          "viewRule": "Admin",
+          "modifyRule": "Admin"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "personal",
+      "displayName": "个人空间",
+      "websiteUrl": "https://personal.itestu.cn",
+      "logo": "https://auth.itestu.cn/img/kaixuan-platform-logo-light.svg",
+      "logoDark": "https://auth.itestu.cn/img/kaixuan-platform-logo-dark.svg",
+      "favicon": "https://auth.itestu.cn/img/kx-favicon.svg",
+      "defaultLanguage": "zh",
+      "passwordType": "bcrypt",
+      "passwordSalt": "",
+      "passwordOptions": [
+        "AtLeast6"
+      ],
+      "countryCodes": [
+        "US",
+        "CN"
+      ],
+      "defaultAvatar": "",
+      "defaultApplication": "personal-app",
+      "tags": [],
+      "languages": [
+        "en",
+        "zh"
+      ],
+      "masterPassword": "",
+      "defaultPassword": "",
+      "initScore": 2000,
+      "enableSoftDeletion": false,
+      "isProfilePublic": true,
+      "disableSignin": false,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "accountItems": [
+        {
+          "name": "Organization",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "ID",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Immutable"
+        },
+        {
+          "name": "Name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Admin"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Avatar",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "viewRule": "Self",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        },
+        {
+          "name": "Phone",
+          "visible": true,
+          "viewRule": "Public",
+          "modifyRule": "Self"
+        }
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "owner": "admin",
+      "name": "acc",
+      "displayName": "开轩调度台",
+      "logo": "https://auth.itestu.cn/img/kx-auth-logo-light.svg",
+      "title": "开轩",
+      "favicon": "https://auth.itestu.cn/img/kx-favicon.svg",
+      "homepageUrl": "https://acc.itestu.cn",
+      "description": "开轩 AI 智能体统一调度中心",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:4100/app/oauth-callback",
+        "http://127.0.0.1:4100/auth/callback",
+        "http://localhost:4100/app/oauth-callback",
+        "http://localhost:4100/auth/callback",
+        "https://acc.itestu.cn/app/oauth-callback",
+        "https://acc.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#1677ff",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "footerHtml": "<div style=\"text-align:center;color:#8c8c8c;font-size:12px;padding:8px 0\">© 2024 开轩 · Unified Identity Platform</div>",
+      "grantTypes": [
+        "authorization_code",
+        "password",
+        "client_credentials",
+        "token",
+        "id_token",
+        "refresh_token"
+      ],
+      "providers": [
+        {
+          "name": "",
+          "canSignUp": true,
+          "canSignIn": true,
+          "canUnlink": false,
+          "prompted": false,
+          "alertType": "None"
+        }
+      ],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        },
+        {
+          "name": "Verification code",
+          "displayName": "Verification code",
+          "rule": "All"
+        },
+        {
+          "name": "WebAuthn",
+          "displayName": "WebAuthn",
+          "rule": "None"
+        },
+        {
+          "name": "Face ID",
+          "displayName": "Face ID",
+          "rule": "None"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Phone",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Agreement",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "official-portal",
+      "displayName": "开轩官网",
+      "logo": "https://auth.itestu.cn/img/kaixuan-platform-logo-light.svg",
+      "homepageUrl": "https://www.itestu.cn",
+      "description": "Kaixuan Official Portal",
+      "organization": "kaixuan",
+      "cert": "",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": false,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "enableLinkWithEmail": false,
+      "clientId": "${PORTAL_CASDOOR_CLIENT_ID}",
+      "clientSecret": "${PORTAL_CASDOOR_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8081/auth/callback",
+        "http://localhost:8081/auth/callback",
+        "https://www.itestu.cn/auth/callback",
+        "https://itestu.cn/auth/callback"
+      ],
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 3,
+      "failedSigninFrozenTime": 15,
+      "themeData": {
+        "themeType": "default",
+        "colorPrimary": "#5734d3",
+        "borderRadius": 8,
+        "isCompact": false,
+        "isEnabled": true
+      },
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Display name",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Email",
+          "visible": true,
+          "required": false,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Phone",
+          "visible": false,
+          "required": false,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "kxmemory-app",
+      "displayName": "Memora 知识记忆系统",
+      "logo": "/assets/icon-memora.svg",
+      "title": "Memora",
+      "favicon": "",
+      "homepageUrl": "${KXMEMORY_URL}",
+      "description": "开轩 Memora 知识记忆系统",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_KXMEMORY_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_KXMEMORY_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8001",
+        "http://127.0.0.1:8001/auth/callback",
+        "http://localhost:8001",
+        "http://localhost:8001/auth/callback",
+        "https://memora.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "stock-trading",
+      "displayName": "股票推荐系统",
+      "logo": "/assets/icon-stock.svg",
+      "title": "Finance AI",
+      "favicon": "",
+      "homepageUrl": "${STOCK_URL}",
+      "description": "开轩股票推荐与交易系统",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": true,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_STOCK_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_STOCK_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8090/callback",
+        "http://127.0.0.1:8090/auth/callback",
+        "http://localhost:8090/callback",
+        "http://localhost:8090/auth/callback",
+        "https://finance.itestu.cn/callback",
+        "https://finance.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "doc-tools",
+      "displayName": "文档工具",
+      "logo": "/assets/icon-docconv.svg",
+      "title": "Doc Tools",
+      "favicon": "",
+      "homepageUrl": "${DOCTOOLS_URL}",
+      "description": "开轩文档处理工具",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_DOCTOOLS_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_DOCTOOLS_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8200/auth/callback",
+        "http://localhost:8200/auth/callback",
+        "https://doc-tools.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "trendaradar",
+      "displayName": "消息雷达",
+      "logo": "/assets/icon-radar.svg",
+      "title": "TrendRadar",
+      "favicon": "",
+      "homepageUrl": "${TRENDARADAR_URL}",
+      "description": "开轩消息雷达",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_TRENDARADAR_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_TRENDARADAR_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8081/auth/callback",
+        "http://127.0.0.1:8081/trendaradar/auth/callback",
+        "http://localhost:8081/auth/callback",
+        "http://localhost:8081/trendaradar/auth/callback",
+        "https://trendaradar.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "personal-app",
+      "displayName": "Personal 助手",
+      "logo": "/assets/icon-assistant.svg",
+      "title": "Personal",
+      "favicon": "",
+      "homepageUrl": "${PERSONAL_WEB_URL}",
+      "description": "开轩个人助手应用",
+      "organization": "personal",
+      "cert": "",
+      "enablePassword": true,
+      "enableSignUp": true,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_PERSONAL_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_PERSONAL_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:9047/api/auth/callback",
+        "http://localhost:9047/api/auth/callback",
+        "https://api.personal.itestu.cn/api/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    },
+    {
+      "owner": "admin",
+      "name": "aicms",
+      "displayName": "AICMS",
+      "logo": "/assets/icon-aicms.svg",
+      "title": "AICMS",
+      "favicon": "",
+      "homepageUrl": "${AICMS_URL}",
+      "description": "开轩 AICMS 应用",
+      "organization": "kaixuan",
+      "cert": "kaixuan-cert",
+      "enablePassword": true,
+      "enableSignUp": false,
+      "disableSignin": false,
+      "enableSigninSession": true,
+      "enableAutoSignin": false,
+      "enableCodeSignin": false,
+      "enableWebAuthn": false,
+      "clientId": "${CASDOOR_AICMS_CLIENT_ID}",
+      "clientSecret": "${CASDOOR_AICMS_CLIENT_SECRET}",
+      "redirectUris": [
+        "http://127.0.0.1:8082/auth/callback",
+        "http://localhost:8082/auth/callback",
+        "https://aicms.itestu.cn/auth/callback"
+      ],
+      "tokenFormat": "JWT",
+      "tokenFields": [],
+      "expireInHours": 168,
+      "refreshExpireInHours": 168,
+      "failedSigninLimit": 5,
+      "failedSigninFrozenTime": 15,
+      "grantTypes": [
+        "authorization_code"
+      ],
+      "providers": [],
+      "signinMethods": [
+        {
+          "name": "Password",
+          "displayName": "Password",
+          "rule": "All"
+        }
+      ],
+      "signupItems": [
+        {
+          "name": "ID",
+          "visible": false,
+          "required": true,
+          "prompted": false,
+          "rule": "Random"
+        },
+        {
+          "name": "Username",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        },
+        {
+          "name": "Confirm password",
+          "visible": true,
+          "required": true,
+          "prompted": false,
+          "rule": "None"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "owner": "kaixuan",
+      "name": "admin",
+      "type": "normal-user",
+      "password": "${CASDOOR_ADMIN_PASS}",
+      "displayName": "系统管理员",
+      "avatar": "",
+      "email": "admin@kaixuan.local",
+      "phone": "",
+      "countryCode": "CN",
+      "address": [],
+      "addresses": [],
+      "affiliation": "",
+      "tag": "",
+      "score": 2000,
+      "ranking": 1,
+      "isAdmin": true,
+      "isForbidden": false,
+      "isDeleted": false,
+      "signupApplication": "acc",
+      "createdIp": "",
+      "groups": [
+        "/kaixuan/admin"
+      ]
+    }
+  ],
+  "providers": [
+    {
+      "owner": "",
+      "name": "",
+      "displayName": "",
+      "category": "",
+      "type": ""
+    }
+  ],
+  "certs": [
+    {
+      "owner": "admin",
+      "name": "kaixuan-cert",
+      "displayName": "开轩 JWT 签名证书",
+      "scope": "JWT",
+      "type": "x509",
+      "cryptoAlgorithm": "RS256",
+      "bitSize": 4096,
+      "expireInYears": 20,
+      "certificate": "",
+      "privateKey": ""
+    }
+  ],
+  "ldaps": [
+    {
+      "id": "",
+      "owner": "",
+      "serverName": "",
+      "host": "",
+      "port": 389,
+      "username": "",
+      "password": "",
+      "baseDn": "",
+      "autoSync": 0,
+      "lastSync": ""
+    }
+  ],
+  "models": [
+    {
+    "owner": "built-in",
+    "name": "user-model-built-in",
+    "modelText": "[request_definition]\nr = sub, obj, act\n\n[policy_definition]\np = sub, obj, act\n\n[role_definition]\ng = _, _\n\n[policy_effect]\ne = some(where (p.eft == allow))\n\n[matchers]\nm = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act",
+    "displayName": "Built-in Model"
+  },
+  {
+    "owner": "built-in",
+    "name": "api-model-built-in",
+    "modelText": "[request_definition]\nr = subOwner, subName, method, urlPath, objOwner, objName\n\n[policy_definition]\np = subOwner, subName, method, urlPath, objOwner, objName\n\n[role_definition]\ng = _, _\n\n[policy_effect]\ne = some(where (p.eft == allow))\n\n[matchers]\nm = (r.subOwner == p.subOwner || p.subOwner == \"*\") && \\\n    (r.subName == p.subName || p.subName == \"*\" || r.subName != \"anonymous\" && p.subName == \"!anonymous\") && \\\n    (r.method == p.method || p.method == \"*\") && \\\n    (keyMatch2(r.urlPath, p.urlPath) || p.urlPath == \"*\") && \\\n    (r.objOwner == p.objOwner || p.objOwner == \"*\") && \\\n    (r.objName == p.objName || p.objName == \"*\") || \\\n    (r.subOwner == r.objOwner && r.subName == r.objName)",
+    "displayName": "API Model"
+    }
+  ],
+  "permissions": [
+    {
+      "actions": ["Read", "Write", "Admin"],
+      "displayName": "Built-in Permission",
+      "effect": "Allow",
+      "isEnabled": true,
+    "model": "built-in/user-model-built-in",
+    "name": "permission-built-in",
+    "owner": "built-in",
+    "resourceType": "Application",
+    "resources": ["app-built-in"],
+    "roles": [],
+    "users": ["built-in/*"]
+    }
+  ],
+  "payments": [
+    {
+      "currency": "",
+      "detail": "",
+      "displayName": "",
+      "invoiceRemark": "",
+      "invoiceTaxId": "",
+      "invoiceTitle": "",
+      "invoiceType": "",
+      "invoiceUrl": "",
+      "message": "",
+      "name": "",
+      "organization": "",
+      "owner": "",
+      "payUrl": "",
+      "personEmail": "",
+      "personIdCard": "",
+      "personName": "",
+      "personPhone": "",
+      "price": 0,
+      "productDisplayName": "",
+      "productName": "",
+      "provider": "",
+      "returnUrl": "",
+      "state": "",
+      "tag": "",
+      "type": "",
+      "user": ""
+    }
+  ],
+  "products": [
+    {
+      "currency": "",
+      "detail": "",
+      "displayName": "",
+      "image": "",
+      "name": "",
+      "owner": "",
+      "price": 0,
+      "providers": [],
+      "quantity": 0,
+      "returnUrl": "",
+      "sold": 0,
+      "state": "",
+      "tag": ""
+    }
+  ],
+  "resources": [
+    {
+      "owner": "",
+      "name": "",
+      "user": "",
+      "provider": "",
+      "application": "",
+      "tag": "",
+      "parent": "",
+      "fileName": "",
+      "fileType": "",
+      "fileFormat": "",
+      "url": "",
+      "description": ""
+    }
+  ],
+  "roles": [
+    {
+    "displayName": "Built-in Admin",
+      "isEnabled": true,
+    "name": "role-built-in-admin",
+    "owner": "built-in",
+    "roles": [],
+    "users": ["built-in/admin"]
+  },
+  {
+    "displayName": "Built-in Readonly",
+    "isEnabled": true,
+    "name": "role-built-in-readonly",
+    "owner": "built-in",
+      "roles": [],
+      "users": []
+    }
+  ],
+  "syncers": [
+    {
+      "affiliationTable": "",
+      "avatarBaseUrl": "",
+      "database": "",
+      "databaseType": "",
+      "errorText": "",
+      "host": "",
+      "isEnabled": false,
+      "name": "",
+      "organization": "",
+      "owner": "",
+      "password": "",
+      "port": 0,
+      "syncInterval": 0,
+      "table": "",
+      "tableColumns": [
+        {
+          "casdoorName": "",
+          "isHashed": true,
+          "name": "",
+          "type": "",
+          "values": []
+        }
+      ],
+      "tablePrimaryKey": "",
+      "type": "",
+      "user": ""
+    }
+  ],
+  "tokens": [
+    {
+      "accessToken": "",
+      "application": "",
+      "code": "",
+      "codeChallenge": "",
+      "codeExpireIn": 0,
+      "codeIsUsed": true,
+      "createdTime": "",
+      "expiresIn": 0,
+      "name": "",
+      "organization": "",
+      "owner": "",
+      "refreshToken": "",
+      "scope": "",
+      "tokenType": "",
+      "user": ""
+    }
+  ],
+  "webhooks": [
+    {
+      "contentType": "",
+      "events": [],
+      "headers": [
+        {
+          "name": "",
+          "value": ""
+        }
+      ],
+      "isEnabled": true,
+      "isUserExtended": true,
+      "method": "",
+      "name": "",
+      "organization": "",
+      "owner": "",
+      "url": ""
+    }
+  ],
+  "groups": [
+    {
+      "owner": "",
+      "name": "",
+      "displayName": "",
+      "manager": "",
+      "contactEmail": "",
+      "type": "",
+      "parent_id": "",
+      "isTopGroup": true,
+      "title": "",
+      "key": "",
+      "children": [],
+      "isEnabled": true
+    }
+  ],
+  "adapters": [
+    {
+    "owner": "built-in",
+    "name": "user-adapter-built-in",
+    "table": "casbin_user_rule",
+    "useSameDb": true,
+    "type": "",
+    "databaseType": "",
+    "database": "",
+    "host": "",
+    "port": 0,
+    "user": "",
+    "password": ""
+  },
+  {
+    "owner": "built-in",
+    "name": "api-adapter-built-in",
+    "table": "casbin_api_rule",
+      "useSameDb": true,
+      "type": "",
+      "databaseType": "",
+      "database": "",
+      "host": "",
+      "port": 0,
+      "user": "",
+      "password": ""
+    }
+  ],
+  "enforcers": [
+    {
+    "owner": "built-in",
+    "name": "user-enforcer-built-in",
+    "displayName": "User Enforcer",
+    "description": "Built-in user permission enforcer",
+    "model": "built-in/user-model-built-in",
+    "adapter": "built-in/user-adapter-built-in",
+    "enforcer": ""
+  },
+  {
+    "owner": "built-in",
+    "name": "api-enforcer-built-in",
+    "displayName": "API Enforcer",
+    "description": "Built-in API permission enforcer",
+    "model": "built-in/api-model-built-in",
+    "adapter": "built-in/api-adapter-built-in",
+      "enforcer": ""
+    }
+  ],
+  "plans": [
+    {
+      "owner": "",
+      "name": "",
+      "displayName": "",
+      "description": "",
+      "price": 0,
+      "currency": "",
+      "period": "",
+      "product": "",
+      "paymentProviders": [],
+      "isEnabled": true,
+      "role": ""
+    }
+  ],
+  "pricings": [
+    {
+      "owner": "",
+      "name": "",
+      "displayName": "",
+      "description": "",
+      "plans": [],
+      "isEnabled": true,
+      "trialDuration": 0,
+      "application": ""
+    }
+  ],
+  "menus": [
+    {
+      "owner": "built-in",
+      "name": "builtin-dashboard",
+      "displayName": "Dashboard",
+      "description": "Built-in dashboard",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "/",
+      "icon": "DashboardOutlined",
+      "component": "DashboardPage",
+      "type": "Menu",
+      "sortOrder": 1,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-organizations",
+      "displayName": "Organizations",
+      "description": "Manage organizations",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "/management/organizations",
+      "icon": "BankOutlined",
+      "component": "OrganizationListPage",
+      "type": "Menu",
+      "sortOrder": 2,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-users",
+      "displayName": "Users",
+      "description": "Manage users",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "/management/users",
+      "icon": "UserOutlined",
+      "component": "UserListPage",
+      "type": "Menu",
+      "sortOrder": 3,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-applications",
+      "displayName": "Applications",
+      "description": "Manage applications",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "/management/applications",
+      "icon": "AppstoreOutlined",
+      "component": "ApplicationListPage",
+      "type": "Menu",
+      "sortOrder": 4,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-access-control",
+      "displayName": "Access Control",
+      "description": "Permission and authorization controls",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "",
+      "icon": "SafetyOutlined",
+      "component": "",
+      "type": "Menu",
+      "sortOrder": 5,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-roles",
+      "displayName": "Roles",
+      "description": "Manage roles",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/roles",
+      "icon": "TeamOutlined",
+      "component": "RoleListPage",
+      "type": "Menu",
+      "sortOrder": 1,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-permissions",
+      "displayName": "Permissions",
+      "description": "Manage permissions",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/permissions",
+      "icon": "KeyOutlined",
+      "component": "PermissionListPage",
+      "type": "Menu",
+      "sortOrder": 2,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-models",
+      "displayName": "Models",
+      "description": "Manage authorization models",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/models",
+      "icon": "BlockOutlined",
+      "component": "ModelListPage",
+      "type": "Menu",
+      "sortOrder": 3,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-permission-rules",
+      "displayName": "Permission Rules",
+      "description": "Manage permission rules",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/permission-rules",
+      "icon": "FireOutlined",
+      "component": "PermissionRuleListPage",
+      "type": "Menu",
+      "sortOrder": 4,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-adapters",
+      "displayName": "Adapters",
+      "description": "Manage Casbin adapters",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/adapters",
+      "icon": "DeploymentUnitOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 5,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-enforcers",
+      "displayName": "Enforcers",
+      "description": "Manage Casbin enforcers",
+      "application": "app-built-in",
+      "parentId": "builtin-access-control",
+      "path": "/management/enforcers",
+      "icon": "ControlOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 6,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-org-structure",
+      "displayName": "Organization Structure",
+      "description": "Manage groups and organizational structure",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "",
+      "icon": "ApartmentOutlined",
+      "component": "",
+      "type": "Menu",
+      "sortOrder": 6,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-groups",
+      "displayName": "Groups",
+      "description": "Manage groups",
+      "application": "app-built-in",
+      "parentId": "builtin-org-structure",
+      "path": "/management/groups",
+      "icon": "GroupOutlined",
+      "component": "GroupListPage",
+      "type": "Menu",
+      "sortOrder": 1,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-departments",
+      "displayName": "Departments",
+      "description": "Manage departments",
+      "application": "app-built-in",
+      "parentId": "builtin-org-structure",
+      "path": "/management/departments",
+      "icon": "ClusterOutlined",
+      "component": "DepartmentListPage",
+      "type": "Menu",
+      "sortOrder": 2,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-posts",
+      "displayName": "Posts",
+      "description": "Manage posts",
+      "application": "app-built-in",
+      "parentId": "builtin-org-structure",
+      "path": "/management/posts",
+      "icon": "IdcardOutlined",
+      "component": "PostListPage",
+      "type": "Menu",
+      "sortOrder": 3,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-menus",
+      "displayName": "Menus",
+      "description": "Manage menus",
+      "application": "app-built-in",
+      "parentId": "builtin-org-structure",
+      "path": "/management/menus",
+      "icon": "MenuOutlined",
+      "component": "MenuListPage",
+      "type": "Menu",
+      "sortOrder": 4,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-system",
+      "displayName": "System",
+      "description": "System-level integrations and credentials",
+      "application": "app-built-in",
+      "parentId": "",
+      "path": "",
+      "icon": "SettingOutlined",
+      "component": "",
+      "type": "Menu",
+      "sortOrder": 7,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-providers",
+      "displayName": "Providers",
+      "description": "Manage providers",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/providers",
+      "icon": "CloudServerOutlined",
+      "component": "ProviderListPage",
+      "type": "Menu",
+      "sortOrder": 1,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-certs",
+      "displayName": "Certificates",
+      "description": "Manage certificates",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/certs",
+      "icon": "SafetyCertificateOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 2,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-ldaps",
+      "displayName": "LDAP",
+      "description": "Manage LDAP integrations",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/ldaps",
+      "icon": "ClusterOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 3,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-tokens",
+      "displayName": "Tokens",
+      "description": "Manage issued tokens",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/tokens",
+      "icon": "KeyOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 4,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-sessions",
+      "displayName": "Sessions",
+      "description": "Inspect active sessions",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/sessions",
+      "icon": "HistoryOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 5,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-records",
+      "displayName": "Records",
+      "description": "Inspect audit records",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/records",
+      "icon": "FileSearchOutlined",
+      "component": "GenericResourceListPage",
+      "type": "Menu",
+      "sortOrder": 6,
+      "visible": true,
+      "isEnabled": true
+    },
+    {
+      "owner": "built-in",
+      "name": "builtin-system-info",
+      "displayName": "System Info",
+      "description": "Inspect system info",
+      "application": "app-built-in",
+      "parentId": "builtin-system",
+      "path": "/management/sysinfo",
+      "icon": "InfoCircleOutlined",
+      "component": "SystemInfoPage",
+      "type": "Menu",
+      "sortOrder": 7,
+      "visible": true,
+      "isEnabled": true
+    }
+  ],
+  "departments": [],
+  "posts": []
+}

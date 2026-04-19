@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
+  <title id="title">开轩文档</title>
+  <desc id="desc">开轩文档品牌标识深色版</desc>
+  <defs>
+    <linearGradient id="kxDocDarkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#73d13d"/>
+      <stop offset="100%" stop-color="#52c41a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="44" cy="44" r="36" fill="url(#kxDocDarkGrad)"/>
+  <path d="M32 20 L50 20 L56 26 L56 66 L32 66 Z" fill="none" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>
+  <path d="M50 20 L50 26 L56 26" fill="none" stroke="#ffffff" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>
+  <line x1="37" y1="34" x2="51" y2="34" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.75"/>
+  <line x1="37" y1="42" x2="51" y2="42" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.75"/>
+  <line x1="37" y1="50" x2="46" y2="50" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="1.5">开轩文档</text>
+</svg>

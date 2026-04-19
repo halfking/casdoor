@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="88" viewBox="0 0 320 88" role="img" aria-labelledby="title desc">
+  <title id="title">开轩智控</title>
+  <desc id="desc">开轩智控品牌标识</desc>
+  <defs>
+    <linearGradient id="kxAccLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <circle cx="44" cy="44" r="36" fill="url(#kxAccLightGrad)"/>
+  <line x1="44" y1="18" x2="44" y2="24" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="44" cy="16" r="2" fill="#ffffff" opacity="0.8"/>
+  <rect x="30" y="24" width="28" height="20" rx="5" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.85"/>
+  <circle cx="37" cy="33" r="2.8" fill="#ffffff" opacity="0.9"/>
+  <circle cx="51" cy="33" r="2.8" fill="#ffffff" opacity="0.9"/>
+  <line x1="37" y1="39" x2="51" y2="39" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+  <rect x="34" y="46" width="20" height="12" rx="3" fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0.55"/>
+  <text x="98" y="53" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="28" font-weight="700" fill="#111827" letter-spacing="1.5">开轩智控</text>
+</svg>

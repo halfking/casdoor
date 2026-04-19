@@ -1,0 +1,37 @@
+name: Config Consistency
+
+on:
+  pull_request:
+    paths:
+      - "deploy/onboarding/applications.json"
+      - "deploy/onboarding/sync-init-applications-from-onboarding.py"
+      - "deploy/onboarding/verify-casdoor-config-consistency.sh"
+      - "services/casdoor/init_data.json.template"
+      - "services/casdoor/Makefile"
+      - "services/casdoor/.github/workflows/config-consistency.yml"
+  push:
+    branches:
+      - master
+    paths:
+      - "deploy/onboarding/applications.json"
+      - "deploy/onboarding/sync-init-applications-from-onboarding.py"
+      - "deploy/onboarding/verify-casdoor-config-consistency.sh"
+      - "services/casdoor/init_data.json.template"
+      - "services/casdoor/Makefile"
+      - "services/casdoor/.github/workflows/config-consistency.yml"
+
+jobs:
+  verify-config:
+    name: Verify Casdoor Config Consistency
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run consistency checks
+        run: make -C services/casdoor verify-casdoor-config

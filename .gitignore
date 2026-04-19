@@ -1,0 +1,64 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.swp
+server_*
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+vendor/
+bin/
+web/node_modules/
+.idea/
+
+# 由 envsubst 从 init_data.json.template 生成，包含密钥，不提交
+init_data.json
+deployment/platform.env
+deployment/generated/
+.env
+.env.local
+.env.*.local
+*.iml
+.vscode/settings.json
+
+tmp/
+tmpFiles/
+*.tmp
+logs/
+files/
+lastupdate.tmp
+commentsRouter*.go
+
+# ignore build result
+casdoor
+server
+
+# include helm-chart
+!manifests/casdoor
+
+# Vite cache
+.vite/
+
+# Build output directories
+web-vue/dist/
+web/dist/
+vue/dist/
+
+# Vue frontend dependencies
+web-vue/node_modules/
+vue/node_modules/
+.playwright-mcp/
+
+# Legacy build output directory (runtime-generated, do not track)
+web/
+conf/app.local.conf
+conf/*.local.conf
+conf.local/*.conf
